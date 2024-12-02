@@ -47,5 +47,7 @@ public class TC01 {
             softAssert.assertTrue(openAccountPage.isSuccessfulMsgDisplayed());
             softAssert.assertAll();
         }
+    public void openGmail () {
 
+    }
 }
