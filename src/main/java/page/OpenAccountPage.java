@@ -13,6 +13,7 @@ public class OpenAccountPage {
     By savingAccountTypeLocator = By.xpath("(//li[contains(@class, 'ui-selectonemenu-item') and contains(@class, 'ui-selectonemenu-list-item') and contains(@class, 'ui-corner-all')])[2]");
     By createAccBtnLocator = By.name("j_idt23:j_idt31");
     By successMessageLocator = By.xpath("//div[text()='Mở tài khoản thành công']");
+    By closeMessageBtnLocator = By.xpath("//span[contains(@class, 'ui-icon') and contains(@class, 'ui-icon-closethick')]");
 
     WebDriver driver;
 
@@ -21,10 +22,7 @@ public class OpenAccountPage {
         this.driver = driver;
     }
 
-    public void clickAccTypeDropdown () {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOf(driver.findElement(accountTypeLocator)));
-        driver.findElement(accountTypeLocator).click();}
+    public void clickAccTypeDropdown () {driver.findElement(accountTypeLocator).click();}
 
     public void selectNonTermAcc () {driver.findElement(nonTermAccountTypeLocator).click();};
 
@@ -33,11 +31,21 @@ public class OpenAccountPage {
     public void clickCreateAccBtn () {
         driver.findElement(createAccBtnLocator).click();
     }
+    public void createSavingAccount () {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        wait.until(ExpectedConditions.elementToBeClickable(accountTypeLocator));
+        clickAccTypeDropdown();
+        selectSavingAcc();
+        clickCreateAccBtn();
+    }
+
 
     public boolean isSuccessfulMsgDisplayed () {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(successMessageLocator));
         return driver.findElement(successMessageLocator).isDisplayed();
     }
+
+    public void closeMessage () { driver.findElement(closeMessageBtnLocator).click();}
 
 }
