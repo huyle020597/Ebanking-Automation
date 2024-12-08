@@ -2,13 +2,16 @@ package example.Admin;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePage {
-    By customerListLocator = By.xpath("(//span[text()='Danh sách khách hàng'])[1]");
-    By withDrawLocator = By.xpath("(//span[text()='Rút tiền'])");
-    By depositLocator = By.xpath("//span[contains(text(),'Nộp Tiền')]");
-    By customerTransactionListLocator = By.xpath("(//span[text()='Theo Khách Hàng'])");
-    By dayTransactionListLocator = By.xpath("(//span[normalize-space()='Theo Ngày'])");
+    By customerListLocator = By.xpath("//a[@tabindex='-1']/span[text()='Danh sách khách hàng']");
+    By withdrawLocator = By.xpath("//a[@tabindex='-1']/span[text()='Rút tiền']");
+    By depositLocator = By.xpath("//a[@tabindex='-1']/span[text()='Nộp Tiền']");
+    By customerTransactionListLocator = By.xpath("//a[@tabindex='-1']/span[text()='Theo Khách Hàng']");
+    By dayTransactionListLocator = By.xpath("//a[@tabindex='-1']/span[text()='Theo Ngày']");
     By logOutLocator = By.xpath("//input[@name='j_idt9:j_idt19']");
 
     WebDriver driver;
@@ -17,23 +20,23 @@ public class HomePage {
         this.driver = driver;
     }
 
-    public void openCustomerList() {
+    public void openCustomerListPage() {
         driver.findElement(customerListLocator).click();
     }
 
-    public void openWithdrawButton() {
-        driver.findElement(withDrawLocator).click();
+    public void openWithdrawPage() {
+        driver.findElement(withdrawLocator).click();
     }
 
     public void openDepositPage() {
         driver.findElement(depositLocator).click();
     }
 
-    public void openCustomerTransactionList() {
+    public void openCustomerTransactionListPage() {
         driver.findElement(customerTransactionListLocator).click();
     }
 
-    public void openDayTransactionList() {
+    public void openDayTransactionListPage() {
         driver.findElement(dayTransactionListLocator).click();
     }
 
@@ -42,5 +45,11 @@ public class HomePage {
     }
 
     public void homePage() {
+        openCustomerListPage();
+        openDepositPage();
+        openWithdrawPage();
+        openCustomerTransactionListPage();
+        openDayTransactionListPage();
+        clickLogOutButton();
     }
 }
