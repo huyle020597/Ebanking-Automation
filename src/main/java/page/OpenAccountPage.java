@@ -32,8 +32,6 @@ public class OpenAccountPage {
         driver.findElement(createAccBtnLocator).click();
     }
     public void createSavingAccount () {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.elementToBeClickable(accountTypeLocator));
         clickAccTypeDropdown();
         selectSavingAcc();
         clickCreateAccBtn();

@@ -43,11 +43,11 @@ public class TC01 {
     public void openNewAccount() {
         loginPage.login("huyle020597", "Maddie123@");
 // Lay so luong account truoc khi tao tai khoan
-        bankAccountsPage.clickAccountPage();
+        bankAccountsPage.openAccountPage();
         accountQuantityBefore = bankAccountsPage.getQuantityAccount();
 
 // Tao tai khoan Saving
-        menuBar.openOpenAccountPage();
+        bankAccountsPage.openOpenAccountPage();
         openAccountPage.createSavingAccount();
 
 // Kiem tra thong bao co hien thi

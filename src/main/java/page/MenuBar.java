@@ -19,13 +19,15 @@ public class MenuBar {
 
     public void openOpenAccountPage() {clickMenuButtons("Mở tài khoản");}
 
-    public void clickUserInfo () {driver.findElement(By.xpath("(//li[@role='menuitem']/a/span)[2]")).click();};
+    public void openUserInfoPage() {driver.findElement(By.xpath("(//li[@role='menuitem']/a/span)[2]")).click();};
 
-    public void clickAccountPage () {driver.findElement(By.xpath("(//li[@role='menuitem']/a/span)[4]")).click();}
+    public void openAccountPage() {clickMenuButtons("Tài khoản");}
 
-    public void clickTransferPage () {
-        clickMenuButtons("Tài khoản");
+    public void openTransferPage() {
+        clickMenuButtons("Chuyển  khoản");
     }
 
-    public void clickExternalTransferPage () {clickMenuButtons("Liên Ngân Hàng");}
+    public void openExternalTransferPage() {clickMenuButtons("Liên Ngân Hàng");}
+
+    public void clickLogoutBtn () {clickMenuButtons("Đăng xuất");}
 }

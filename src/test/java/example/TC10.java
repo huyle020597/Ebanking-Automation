@@ -1,5 +1,6 @@
 package example;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -15,6 +16,7 @@ public class TC10 {
     MenuBar menuBar;
     BankAccountsPage bankAccountsPage;
     UserInfoPage userInfoPage;
+    Faker faker;
 
     @BeforeMethod
     public void initData () {
@@ -24,7 +26,7 @@ public class TC10 {
         menuBar = new MenuBar(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         userInfoPage = new UserInfoPage(driver);
-
+        faker = new Faker();
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
         driver.manage().window().maximize();
@@ -40,10 +42,10 @@ public class TC10 {
     public void editAddress () {
         loginPage.login("huyle020597", "Maddie123@");
 
-        menuBar.clickUserInfo();
+        menuBar.openUserInfoPage();
 
 //        System.out.println(userInfoPage.getAddressValue());
-        String addressInput = "Danang123";
+        String addressInput = faker.address().fullAddress();
 
         userInfoPage.editAddress(addressInput);
 

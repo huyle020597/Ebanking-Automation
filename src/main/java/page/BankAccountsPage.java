@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BankAccountsPage extends MenuBar{
     By accountNumberLocator;
-    By accountBalanceLocator = By.xpath("//*[contains(text(), 'VNĐ')]");
+    By accountBalanceLocator = By.xpath("//label[text()='Số dư tài khoản']/../following-sibling::td/label");
 
 
     public BankAccountsPage(WebDriver driver) {
@@ -26,7 +26,7 @@ public class BankAccountsPage extends MenuBar{
     }
 
     public double getAccountBalance () {
-        return Double.parseDouble(driver.findElement(accountBalanceLocator).getText().replace(" VNĐ",""));
+        return Double.parseDouble(driver.findElement(accountBalanceLocator).getText().replace(" VNĐ","").replace(",",""));
     }
 
     public int getQuantityAccount () {
