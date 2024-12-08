@@ -15,14 +15,15 @@ public class TransferPage {
     By availableAccountLocator = By.xpath("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all']");
 
     By receiverAccLocator = By.id("j_idt23:j_idt35");
-    By receiverNameLocator = By.xpath("");
+    By receiverNameLocator = By.xpath("//label[@id='j_idt23:out']");
 
     By moneyAmountLocator = By.id("j_idt23:j_idt40");
     By transferDescLocator = By.id("j_idt23:j_idt42");
 
     By confirmBtnLocator = By.name("j_idt23:j_idt44");
 
-    By errorMesssageLocator = By.xpath("//span[@class='ui-growl-title'][text()='Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại.']");
+    By invalidAccountMsgLocator = By.xpath("//span[@class='ui-growl-title'][text()='Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại.']");
+    By insufficientMoneyMsgLocator = By.xpath("//span[@class='ui-growl-title'][text()='Số tiền vượt mức']");
 
     WebDriver driver;
 
@@ -69,7 +70,16 @@ public class TransferPage {
 
     public void clickConfirmBtn () {driver.findElement(confirmBtnLocator).click();}
 
-    public boolean isReceiverNameDisplayed () {
-        return driver.findElement(receiverNameLocator).isDisplayed();
+    public boolean isReceiverNameEmpty () {
+        return driver.findElement(receiverNameLocator).getText().equals("");
+    }
+
+    public boolean isInvalidAccMessageDisplayed () {
+        return driver.findElement(invalidAccountMsgLocator).isDisplayed();
+    }
+
+
+    public boolean isInsufficientMessageDisplayed () {
+        return driver.findElement(insufficientMoneyMsgLocator).isDisplayed();
     }
 }

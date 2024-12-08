@@ -17,6 +17,8 @@ public class TransferConfirmationPage {
     By transferSuccessMessageLocator = By.xpath("//div[text()='Chuyển tiền thành công']");
     By closeMessageBtnLocator = By.xpath("//*[@class='ui-icon ui-icon-closethick']");
 
+    By wrongOTPMsgLocator = By.xpath("//span[@class='ui-growl-title'][text()='Sai mã OTP']");
+
     WebDriver driver;
 
     public TransferConfirmationPage(WebDriver driver) {
@@ -54,6 +56,7 @@ public class TransferConfirmationPage {
     }
 
     public void inputOTP (String OTPcode) {
+        driver.findElement(OTPboxLocator).clear();
         driver.findElement(OTPboxLocator).sendKeys(OTPcode);
     }
 
@@ -67,5 +70,9 @@ public class TransferConfirmationPage {
 
     public void closeTransferSuccessMessage () {
         driver.findElement(closeMessageBtnLocator).click();
+    }
+
+    public boolean isWrongOTPMessageDisplayed () {
+        return driver.findElement(wrongOTPMsgLocator).isDisplayed();
     }
 }

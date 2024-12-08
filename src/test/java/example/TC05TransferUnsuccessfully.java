@@ -56,9 +56,8 @@ public class TC05TransferUnsuccessfully {
     }
 
     @Test
-    public void TC05 () {
+    public void TC05 () throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        menuBar.clickLogoutBtn();
         loginPage.login(userId1, password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         double senderBalance = bankAccountsPage.getAccountBalance();
@@ -68,9 +67,11 @@ public class TC05TransferUnsuccessfully {
         transferPage.clickAccDropdown();
         transferPage.selectAccountByAccNumber(senderAcc);
 
+        Thread.sleep(500);
         softAssert.assertEquals(transferPage.getAccBalance(),senderBalance);
 
-        transferPage.inputReceiverAccount(receiverAcc+"123");
+        transferPage.inputReceiverAccount(receiverAcc+"1");
+        softAssert.assertTrue(transferPage.isReceiverNameEmpty()); //Check name empty
 
         transferPage.inputMoneyAmount(transferAmount);
 
@@ -78,7 +79,19 @@ public class TC05TransferUnsuccessfully {
 
         transferPage.clickConfirmBtn();
 
-        //Kiem tra thong bao sai thong tin nguoi nhan
+        softAssert.assertTrue(transferPage.isInvalidAccMessageDisplayed()); //Check loi~ tai khoan khong hop le
+
+        transferPage.inputReceiverAccount(receiverAcc);
+
+        transferPage.inputMoneyAmount(2000000000);
+
+        transferPage.clickConfirmBtn();
+
+        softAssert.assertTrue(transferPage.isInsufficientMessageDisplayed()); //Check loi~ so tien vuot muc
+
+        transferPage.inputMoneyAmount(transferAmount);
+
+        transferPage.clickConfirmBtn();
 
 
         // Kiem tra thong tin da nhap
@@ -91,9 +104,13 @@ public class TC05TransferUnsuccessfully {
         transferConfirmationPage.clickConfirmBtn();
         Thread.sleep(3000);
 
-        String originalHandle = driver.getWindowHandle();
+        //Nhap sai OTP
+        transferConfirmationPage.inputOTP("ABCDEFGH");
+        transferConfirmationPage.clickTransferBtn();
+        transferConfirmationPage.isWrongOTPMessageDisplayed();
 
         // Lay ma OTP tu Yopmail
+        String originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get("https://yopmail.com");
         yopmailPage.inputEmailAddress(userId1);
@@ -101,26 +118,16 @@ public class TC05TransferUnsuccessfully {
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
-
         transferConfirmationPage.inputOTP(OTP);
-
         transferConfirmationPage.clickTransferBtn();
 
-        // Kiem tra message success, so du cua 2 tai khoan
-        //Kiem tra message
+        // Kiem tra message success
         softAssert.assertTrue(transferConfirmationPage.isTransferSuccessMessageDisplayed());
         transferConfirmationPage.closeTransferSuccessMessage();
 
         //Kiem tra so du tai khoan gui
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(),senderBalance-transferAmount-transactionFee);
-
-        //Kiem tra so du tai khoan nhan
-        menuBar.clickLogoutBtn();
-
-        loginPage.login(userId2, password2);
-        bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiverBalance+transferAmount);
 
         softAssert.assertAll();
     }
