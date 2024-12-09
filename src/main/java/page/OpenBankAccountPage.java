@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class OpenAccountPage {
+public class OpenBankAccountPage {
     By accountTypeLocator = By.cssSelector(".ui-selectonemenu-label.ui-inputfield.ui-corner-all");
     By nonTermAccountTypeLocator = By.cssSelector(".ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all.ui-state-highlight");
     By savingAccountTypeLocator = By.xpath("(//li[contains(@class, 'ui-selectonemenu-item') and contains(@class, 'ui-selectonemenu-list-item') and contains(@class, 'ui-corner-all')])[2]");
@@ -18,7 +18,7 @@ public class OpenAccountPage {
     WebDriver driver;
 
 
-    public OpenAccountPage(WebDriver driver) {
+    public OpenBankAccountPage(WebDriver driver) {
         this.driver = driver;
     }
 

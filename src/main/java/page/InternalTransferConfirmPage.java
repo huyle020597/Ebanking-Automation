@@ -3,7 +3,7 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class TransferConfirmationPage {
+public class InternalTransferConfirmPage {
     By senderAccount = By.id("j_idt23:j_idt27");
     By availableBalance = By.id("j_idt23:j_idt29");
     By transferAmount = By.id("j_idt23:j_idt31");
@@ -21,7 +21,7 @@ public class TransferConfirmationPage {
 
     WebDriver driver;
 
-    public TransferConfirmationPage(WebDriver driver) {
+    public InternalTransferConfirmPage(WebDriver driver) {
         this.driver = driver;
     }
 

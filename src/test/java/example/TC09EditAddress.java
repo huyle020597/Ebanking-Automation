@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.*;
 
-public class TC10 {
+public class TC09EditAddress {
     WebDriver driver ;
     LoginPage loginPage;
     SoftAssert softAssert;

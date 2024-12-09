@@ -16,14 +16,17 @@ public class TC04InternalTransfer {
     LoginPage loginPage;
     SoftAssert softAssert;
     MenuBar menuBar;
-    OpenAccountPage openAccountPage;
+    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
-    TransferPage transferPage;
-    TransferConfirmationPage transferConfirmationPage;
+    InternalTransferPage internalTransferPage;
+    InternalTransferConfirmPage internalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String userId1; String password1;
-    String userId2; String password2;
-    String receiverAcc; String senderAcc;
+    String userId1;
+    String password1;
+    String userId2;
+    String password2;
+    String receiverAcc;
+    String senderAcc;
     double transferAmount;
     double transactionFee;
 
@@ -33,14 +36,17 @@ public class TC04InternalTransfer {
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
         menuBar = new MenuBar(driver);
-        openAccountPage = new OpenAccountPage(driver);
+        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
-        transferPage = new TransferPage(driver);
-        transferConfirmationPage = new TransferConfirmationPage(driver);
+        internalTransferPage = new InternalTransferPage(driver);
+        internalTransferConfirmPage = new InternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        userId1 = "huyle020597"; password1 = "Maddie123@";
-        userId2 = "huyle0205971"; password2 = "Maddie123@";
-        senderAcc = "100001283" ; receiverAcc = "100001298";
+        userId1 = "huyle020597";
+        password1 = "Maddie123@";
+        userId2 = "huyle0205971";
+        password2 = "Maddie123@";
+        senderAcc = "100001283";
+        receiverAcc = "100001298";
         transferAmount = 20000.0;
         transactionFee = 1100;
 
@@ -56,74 +62,74 @@ public class TC04InternalTransfer {
     }
 
     @Test
-    public void TC04 () throws InterruptedException {
-    // Login tai khoan nhan va kiem tra so du
+    public void TC04() throws InterruptedException {
+        // Login tai khoan nhan va kiem tra so du
         loginPage.login(userId2, password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
         double receiverBalance = bankAccountsPage.getAccountBalance();
 
 
-    // Login voi tai khoan gui và kiem tra so du
-        menuBar.clickLogoutBtn();
+        // Login voi tai khoan gui và kiem tra so du
+        bankAccountsPage.clickLogoutBtn();
         loginPage.login(userId1, password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         double senderBalance = bankAccountsPage.getAccountBalance();
 
-    // Thuc hien chuyen tien
+        // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
-        transferPage.clickAccDropdown();
-        transferPage.selectAccountByAccNumber(senderAcc);
+        internalTransferPage.clickAccDropdown();
+        internalTransferPage.selectAccountByAccNumber(senderAcc);
 
-        softAssert.assertEquals(transferPage.getAccBalance(),senderBalance);
+        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); //Kiem tra so du
 
-        transferPage.inputReceiverAccount(receiverAcc);
+        internalTransferPage.inputReceiverAccount(receiverAcc);
 
-        transferPage.inputMoneyAmount(transferAmount);
+        internalTransferPage.inputMoneyAmount(transferAmount);
 
-        transferPage.inputTransferDescription("Hello");
+        internalTransferPage.inputTransferDescription("Hello");
 
-        transferPage.clickConfirmBtn();
+        internalTransferPage.clickConfirmBtn();
 
-    // Kiem tra thong tin da nhap
-        softAssert.assertEquals(transferConfirmationPage.getReceiverAcc(),receiverAcc);
-        softAssert.assertEquals(transferConfirmationPage.getAvailableBalance(),senderBalance);
-        softAssert.assertEquals(transferConfirmationPage.getTransferAmount(),transferAmount);
-        softAssert.assertEquals(transferConfirmationPage.getTransferDescription(),"Hello");
-        softAssert.assertEquals(transferConfirmationPage.getReceiverAcc(),receiverAcc);
+        // Kiem tra thong tin da nhap
+        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
+        softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
+        softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
+        softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), "Hello");
+        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
 
-        transferConfirmationPage.clickConfirmBtn();
+        internalTransferConfirmPage.clickConfirmBtn();
         Thread.sleep(3000);
 
         String originalHandle = driver.getWindowHandle();
 
-    // Lay ma OTP tu Yopmail
+        // Lay ma OTP tu Yopmail
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get("https://yopmail.com");
         yopmailPage.inputEmailAddress(userId1);
         String OTP = yopmailPage.getOTPcode();
 
-    // Quay ve tab cu va nhap OTP
+        // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
 
-        transferConfirmationPage.inputOTP(OTP);
+        internalTransferConfirmPage.inputOTP(OTP);
 
-        transferConfirmationPage.clickTransferBtn();
+        internalTransferConfirmPage.clickTransferBtn();
 
-    // Kiem tra message success, so du cua 2 tai khoan
+        // Kiem tra message success, so du cua 2 tai khoan
         //Kiem tra message
-        softAssert.assertTrue(transferConfirmationPage.isTransferSuccessMessageDisplayed());
-        transferConfirmationPage.closeTransferSuccessMessage();
+        softAssert.assertTrue(internalTransferConfirmPage.isTransferSuccessMessageDisplayed());
+        internalTransferConfirmPage.closeTransferSuccessMessage();
 
         //Kiem tra so du tai khoan gui
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(),senderBalance-transferAmount-transactionFee);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - transactionFee);
 
         //Kiem tra so du tai khoan nhan
         menuBar.clickLogoutBtn();
 
         loginPage.login(userId2, password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiverBalance+transferAmount);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiverBalance + transferAmount);
 
         softAssert.assertAll();
     }

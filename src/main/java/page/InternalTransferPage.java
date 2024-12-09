@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class TransferPage {
+public class InternalTransferPage {
     By selectAccDropdownLocator = By.id("j_idt23:j_idt28_label");
     By availableBalanceLocator = By.xpath("//label[@id='j_idt23:amount']");
     By availableAccountLocator = By.xpath("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all']");
@@ -27,7 +27,7 @@ public class TransferPage {
 
     WebDriver driver;
 
-    public TransferPage(WebDriver driver) {
+    public InternalTransferPage(WebDriver driver) {
         this.driver = driver;
     }
 

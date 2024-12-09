@@ -9,14 +9,14 @@ import org.testng.asserts.SoftAssert;
 import page.BankAccountsPage;
 import page.LoginPage;
 import page.MenuBar;
-import page.OpenAccountPage;
+import page.OpenBankAccountPage;
 
-public class TC01 {
+public class TC01OpenAccount {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
     MenuBar menuBar;
-    OpenAccountPage openAccountPage;
+    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     int accountQuantityBefore;
 
@@ -26,7 +26,7 @@ public class TC01 {
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
         menuBar = new MenuBar(driver);
-        openAccountPage = new OpenAccountPage(driver);
+        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
@@ -48,11 +48,11 @@ public class TC01 {
 
 // Tao tai khoan Saving
         bankAccountsPage.openOpenAccountPage();
-        openAccountPage.createSavingAccount();
+        openBankAccountPage.createSavingAccount();
 
 // Kiem tra thong bao co hien thi
-        softAssert.assertTrue(openAccountPage.isSuccessfulMsgDisplayed());
-        openAccountPage.closeMessage();
+        softAssert.assertTrue(openBankAccountPage.isSuccessfulMsgDisplayed());
+        openBankAccountPage.closeMessage();
 
 // Kiem tra so luong account sau khi tao tai khoan
         softAssert.assertEquals(bankAccountsPage.getQuantityAccount(), accountQuantityBefore + 1);
