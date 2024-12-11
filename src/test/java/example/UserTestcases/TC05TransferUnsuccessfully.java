@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,8 +28,13 @@ public class TC05TransferUnsuccessfully {
     String password2;
     String receiverAcc;
     String senderAcc;
+    String transferDesc;
     double transferAmount;
     double transactionFee;
+    double senderBalance;
+    String OTP;
+    String originalHandle;
+
 
     @BeforeMethod
     public void initData() {
@@ -48,7 +54,8 @@ public class TC05TransferUnsuccessfully {
         senderAcc = "100001283";
         receiverAcc = "100001298";
         transferAmount = 20000.0;
-        transactionFee = 1100;
+        transactionFee = Constants.INTERNAL_TRANSACTION_FEE;
+        transferDesc = "Hello";
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
         driver.manage().window().maximize();
@@ -66,11 +73,10 @@ public class TC05TransferUnsuccessfully {
         // Login voi tai khoan gui và kiem tra so du
         loginPage.login(userId1, password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        double senderBalance = bankAccountsPage.getAccountBalance();
+        senderBalance = bankAccountsPage.getAccountBalance();
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
-        internalTransferPage.clickAccDropdown();
         internalTransferPage.selectAccountByAccNumber(senderAcc);
 
         softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance);
@@ -80,7 +86,7 @@ public class TC05TransferUnsuccessfully {
 
         internalTransferPage.inputMoneyAmount(transferAmount);
 
-        internalTransferPage.inputTransferDescription("Hello");
+        internalTransferPage.inputTransferDescription(transferDesc);
 
         internalTransferPage.clickConfirmBtn();
 
@@ -103,26 +109,28 @@ public class TC05TransferUnsuccessfully {
         softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
         softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
-        softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), "Hello");
+        softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), transferDesc);
         softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
 
         internalTransferConfirmPage.clickConfirmBtn();
-        Thread.sleep(3000);
 
-        //Nhap sai OTP
-        internalTransferConfirmPage.inputOTP("ABCDEFGH");
-        internalTransferConfirmPage.clickTransferBtn();
-        internalTransferConfirmPage.isWrongOTPMessageDisplayed();
 
         // Lay ma OTP tu Yopmail
-        String originalHandle = driver.getWindowHandle();
+        originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get("https://yopmail.com");
+        Thread.sleep(3000);
         yopmailPage.inputEmailAddress(userId1);
-        String OTP = yopmailPage.getOTPcode();
+        OTP = yopmailPage.getOTPcode();
 
-        // Quay ve tab cu va nhap OTP
+
+        // Quay ve tab cu
         driver.switchTo().window(originalHandle);
+        // Nhap sai OTP
+        internalTransferConfirmPage.inputOTP(OTP+"A");
+        internalTransferConfirmPage.clickTransferBtn();
+        internalTransferConfirmPage.isWrongOTPMessageDisplayed();
+        // Nhap dung OTP
         internalTransferConfirmPage.inputOTP(OTP);
         internalTransferConfirmPage.clickTransferBtn();
 

@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,6 +30,11 @@ public class TC04InternalTransfer {
     String senderAcc;
     double transferAmount;
     double transactionFee;
+    String OTP;
+    String transferDescription;
+    double receiverBalance;
+    double senderBalance;
+
 
     @BeforeMethod
     public void initData() {
@@ -48,7 +54,8 @@ public class TC04InternalTransfer {
         senderAcc = "100001283";
         receiverAcc = "100001298";
         transferAmount = 20000.0;
-        transactionFee = 1100;
+        transactionFee = Constants.INTERNAL_TRANSACTION_FEE;
+        transferDescription = "Hello";
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
         driver.manage().window().maximize();
@@ -66,18 +73,17 @@ public class TC04InternalTransfer {
         // Login tai khoan nhan va kiem tra so du
         loginPage.login(userId2, password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
-        double receiverBalance = bankAccountsPage.getAccountBalance();
+        receiverBalance = bankAccountsPage.getAccountBalance();
 
 
         // Login voi tai khoan gui và kiem tra so du
-        bankAccountsPage.clickLogoutBtn();
+        bankAccountsPage.LogOut();
         loginPage.login(userId1, password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        double senderBalance = bankAccountsPage.getAccountBalance();
+        senderBalance = bankAccountsPage.getAccountBalance();
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
-        internalTransferPage.clickAccDropdown();
         internalTransferPage.selectAccountByAccNumber(senderAcc);
 
         softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); //Kiem tra so du
@@ -86,7 +92,7 @@ public class TC04InternalTransfer {
 
         internalTransferPage.inputMoneyAmount(transferAmount);
 
-        internalTransferPage.inputTransferDescription("Hello");
+        internalTransferPage.inputTransferDescription(transferDescription);
 
         internalTransferPage.clickConfirmBtn();
 
@@ -94,19 +100,18 @@ public class TC04InternalTransfer {
         softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
         softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
-        softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), "Hello");
+        softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), transferDescription);
         softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
 
         internalTransferConfirmPage.clickConfirmBtn();
-        Thread.sleep(3000);
-
         String originalHandle = driver.getWindowHandle();
 
         // Lay ma OTP tu Yopmail
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get("https://yopmail.com");
+        Thread.sleep(3000);
         yopmailPage.inputEmailAddress(userId1);
-        String OTP = yopmailPage.getOTPcode();
+        OTP = yopmailPage.getOTPcode();
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -115,8 +120,7 @@ public class TC04InternalTransfer {
 
         internalTransferConfirmPage.clickTransferBtn();
 
-        // Kiem tra message success, so du cua 2 tai khoan
-        //Kiem tra message
+        // Kiem tra message success
         softAssert.assertTrue(internalTransferConfirmPage.isTransferSuccessMessageDisplayed());
         internalTransferConfirmPage.closeTransferSuccessMessage();
 
@@ -125,7 +129,7 @@ public class TC04InternalTransfer {
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - transactionFee);
 
         //Kiem tra so du tai khoan nhan
-        menuBar.clickLogoutBtn();
+        bankAccountsPage.LogOut();
 
         loginPage.login(userId2, password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);

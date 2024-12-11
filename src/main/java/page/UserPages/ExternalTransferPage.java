@@ -30,18 +30,19 @@ public class ExternalTransferPage {
         this.driver = driver;
     }
 
-    public void clickAccountDropdown() {
+    private void clickAccountDropdown() {
         driver.findElement(accountDropdownLocator).click();
     }
 
     public void selectAccountByAccNumber(String accNumber) {
+        clickAccountDropdown();
         availableAccountsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",accNumber));
         driver.findElement(availableAccountsLocator).click();
     }
 
     public double getSenderBalance() {
       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(senderBalanceLocator));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(senderBalanceLocator)));
         return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ","").replace(",",""));
     }
 
@@ -50,15 +51,16 @@ public class ExternalTransferPage {
         driver.findElement(receiverAccountBoxLocator).sendKeys(receiverAccount);
     }
 
-    public String getReceiverName () {
-       return driver.findElement(receiverNameLocator).getText();
+    public void inputReceiverName (String receiverName) {
+       driver.findElement(receiverNameLocator).sendKeys(receiverName);
     }
 
     public void clickBanksDropdown() {
         driver.findElement(banksDropdownLocator).click();
     }
     private void selectAvailableBanks(String bankName) {
-        availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='Ngân hàng Đông Á']",bankName));
+        driver.findElement(banksDropdownLocator).click();
+        availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",bankName));
         driver.findElement(availableBanksLocator).click();
     }
     public void selectDongABank() {
@@ -70,7 +72,9 @@ public class ExternalTransferPage {
         driver.findElement(branchDropdownLocator).click();
     }
     private void selectAvailableBranch(String branchName) {
+        clickBranchsDropdown();
         availableBranchsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",branchName));
+        driver.findElement(availableBranchsLocator).click();
     }
     public void selectDaNangBranch() {
         selectAvailableBranch("Chi nhánh Đà Nẵng");

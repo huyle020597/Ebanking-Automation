@@ -10,14 +10,14 @@ import org.testng.asserts.SoftAssert;
 import page.UserPages.BankAccountsPage;
 import page.UserPages.LoginPage;
 import page.UserPages.MenuBar;
-import page.OpenAccountPage;
+import page.UserPages.OpenBankAccountPage;
 
 public class TC03 {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
     MenuBar menuBar;
-    OpenAccountPage openAccountPage;
+    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     page.AdminPages.LoginPage loginPage2;
     int accountQuantityBefore;
@@ -30,7 +30,7 @@ public class TC03 {
         softAssert = new SoftAssert();
         menuBar = new MenuBar(driver);
         loginPage2 = new page.AdminPages.LoginPage(driver);
-        openAccountPage = new OpenAccountPage(driver);
+        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
 

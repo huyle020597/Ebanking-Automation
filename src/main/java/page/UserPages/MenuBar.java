@@ -29,5 +29,5 @@ public class MenuBar {
 
     public void openExternalTransferPage() {clickMenuButtons("Liên Ngân Hàng");}
 
-    public void clickLogoutBtn () {clickMenuButtons("Đăng xuất");}
+    public void LogOut() {clickMenuButtons("Đăng xuất");}
 }

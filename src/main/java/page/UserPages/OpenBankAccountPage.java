@@ -31,9 +31,16 @@ public class OpenBankAccountPage {
     public void clickCreateAccBtn () {
         driver.findElement(createAccBtnLocator).click();
     }
+
     public void createSavingAccount () {
         clickAccTypeDropdown();
         selectSavingAcc();
+        clickCreateAccBtn();
+    }
+
+    public void createNonTermAccount () {
+        clickAccTypeDropdown();
+        selectNonTermAcc();
         clickCreateAccBtn();
     }
 

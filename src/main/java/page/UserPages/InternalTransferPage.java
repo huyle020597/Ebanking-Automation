@@ -31,7 +31,7 @@ public class InternalTransferPage {
         this.driver = driver;
     }
 
-    public void clickAccDropdown () {driver.findElement(selectAccDropdownLocator).click();}
+    private void clickAccDropdown () {driver.findElement(selectAccDropdownLocator).click();}
 
     public void selectAccountByIndex (int index) {
         List <WebElement> listAvailableAccount = driver.findElements(availableAccountLocator);
@@ -39,6 +39,7 @@ public class InternalTransferPage {
     }
 
     public void selectAccountByAccNumber (String AccountNumber) {
+        clickAccDropdown();
         By availableAccountLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",AccountNumber));
         driver.findElement(availableAccountLocator).click();
     }

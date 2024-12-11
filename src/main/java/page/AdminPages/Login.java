@@ -12,7 +12,7 @@ public class Login {
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
 
-        loginPage.login("1","admin");
+        loginPage.loginAdmin("1","admin");
     }
 }
 
