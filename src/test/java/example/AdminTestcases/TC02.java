@@ -100,7 +100,7 @@ public class TC02 {
 //        double initialBalanceAmount = Double.parseDouble(initialBalance.replaceAll("[^\\d.]", ""));
 //        double depositAmount;
 //        double updatedBalanceAmount = Double.parseDouble(updatedBalance.replaceAll("[^\\d.]", ""));
-//        softAssert.assertEquals(updatedBalanceAmount, initialBalanceAmount + depositAmount, "Balance did not increase correctly");
+//        softAssert.assertEquals(updatedBalanceAmount, initialBalanceAmount + depositAmount);
 
 
         softAssert.assertAll();
