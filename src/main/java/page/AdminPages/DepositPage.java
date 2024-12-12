@@ -24,8 +24,8 @@ public class DepositPage {
         driver.findElement(receiveAccountTextbox).sendKeys(accountNumber);
     }
 
-    public void inputAmount(String amount) {
-        driver.findElement(amountTextbox).sendKeys(amount);
+    public void inputAmount(Double amount) {
+        driver.findElement(amountTextbox).sendKeys(Double.toString(amount));
     }
 
     public void inputNote(String paymentNote) {
@@ -38,7 +38,7 @@ public class DepositPage {
 
 
 
-    public void inputDeposit(String accountNumber, String amount, String paymentNote) {
+    public void inputDeposit(String accountNumber, Double amount, String paymentNote) {
         inputReceiveAccount(accountNumber);
         inputAmount(amount);
         inputNote(paymentNote);

@@ -1,8 +1,8 @@
 package example.AdminTestcases;
 
+import page.AdminPages.CustomerList;
 import page.AdminPages.HomePage;
 import page.AdminPages.LoginPage;
-import page.AdminPages.TransactionCustomerPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -12,17 +12,15 @@ import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 
-
 public class TC12 {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;
-    TransactionCustomerPage transactionCustomerPage;
+    CustomerList customerList;
     SoftAssert softAssert;
-    String accountNumber;
+    String customerID; String phoneNumber;
     String dateFrom;     String dateTo;
     String adminId;     String password;
-    boolean transactionFound;
 
 
     @BeforeMethod
@@ -31,17 +29,15 @@ public class TC12 {
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
         homePage = new HomePage(driver);
-        transactionCustomerPage = new TransactionCustomerPage(driver);
-        accountNumber = "100001283";
+        customerList = new CustomerList(driver);
+        customerID = "ngochien123"; phoneNumber = "0799453330";
         dateFrom = "20112024"; dateTo = "20122024";
         adminId = "1"; password = "admin";
-        transactionFound = false;
 
 
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-
     }
 
     @AfterMethod
@@ -50,21 +46,20 @@ public class TC12 {
     }
 
     @Test
-    public void viewTransactionByAccount() {
+            (description = "Admin - Search customer by multiple fields")
+    public void searchCustomer() {
         loginPage.loginAdmin(adminId,password);
 
         //Nhap data tim kiem
-        homePage.openCustomerTransactionListPage();
-        transactionCustomerPage.inputAccountNumber(accountNumber);
-        transactionCustomerPage.inputDateFrom(dateFrom);
-        transactionCustomerPage.inputDateTo(dateTo);
-        transactionCustomerPage.clickSearchBtn();
+        homePage.openCustomerListPage();
+        customerList.enterCustomerID(customerID);
+        customerList.enterPhoneNumber(phoneNumber);
 
-        //kiem tra thong tin hien thi
+        //kiem tra ket qua hien thi
+        softAssert.assertEquals(phoneNumber, customerList.phoneNumberSearchReturn());
+
 
         softAssert.assertAll();
+
     }
-
-
 }
-
