@@ -57,7 +57,7 @@ public class TC04InternalTransfer {
         transactionFee = Constants.INTERNAL_TRANSACTION_FEE;
         transferDescription = "Hello";
 
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 

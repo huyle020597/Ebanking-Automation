@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -29,7 +30,7 @@ public class TC01OpenAccount {
         openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
 
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
 
     }

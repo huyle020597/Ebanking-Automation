@@ -32,7 +32,7 @@ public class TC02 {
     double depositAmount;
     String originalHandle;
     double receiveBalance;
-    double receiveAccountNo;
+    String receiveAccountNo;
     //  LinkPage linkPage;
 
 

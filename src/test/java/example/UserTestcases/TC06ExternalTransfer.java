@@ -54,7 +54,7 @@ public class TC06ExternalTransfer {
         transferDesc = "Hello";
         transactionFee = Constants.EXTERNAL_TRANSACTION_FEE;
 
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 

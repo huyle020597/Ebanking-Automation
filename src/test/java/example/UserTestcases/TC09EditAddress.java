@@ -1,6 +1,7 @@
 package example.UserTestcases;
 
 import com.github.javafaker.Faker;
+import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -31,7 +32,7 @@ public class TC09EditAddress {
         userInfoPage = new UserInfoPage(driver);
         faker = new Faker();
 
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#");
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
 
     }
