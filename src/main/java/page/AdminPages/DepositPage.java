@@ -20,8 +20,8 @@ public class DepositPage {
         this.driver = driver;
     }
 
-    public void inputReceiveAccount(String accountNumber) {
-        driver.findElement(receiveAccountTextbox).sendKeys(accountNumber);
+    public void inputReceiveAccount(double accountNumber) {
+        driver.findElement(receiveAccountTextbox).sendKeys(Double.toString(accountNumber));
     }
 
     public void inputAmount(Double amount) {
@@ -38,7 +38,7 @@ public class DepositPage {
 
 
 
-    public void inputDeposit(String accountNumber, Double amount, String paymentNote) {
+    public void inputDeposit(double accountNumber, double amount, String paymentNote) {
         inputReceiveAccount(accountNumber);
         inputAmount(amount);
         inputNote(paymentNote);

@@ -25,9 +25,10 @@ public class BankAccountsPage extends MenuBar{
         listBankAccNumbers.get(index-1).click();
     }
 
-    public void getAccountNoByIndex(int index) {
+    public double getAccountNoByIndex(int index) {
         List < WebElement> listBankAccNumbers = driver.findElements(By.xpath("//td[@role='gridcell']/a"));
         listBankAccNumbers.get(index-1).getText();
+        return 0;
     }
 
     public double getAccountBalance () {
