@@ -1,6 +1,5 @@
 package example.AdminTestcases;
 
-import org.openqa.selenium.WebElement;
 import page.AdminPages.HomePage;
 import page.AdminPages.LoginPage;
 import page.AdminPages.TransactionCustomerPage;
@@ -10,12 +9,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import java.util.List;
 
 import java.time.Duration;
 
 
-public class TC11 {
+public class TC11ViewTransaction {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;

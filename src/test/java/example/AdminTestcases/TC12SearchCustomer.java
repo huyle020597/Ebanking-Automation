@@ -12,7 +12,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 
-public class TC12 {
+public class TC12SearchCustomer {
     WebDriver driver;
     LoginPage loginPage;
     HomePage homePage;

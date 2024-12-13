@@ -16,7 +16,7 @@ import page.UserPages.MenuBar;
 import java.time.Duration;
 
 
-public class TC02 {
+public class TC02AdminDeposit {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
@@ -33,6 +33,7 @@ public class TC02 {
     String originalHandle;
     double receiveBalance;
     String receiveAccountNo;
+    double newReceiveBalance;
     //  LinkPage linkPage;
 
 
@@ -83,7 +84,6 @@ public class TC02 {
         //Nop tien va xac nhan
         homePage.openDepositPage();
         depositPage.inputReceiveAccount(receiveAccountNo);
-        // Khí lấy kết quả nào đó thì gán cho nó vào 1 biến, tương tự a gán kết quả senderBalance
         depositPage.inputAmount(depositAmount);
         depositPage.inputNote("test");
         depositPage.clickConfirm();
@@ -94,10 +94,9 @@ public class TC02 {
         driver.switchTo().window(originalHandle);
         bankAccountsPage.openAccountPage();
         bankAccountsPage.viewDetailsByAccNumber(String.valueOf(receiveAccountNo));
-        // nên dùng hàm viewDetailsbyAccNumber vì ban đầu mình đã lấy đc giá trị acc number rồi
+        newReceiveBalance = bankAccountsPage.getAccountBalance();
 
-       softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiveBalance + depositAmount);
-
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiveBalance + depositAmount);
 
         softAssert.assertAll();
     }
