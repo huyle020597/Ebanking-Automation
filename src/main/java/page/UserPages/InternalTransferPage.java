@@ -12,7 +12,7 @@ import java.util.List;
 public class InternalTransferPage {
     By selectAccDropdownLocator = By.id("j_idt23:j_idt28_label");
     By availableBalanceLocator = By.xpath("//label[@id='j_idt23:amount']");
-    By availableAccountLocator = By.xpath("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all']");
+    By availableAccountLocator ;
 
     By receiverAccLocator = By.id("j_idt23:j_idt35");
     By receiverNameLocator = By.xpath("//label[@id='j_idt23:out']");
@@ -38,9 +38,9 @@ public class InternalTransferPage {
         listAvailableAccount.get(index).click();
     }
 
-    public void selectAccountByAccNumber (String AccountNumber) {
+    public void selectAccountByAccNumber (String senderAccount) {
         clickAccDropdown();
-        By availableAccountLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",AccountNumber));
+        availableAccountLocator = By.xpath(String.format("//li[contains(@class, 'ui-selectonemenu-item')][@data-label='%s']",senderAccount));
         driver.findElement(availableAccountLocator).click();
     }
 
@@ -71,6 +71,13 @@ public class InternalTransferPage {
 
     public void clickConfirmBtn () {driver.findElement(confirmBtnLocator).click();}
 
+    public void inputTransferInfo (String senderAccount, String receiverAccount, double transferMoney, String transferDesc  ) {
+        selectAccountByAccNumber(senderAccount);
+        inputReceiverAccount(receiverAccount);
+        inputMoneyAmount(transferMoney);
+        inputTransferDescription(transferDesc);
+    }
+
     public boolean isReceiverNameEmpty () {
         return driver.findElement(receiverNameLocator).getText().equals("");
     }
@@ -79,8 +86,9 @@ public class InternalTransferPage {
         return driver.findElement(invalidAccountMsgLocator).isDisplayed();
     }
 
-
     public boolean isInsufficientMessageDisplayed () {
         return driver.findElement(insufficientMoneyMsgLocator).isDisplayed();
     }
+
+
 }

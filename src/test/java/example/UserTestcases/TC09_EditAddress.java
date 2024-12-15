@@ -13,7 +13,7 @@ import page.UserPages.LoginPage;
 import page.UserPages.MenuBar;
 import page.UserPages.UserInfoPage;
 
-public class TC09EditAddress {
+public class TC09_EditAddress {
     WebDriver driver ;
     LoginPage loginPage;
     SoftAssert softAssert;
@@ -21,6 +21,7 @@ public class TC09EditAddress {
     BankAccountsPage bankAccountsPage;
     UserInfoPage userInfoPage;
     Faker faker;
+    String addressInput;
 
     @BeforeMethod
     public void initData () {
@@ -31,6 +32,7 @@ public class TC09EditAddress {
         bankAccountsPage = new BankAccountsPage(driver);
         userInfoPage = new UserInfoPage(driver);
         faker = new Faker();
+        addressInput = faker.address().fullAddress();
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -49,10 +51,8 @@ public class TC09EditAddress {
         menuBar.openUserInfoPage();
 
 //        System.out.println(userInfoPage.getAddressValue());
-        String addressInput = faker.address().fullAddress();
 
         userInfoPage.editAddress(addressInput);
-
 
         softAssert.assertEquals(userInfoPage.getAddressValue(),addressInput);
         softAssert.assertAll();

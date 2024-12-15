@@ -62,6 +62,7 @@ public class ExternalTransferPage {
         driver.findElement(banksDropdownLocator).click();
         availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",bankName));
         driver.findElement(availableBanksLocator).click();
+
     }
     public void selectDongABank() {
         selectAvailableBanks("Ngân hàng Đông Á");

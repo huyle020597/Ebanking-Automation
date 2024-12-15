@@ -7,8 +7,14 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class BankAccountsPage extends MenuBar{
+    // Accounts list
     By accountNumberLocator;
     By accountBalanceLocator = By.xpath("//label[text()='Số dư tài khoản']/../following-sibling::td/label");
+
+    //Latest Transactions list
+    By transactionDate;
+    By transactionAccNumber;
+    By transactionAmount;
 
 
     public BankAccountsPage(WebDriver driver) {
@@ -37,6 +43,30 @@ public class BankAccountsPage extends MenuBar{
     public int getQuantityAccount () {
         List < WebElement> listBankAccNumbers = driver.findElements(By.xpath("//td[@role='gridcell']/a"));
         return listBankAccNumbers.size();
+    }
+
+
+    public String getTransactionDateByIndex(int index) {
+        transactionDate = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(index-1)*3+1));
+        return driver.findElement(transactionDate).getText();
+    }
+
+    public String getTransactionAccNumberByIndex (int index) {
+        transactionAccNumber = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(index-1)*3+2));
+        return driver.findElement(transactionAccNumber).getText();
+    }
+
+    public double getTransactionAmountByIndex (int index) {
+        transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(index-1)*3+3));
+        return Double.parseDouble(driver.findElement(transactionAmount).getText().substring(2).
+                replace(",","").replace(" VNĐ",""));
+    }
+
+    public boolean isTransactionAmountNegative (int transactionIndex) {
+        transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(transactionIndex-1)*3+3));
+
+        return Double.parseDouble(driver.findElement(transactionAmount).getText()
+                .replace(" ","").replace(",","").replace("VNĐ",""))<0;
     }
 
 }

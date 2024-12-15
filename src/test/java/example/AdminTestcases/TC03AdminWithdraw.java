@@ -20,9 +20,7 @@ public class TC03AdminWithdraw {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
-    MenuBar menuBar;
     HomePage homePage;
-    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     page.AdminPages.LoginPage loginPageAdmin;
     WithdrawPage withdrawPage;
@@ -34,7 +32,6 @@ public class TC03AdminWithdraw {
     String originalHandle;
     String receiveAccountNo;
     double receiveBalance;
-    double newReceiveBalance;
 
 
     @BeforeMethod
@@ -42,10 +39,8 @@ public class TC03AdminWithdraw {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        menuBar = new MenuBar(driver);
         homePage = new HomePage(driver);
         loginPageAdmin = new page.AdminPages.LoginPage(driver);
-        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
         userId1 = "huyle020597";
@@ -66,7 +61,7 @@ public class TC03AdminWithdraw {
 
     @Test
             (description = "Admin - Withdraw money successfully")
-    public void loginUserAccount() {
+    public void TC03() {
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/index.xhtml");
         loginPage.login(userId1, password1);
 
@@ -74,6 +69,7 @@ public class TC03AdminWithdraw {
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
         bankAccountsPage.viewDetailsByIndex(1);
         receiveBalance = bankAccountsPage.getAccountBalance();
+        // lấy số dư trừ một số random để đảm bảo số tiền withdraw không vuowjt quá
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
@@ -92,8 +88,7 @@ public class TC03AdminWithdraw {
         driver.switchTo().window(originalHandle);
         bankAccountsPage.openAccountPage();
         bankAccountsPage.viewDetailsByAccNumber(receiveAccountNo);
-        newReceiveBalance = bankAccountsPage.getAccountBalance();
 
-        softAssert.assertEquals(newReceiveBalance,receiveBalance - withdrawAmount);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiveBalance - withdrawAmount);
     }
 }

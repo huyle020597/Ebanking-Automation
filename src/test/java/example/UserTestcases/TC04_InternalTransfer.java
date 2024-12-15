@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import com.github.javafaker.Faker;
 import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
@@ -12,28 +13,23 @@ import page.UserPages.*;
 
 import java.time.Duration;
 
-public class TC04InternalTransfer {
+public class TC04_InternalTransfer {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
-    MenuBar menuBar;
     OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     InternalTransferPage internalTransferPage;
     InternalTransferConfirmPage internalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String userId1;
-    String password1;
-    String userId2;
-    String password2;
     String receiverAcc;
     String senderAcc;
     double transferAmount;
-    double transactionFee;
     String OTP;
     String transferDescription;
     double receiverBalance;
     double senderBalance;
+    Faker faker;
 
 
     @BeforeMethod
@@ -41,21 +37,15 @@ public class TC04InternalTransfer {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        menuBar = new MenuBar(driver);
         openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         internalTransferPage = new InternalTransferPage(driver);
         internalTransferConfirmPage = new InternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        userId1 = "huyle020597";
-        password1 = "Maddie123@";
-        userId2 = "huyle0205971";
-        password2 = "Maddie123@";
-        senderAcc = "100001283";
+        senderAcc = "100001284";
         receiverAcc = "100001298";
-        transferAmount = 20000.0;
-        transactionFee = Constants.INTERNAL_TRANSACTION_FEE;
-        transferDescription = "Hello";
+        faker = new Faker();
+        transferDescription = faker.name().fullName();
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -71,28 +61,24 @@ public class TC04InternalTransfer {
     @Test
     public void TC04() throws InterruptedException {
         // Login tai khoan nhan va kiem tra so du
-        loginPage.login(userId2, password2);
+        loginPage.login(Constants.userId2, Constants.password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
         receiverBalance = bankAccountsPage.getAccountBalance();
 
 
         // Login voi tai khoan gui và kiem tra so du
         bankAccountsPage.LogOut();
-        loginPage.login(userId1, password1);
+        loginPage.login(Constants.userId1, Constants.password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
-        internalTransferPage.selectAccountByAccNumber(senderAcc);
 
-        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); //Kiem tra so du
+        internalTransferPage.inputTransferInfo(senderAcc,receiverAcc,transferAmount,transferDescription);
 
-        internalTransferPage.inputReceiverAccount(receiverAcc);
+        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance);//Kiem tra so du
 
-        internalTransferPage.inputMoneyAmount(transferAmount);
-
-        internalTransferPage.inputTransferDescription(transferDescription);
 
         internalTransferPage.clickConfirmBtn();
 
@@ -104,14 +90,13 @@ public class TC04InternalTransfer {
         softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
 
         internalTransferConfirmPage.clickConfirmBtn();
-        String originalHandle = driver.getWindowHandle();
 
         // Lay ma OTP tu Yopmail
+        String originalHandle = driver.getWindowHandle();
+
         driver.switchTo().newWindow(WindowType.TAB);
-        driver.get("https://yopmail.com");
-        Thread.sleep(3000);
-        yopmailPage.inputEmailAddress(userId1);
-        OTP = yopmailPage.getOTPcode();
+
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -126,12 +111,12 @@ public class TC04InternalTransfer {
 
         //Kiem tra so du tai khoan gui
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - transactionFee);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.INTERNAL_TRANSACTION_FEE);
 
         //Kiem tra so du tai khoan nhan
         bankAccountsPage.LogOut();
 
-        loginPage.login(userId2, password2);
+        loginPage.login(Constants.userId2, Constants.password2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiverBalance + transferAmount);
 

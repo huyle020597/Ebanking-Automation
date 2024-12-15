@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import com.github.javafaker.Faker;
 import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
@@ -12,28 +13,22 @@ import page.UserPages.*;
 
 import java.time.Duration;
 
-public class TC05TransferUnsuccessfully {
+public class TC05_TransferUnsuccessfully {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
-    MenuBar menuBar;
-    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     InternalTransferPage internalTransferPage;
     InternalTransferConfirmPage internalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String userId1;
-    String password1;
-    String userId2;
-    String password2;
     String receiverAcc;
     String senderAcc;
     String transferDesc;
     double transferAmount;
-    double transactionFee;
     double senderBalance;
     String OTP;
     String originalHandle;
+    Faker faker;
 
 
     @BeforeMethod
@@ -41,21 +36,15 @@ public class TC05TransferUnsuccessfully {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        menuBar = new MenuBar(driver);
-        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         internalTransferPage = new InternalTransferPage(driver);
         internalTransferConfirmPage = new InternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        userId1 = "huyle020597";
-        password1 = "Maddie123@";
-        userId2 = "huyle0205971";
-        password2 = "Maddie123@";
-        senderAcc = "100001283";
+        senderAcc = "100001284";
         receiverAcc = "100001298";
-        transferAmount = 20000.0;
-        transactionFee = Constants.INTERNAL_TRANSACTION_FEE;
-        transferDesc = "Hello";
+        faker = new Faker();
+        transferDesc = faker.name().fullName();
+        transferAmount = faker.number().numberBetween(1,10)*1000;
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -63,23 +52,24 @@ public class TC05TransferUnsuccessfully {
 
     }
 
-    @AfterMethod
-    public void cleanUp() {
-        driver.quit();
-    }
+//    @AfterMethod
+//    public void cleanUp() {
+//        driver.quit();
+//    }
 
     @Test
     public void TC05() throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(userId1, password1);
+        loginPage.login(Constants.userId1, Constants.password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
         internalTransferPage.selectAccountByAccNumber(senderAcc);
+        Thread.sleep(500); //check hàm wait
 
-        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance);
+        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); //Check balance
 
         internalTransferPage.inputReceiverAccount(receiverAcc + "1");
         softAssert.assertTrue(internalTransferPage.isReceiverNameEmpty()); //Check name empty
@@ -94,7 +84,7 @@ public class TC05TransferUnsuccessfully {
 
         internalTransferPage.inputReceiverAccount(receiverAcc);
 
-        internalTransferPage.inputMoneyAmount(2000000000);
+        internalTransferPage.inputMoneyAmount(senderBalance+1);
 
         internalTransferPage.clickConfirmBtn();
 
@@ -118,18 +108,16 @@ public class TC05TransferUnsuccessfully {
         // Lay ma OTP tu Yopmail
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
-        driver.get("https://yopmail.com");
-        Thread.sleep(3000);
-        yopmailPage.inputEmailAddress(userId1);
-        OTP = yopmailPage.getOTPcode();
-
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
 
         // Quay ve tab cu
         driver.switchTo().window(originalHandle);
+
         // Nhap sai OTP
         internalTransferConfirmPage.inputOTP(OTP+"A");
         internalTransferConfirmPage.clickTransferBtn();
-        internalTransferConfirmPage.isWrongOTPMessageDisplayed();
+        softAssert.assertTrue(internalTransferConfirmPage.isWrongOTPMessageDisplayed());
+
         // Nhap dung OTP
         internalTransferConfirmPage.inputOTP(OTP);
         internalTransferConfirmPage.clickTransferBtn();
@@ -140,7 +128,7 @@ public class TC05TransferUnsuccessfully {
 
         //Kiem tra so du tai khoan gui
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - transactionFee);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.INTERNAL_TRANSACTION_FEE);
 
         softAssert.assertAll();
     }

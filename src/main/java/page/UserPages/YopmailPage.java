@@ -1,8 +1,10 @@
 package page.UserPages;
 
+import modal.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 
 import java.util.List;
 
@@ -32,6 +34,13 @@ public class YopmailPage {
         driver.switchTo().frame("ifmail");
         String OTPCode = driver.findElement(OTPcodeLocator).getText().replace("OTP:  ","");
         return OTPCode;
+    }
+
+    public String getOTPcodeByEmail (String senderEmailAddress) throws InterruptedException {
+        driver.get(Constants.YOPMAIL_URL);
+        Thread.sleep(2000);
+        inputEmailAddress(senderEmailAddress);
+        return getOTPcode();
     }
 }
 

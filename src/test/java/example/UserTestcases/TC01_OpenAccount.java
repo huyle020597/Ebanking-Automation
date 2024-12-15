@@ -12,7 +12,7 @@ import page.UserPages.LoginPage;
 import page.UserPages.MenuBar;
 import page.UserPages.OpenBankAccountPage;
 
-public class TC01OpenAccount {
+public class TC01_OpenAccount {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;

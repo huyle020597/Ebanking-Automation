@@ -93,8 +93,7 @@ public class TC02AdminDeposit {
         //quay lai tab user kiem tra so du tai khoan
         driver.switchTo().window(originalHandle);
         bankAccountsPage.openAccountPage();
-        bankAccountsPage.viewDetailsByAccNumber(String.valueOf(receiveAccountNo));
-        newReceiveBalance = bankAccountsPage.getAccountBalance();
+        bankAccountsPage.viewDetailsByAccNumber(receiveAccountNo);
 
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiveBalance + depositAmount);
 

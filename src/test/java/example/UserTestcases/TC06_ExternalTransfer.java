@@ -1,5 +1,6 @@
 package example.UserTestcases;
 
+import com.github.javafaker.Faker;
 import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
@@ -12,47 +13,36 @@ import page.UserPages.*;
 
 import java.time.Duration;
 
-public class TC06ExternalTransfer {
+public class TC06_ExternalTransfer {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
-    MenuBar menuBar;
-    OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
     ExternalTransferPage externalTransferPage;
     ExternalTransferConfirmPage externalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String userId1;
-    String password1;
-    String receiverName;
-    String receiverAcc;
     String senderAcc;
     double transferAmount;
     String transferDesc;
-    double transactionFee;
     double senderBalance;
     String OTP;
     String originalHandle;
+    Faker faker;
 
     @BeforeMethod
     public void initData() {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        menuBar = new MenuBar(driver);
-        openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         externalTransferPage = new ExternalTransferPage(driver);
         externalTransferConfirmPage = new ExternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        userId1 = "huyle020597";
-        password1 = "Maddie123@";
-        receiverName = "Nguyen Van A";
-        senderAcc = "100001283";
-        receiverAcc = "10001111";
-        transferAmount = 20000.0;
-        transferDesc = "Hello";
-        transactionFee = Constants.EXTERNAL_TRANSACTION_FEE;
+        senderAcc = "100001284";
+        faker = new Faker();
+        transferAmount = faker.number().numberBetween(1,10)*1000;
+        transferDesc = faker.name().fullName();
+
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -68,7 +58,7 @@ public class TC06ExternalTransfer {
     @Test
     public void TC06 () throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(userId1, password1);
+        loginPage.login(Constants.userId1, Constants.password1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
@@ -78,10 +68,10 @@ public class TC06ExternalTransfer {
         Thread.sleep(500);
         softAssert.assertEquals(externalTransferPage.getSenderBalance(), senderBalance); //Kiem tra so du
 
-        externalTransferPage.inputReceiverAccount(receiverAcc);
-        externalTransferPage.inputReceiverName(receiverName);
+        externalTransferPage.inputReceiverAccount(Constants.ExternalAccountNumber);
+        externalTransferPage.inputReceiverName(Constants.ExternalName);
         externalTransferPage.selectDongABank();
-        Thread.sleep(500);
+        Thread.sleep(500); // check hàm wait
         externalTransferPage.selectDaNangBranch();
         externalTransferPage.inputTransferDescription(transferDesc);
         externalTransferPage.inputTransferAmount(transferAmount);
@@ -90,10 +80,10 @@ public class TC06ExternalTransfer {
         // Kiem tra thong tin chuyen khoan
         softAssert.assertEquals(externalTransferConfirmPage.getSenderAcc(),senderAcc);
         softAssert.assertEquals(externalTransferConfirmPage.getSenderBalance(),senderBalance);
-        softAssert.assertEquals(externalTransferConfirmPage.getReceiverAcc(),receiverAcc);
+        softAssert.assertEquals(externalTransferConfirmPage.getReceiverAcc(),Constants.ExternalAccountNumber);
         softAssert.assertEquals(externalTransferConfirmPage.getTransferAmount(),transferAmount);
         softAssert.assertEquals(externalTransferConfirmPage.getTransferDesc(),transferDesc);
-        softAssert.assertEquals(externalTransferConfirmPage.getReceiverName(),receiverName);
+        softAssert.assertEquals(externalTransferConfirmPage.getReceiverName(),Constants.ExternalName);
 
         //Xac nhan va nhap OTP
         externalTransferConfirmPage.clickConfirmBtn();
@@ -101,10 +91,7 @@ public class TC06ExternalTransfer {
         // Lay ma OTP tu Yopmail
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
-        driver.get("https://yopmail.com");
-        Thread.sleep(3000);
-        yopmailPage.inputEmailAddress(userId1);
-        OTP = yopmailPage.getOTPcode();
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -119,7 +106,7 @@ public class TC06ExternalTransfer {
 
         //Kiem tra so du tai khoan gui
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
-        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - transactionFee);
+        softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.EXTERNAL_TRANSACTION_FEE);
 
         softAssert.assertAll();
 

@@ -30,4 +30,6 @@ public class MenuBar {
     public void openExternalTransferPage() {clickMenuButtons("Liên Ngân Hàng");}
 
     public void LogOut() {clickMenuButtons("Đăng xuất");}
+
+    public void openTransactionsPage () {clickMenuButtons("Nhật kí giao dịch");}
 }
