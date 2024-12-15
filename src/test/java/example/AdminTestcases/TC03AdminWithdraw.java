@@ -1,7 +1,9 @@
 package example.AdminTestcases;
 
+import modal.Constants;
 import org.openqa.selenium.WindowType;
 import page.AdminPages.HomePage;
+import page.AdminPages.LoginAdminPage;
 import page.AdminPages.WithdrawPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,23 +13,19 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.UserPages.BankAccountsPage;
 import page.UserPages.LoginPage;
-import page.UserPages.MenuBar;
-import page.UserPages.OpenBankAccountPage;
 
 import java.time.Duration;
 
 public class TC03AdminWithdraw {
     WebDriver driver;
-    LoginPage loginPage;
     SoftAssert softAssert;
+
+    LoginPage loginPage;
+    LoginAdminPage loginAdminPage;
+
     HomePage homePage;
     BankAccountsPage bankAccountsPage;
-    page.AdminPages.LoginPage loginPageAdmin;
     WithdrawPage withdrawPage;
-    String userId1;
-    String password1;
-    String adminId;
-    String adminPassword;
     double withdrawAmount;
     String originalHandle;
     String receiveAccountNo;
@@ -40,15 +38,13 @@ public class TC03AdminWithdraw {
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
         homePage = new HomePage(driver);
-        loginPageAdmin = new page.AdminPages.LoginPage(driver);
+        loginAdminPage = new LoginAdminPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
-        userId1 = "huyle020597";
-        password1 = "Maddie123@";
-        adminId = "1";
-        adminPassword = "admin";
         withdrawAmount = 325712.0;
 
+        driver.get(Constants.ADMIN_URL);
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         originalHandle = driver.getWindowHandle();
@@ -62,19 +58,19 @@ public class TC03AdminWithdraw {
     @Test
             (description = "Admin - Withdraw money successfully")
     public void TC03() {
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/index.xhtml");
-        loginPage.login(userId1, password1);
+        loginPage.login(Constants.userId1, Constants.password1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
         bankAccountsPage.viewDetailsByIndex(1);
         receiveBalance = bankAccountsPage.getAccountBalance();
-        // lấy số dư trừ một số random để đảm bảo số tiền withdraw không vuowjt quá
+        // lấy số dư trừ một số random để đảm bảo số tiền withdraw không vuot quá
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
+      //  loginAdminPageAdmin.loginAdmin(Constants.adminId, Constants.adminPassword);
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginPageAdmin.loginAdmin(adminId, adminPassword);
+        loginAdminPage.loginAdmin("1","admin");
 
         //Rut tien va xac nhan
         homePage.openWithdrawPage();

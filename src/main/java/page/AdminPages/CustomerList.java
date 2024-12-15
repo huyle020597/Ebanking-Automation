@@ -12,7 +12,8 @@ public class CustomerList {
     By inputActiveTextbox = By.id("j_idt22:j_idt24:j_idt36:filter");
     By inputStatusTextbox = By.id("j_idt22:j_idt24:j_idt39:filter");
     By customerIdReturn = By.xpath("(//td[@role='gridcell'])[1]");
-    By customerPhoneReturn = By.xpath("//td[normalize-space()='0799453330']");
+    By customerPhoneReturn;
+    //td[@role='gridcell'][normalize-space()='7774003855'])[1]
 
     WebDriver driver;
 
@@ -40,14 +41,15 @@ public class CustomerList {
         driver.findElement(inputPhoneNumberTextbox).sendKeys(phoneNumber);
     }
 
-    public void customerIdSearchReturn() {
+    public String customerIdSearchReturn() {
         driver.findElement(customerIdReturn).getText();
+        return null;
     }
 
-    public String phoneNumberSearchReturn() {
+    public String phoneNumberSearchReturn(String phoneNumber) {
+        customerPhoneReturn = By.xpath(String.format("//td@role='gridcell'][text()='%s']", phoneNumber));;
         driver.findElement(customerPhoneReturn).getText();
-        //return null;
-        return null;
+        return phoneNumber;
     }
 
     public void enterActive(String active) {
@@ -58,8 +60,9 @@ public class CustomerList {
         driver.findElement(inputStatusTextbox).sendKeys(status);
     }
 
-    public void customerList(String Id) {
+    public void customerList(String Id, String phoneNumber) {
         enterCustomerID(Id);
-
+        enterPhoneNumber(phoneNumber);
     }
+
 }

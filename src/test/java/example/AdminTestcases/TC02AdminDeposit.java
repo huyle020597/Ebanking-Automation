@@ -1,5 +1,6 @@
 package example.AdminTestcases;
 
+import modal.Constants;
 import page.AdminPages.DepositPage;
 import page.AdminPages.HomePage;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import page.AdminPages.LoginAdminPage;
 import page.UserPages.BankAccountsPage;
 import page.UserPages.LoginPage;
 import page.UserPages.MenuBar;
@@ -22,19 +24,14 @@ public class TC02AdminDeposit {
     SoftAssert softAssert;
     MenuBar menuBar;
     BankAccountsPage bankAccountsPage;
-    page.AdminPages.LoginPage loginPageAdmin;
+    LoginAdminPage loginAdminPage;
     DepositPage depositPage;
     HomePage homePage;
-    String userId1;
-    String password1;
-    String adminId;
-    String adminPassword;
     double depositAmount;
     String originalHandle;
     double receiveBalance;
     String receiveAccountNo;
     double newReceiveBalance;
-    //  LinkPage linkPage;
 
 
     @BeforeMethod
@@ -43,15 +40,14 @@ public class TC02AdminDeposit {
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
         menuBar = new MenuBar(driver);
-        loginPageAdmin = new page.AdminPages.LoginPage(driver);
+        loginAdminPage = new LoginAdminPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         depositPage = new DepositPage(driver);
         homePage = new HomePage(driver);
-        userId1 = "huyle020597";
-        password1 = "Maddie123@";
-        adminId = "1";
-        adminPassword = "admin";
         depositAmount = 325712.0;
+
+        driver.get(Constants.ADMIN_URL);
+        driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         originalHandle = driver.getWindowHandle();
@@ -66,8 +62,7 @@ public class TC02AdminDeposit {
             (description = "Admin - Deposit money into account successfully")
     public void depositMoney() {
         //dang nhap tai khoan user
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/index.xhtml");
-        loginPage.login(userId1, password1);
+        loginPage.login(Constants.userId1, Constants.password1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
@@ -77,8 +72,9 @@ public class TC02AdminDeposit {
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
+      //  loginAdminPage.loginAdmin(Constants.adminId,Constants.adminPassword);
         driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginPageAdmin.loginAdmin(adminId, adminPassword);
+        loginAdminPage.loginAdmin("1","admin");
 
 
         //Nop tien va xac nhan

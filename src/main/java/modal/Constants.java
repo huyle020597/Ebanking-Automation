@@ -19,4 +19,8 @@ public class Constants {
     public static final String ExternalAccountNumber = "10001111";
     public static final String ExternalName = "Nguyen Van A";
 
+    //Test data , admin account
+    public static final String adminId = "1";
+    public static final String adminPassword = "admin";
+
 }

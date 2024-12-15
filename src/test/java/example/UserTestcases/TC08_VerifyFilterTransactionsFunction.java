@@ -54,7 +54,7 @@ public class TC08_VerifyFilterTransactionsFunction {
         faker = new Faker();
         actions = new Actions(driver);
 
-        start1  =Date.from(LocalDate.of(2024,12,1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        start1 = Date.from(LocalDate.of(2024,12,1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         end1 = Date.from(LocalDate.of(2024,12,15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         startDate = faker.date().between(start1,end1);
 

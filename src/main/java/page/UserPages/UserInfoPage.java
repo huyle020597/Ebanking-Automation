@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class UserInfoPage {
     By addressBoxLocator = By.id("j_idt24:j_idt36");
     By saveInfoBtnLocator = By.name("j_idt24:j_idt39");
+    By userPhoneNumbLocator = By.id("j_idt24:j_idt34");
 
     WebDriver driver;
 
@@ -29,4 +30,7 @@ public class UserInfoPage {
         clickSaveBtn();
     }
 
+    public String getUserPhoneNumber() {
+        return driver.findElement(userPhoneNumbLocator).getText();
+    }
 }

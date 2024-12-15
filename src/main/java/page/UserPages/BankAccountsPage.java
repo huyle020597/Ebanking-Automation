@@ -63,10 +63,10 @@ public class BankAccountsPage extends MenuBar{
     }
 
     public boolean isTransactionAmountNegative (int transactionIndex) {
-        transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(transactionIndex-1)*3+3));
+        transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]", (transactionIndex - 1) * 3 + 3));
 
         return Double.parseDouble(driver.findElement(transactionAmount).getText()
-                .replace(" ","").replace(",","").replace("VNĐ",""))<0;
+                .replace(" ", "").replace(",", "").replace("VNĐ", "")) < 0;
     }
 
 }
