@@ -42,7 +42,8 @@ public class TransactionsPage {
         driver.findElement(toDateLocator).sendKeys(endDate);
     }
 
-    public void inputDateRange(String startDate, String endDate) {
+    public void searchTransaction(String accountNumber,String startDate, String endDate) {
+        selectAccountByAccNumber(accountNumber);
         inputFromDate(startDate);
         inputToDate(endDate);
     }
@@ -64,7 +65,7 @@ public class TransactionsPage {
         return getColumnOrder("Ngày giao dịch");
     }
 
-    //Lấy data của từng ô dựa vào thứ tự cột
+    //Lấy data của từng ô dựa vào thứ tự hàng và cột
     public String getAccountNumbByRow(int rowNumber) {
         By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td", rowNumber - 1));
         return driver.findElements(cellLocator).get(getMainAccountColumnOrder() - 1).getText();

@@ -78,6 +78,7 @@ public class TC08_VerifyFilterTransactionsFunction {
         loginPage.login(Constants.USER_ID_1,Constants.PASSWORD_1);
         bankAccountsPage.openTransactionsPage();
 
+        transactionsPage.searchTransaction(selectedAccount,startDateinString,endDateinString);
         transactionsPage.selectAccountByAccNumber(selectedAccount);
         transactionsPage.inputFromDate(startDateinString);
         transactionsPage.inputToDate(endDateinString);
