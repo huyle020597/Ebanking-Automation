@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.UserPages.*;
 
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,7 +67,7 @@ public class TC07_VerifyLastTransaction {
     public void TC06 () throws InterruptedException {
 
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
@@ -84,7 +83,7 @@ public class TC07_VerifyLastTransaction {
 
         driver.switchTo().newWindow(WindowType.TAB);
 
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -101,14 +100,14 @@ public class TC07_VerifyLastTransaction {
         //Kiem tra latest transaction cua nguoi gui
         softAssert.assertEquals(bankAccountsPage.getTransactionDateByIndex(1),transferTime);
         softAssert.assertEquals(bankAccountsPage.getTransactionAccNumberByIndex(1),senderAcc);
-        softAssert.assertTrue(bankAccountsPage.isTransactionAmountNegative(1));
+        softAssert.assertTrue(bankAccountsPage.getTransactionAmount() <0);
         softAssert.assertEquals(bankAccountsPage.getTransactionAmountByIndex(1),transferAmount);
 
 
         //Kiem tra latest transaction cua nguoi nhan
         bankAccountsPage.LogOut();
 
-        loginPage.login(Constants.userId2, Constants.password2);
+        loginPage.login(Constants.USER_ID_2, Constants.PASSWORD_2);
 
         softAssert.assertEquals(bankAccountsPage.getTransactionDateByIndex(1),transferTime);
         softAssert.assertEquals(bankAccountsPage.getTransactionAccNumberByIndex(1),receiverAcc);

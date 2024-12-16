@@ -58,7 +58,7 @@ public class TC06_ExternalTransfer {
     @Test
     public void TC06 () throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
@@ -68,8 +68,8 @@ public class TC06_ExternalTransfer {
         Thread.sleep(500);
         softAssert.assertEquals(externalTransferPage.getSenderBalance(), senderBalance); //Kiem tra so du
 
-        externalTransferPage.inputReceiverAccount(Constants.ExternalAccountNumber);
-        externalTransferPage.inputReceiverName(Constants.ExternalName);
+        externalTransferPage.inputReceiverAccount(Constants.EXTERNAL_ACCOUNT_NUMBER);
+        externalTransferPage.inputReceiverName(Constants.EXTERNAL_NAME);
         externalTransferPage.selectDongABank();
         Thread.sleep(500); // check hàm wait
         externalTransferPage.selectDaNangBranch();
@@ -80,10 +80,10 @@ public class TC06_ExternalTransfer {
         // Kiem tra thong tin chuyen khoan
         softAssert.assertEquals(externalTransferConfirmPage.getSenderAcc(),senderAcc);
         softAssert.assertEquals(externalTransferConfirmPage.getSenderBalance(),senderBalance);
-        softAssert.assertEquals(externalTransferConfirmPage.getReceiverAcc(),Constants.ExternalAccountNumber);
+        softAssert.assertEquals(externalTransferConfirmPage.getReceiverAcc(),Constants.EXTERNAL_ACCOUNT_NUMBER);
         softAssert.assertEquals(externalTransferConfirmPage.getTransferAmount(),transferAmount);
         softAssert.assertEquals(externalTransferConfirmPage.getTransferDesc(),transferDesc);
-        softAssert.assertEquals(externalTransferConfirmPage.getReceiverName(),Constants.ExternalName);
+        softAssert.assertEquals(externalTransferConfirmPage.getReceiverName(),Constants.EXTERNAL_NAME);
 
         //Xac nhan va nhap OTP
         externalTransferConfirmPage.clickConfirmBtn();
@@ -91,7 +91,7 @@ public class TC06_ExternalTransfer {
         // Lay ma OTP tu Yopmail
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);

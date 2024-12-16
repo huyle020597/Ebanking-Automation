@@ -55,7 +55,6 @@ public class TC12SearchCustomer {
 
 
         driver.get(Constants.USER_URL);
-        driver.get(Constants.ADMIN_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         originalHandle = driver.getWindowHandle();
@@ -70,30 +69,23 @@ public class TC12SearchCustomer {
             (description = "Admin - Search customer by multiple fields")
     public void searchCustomer() {
         //dang nhap tai khoan user, chon tai khoan va lay so dien thoai
-        // loginPage.login(Constants.userId1, Constants.password1);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml");
-        loginPage.login("huyle020597","Maddie123@");
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
 
         menuBar.openUserInfoPage();
         phoneNumber = userInfoPage.getUserPhoneNumber();
 
 
         driver.switchTo().newWindow(WindowType.TAB);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginAdminPage.loginAdmin("1","admin");
-
+        driver.get(Constants.ADMIN_URL);
+        loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
         actualPhoneNumber = customerList.phoneNumberSearchReturn(phoneNumber);
 
-
         //kiem tra ket qua hien thi
         softAssert.assertEquals(actualPhoneNumber,phoneNumber);
 
-
         softAssert.assertAll();
-
-
     }
 }

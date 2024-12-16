@@ -69,4 +69,7 @@ public class BankAccountsPage extends MenuBar{
                 .replace(" ", "").replace(",", "").replace("VNĐ", "")) < 0;
     }
 
+    public double getTransactionAmount() {
+return 0;
+    }
 }

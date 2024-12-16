@@ -58,7 +58,7 @@ public class TC03AdminWithdraw {
     @Test
             (description = "Admin - Withdraw money successfully")
     public void TC03() {
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);

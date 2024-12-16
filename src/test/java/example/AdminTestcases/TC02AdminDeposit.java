@@ -62,7 +62,7 @@ public class TC02AdminDeposit {
             (description = "Admin - Deposit money into account successfully")
     public void depositMoney() {
         //dang nhap tai khoan user
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);

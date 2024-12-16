@@ -36,7 +36,8 @@ public class TransactionCustomerPage {
         driver.findElement(searchBtn).click();
     }
 
-    public void inputSearchCustomer(String dateFrom, String dateTo) {
+    public void search (String accountNumber,String dateFrom, String dateTo) {
+        inputAccountNumber(accountNumber);
         inputDateFrom(dateFrom);
         inputDateTo(dateTo);
         clickSearchBtn();
@@ -85,5 +86,6 @@ public class TransactionCustomerPage {
         }
         return isValid;
     }
+
 
 }

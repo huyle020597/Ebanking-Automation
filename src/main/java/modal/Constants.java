@@ -8,19 +8,19 @@ public class Constants {
     public static final String YOPMAIL_URL = "https://yopmail.com";
 
     //Test data , user account
-    public static final String userId1 = "huyle020597";
-    public static final String password1 = "Maddie123@";
-    public static final String email1 = "huyle020597@yopmail.com";
+    public static final String USER_ID_1 = "huyle020597";
+    public static final String PASSWORD_1 = "Maddie123@";
+    public static final String EMAIL_1 = "huyle020597@yopmail.com";
 
-    public static final String userId2 = "huyle0205971";
-    public static final String password2 = "Maddie123@";
+    public static final String USER_ID_2 = "huyle0205971";
+    public static final String PASSWORD_2 = "Maddie123@";
 
     //Test data - External Bank Account
-    public static final String ExternalAccountNumber = "10001111";
-    public static final String ExternalName = "Nguyen Van A";
+    public static final String EXTERNAL_ACCOUNT_NUMBER = "10001111";
+    public static final String EXTERNAL_NAME = "Nguyen Van A";
 
     //Test data , admin account
-    public static final String adminId = "1";
-    public static final String adminPassword = "admin";
+    public static final String ADMIN_ID = "1";
+    public static final String ADMIN_PASSWORD = "admin";
 
 }

@@ -77,7 +77,6 @@ public class TC11ViewTransaction {
 
 
         driver.get(Constants.USER_URL);
-        driver.get(Constants.ADMIN_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         originalHandle = driver.getWindowHandle();
@@ -96,23 +95,17 @@ public class TC11ViewTransaction {
             (description = "Admin - View transaction list by Account")
     public void viewTransactionByAccount() {
         //dang nhap tai khoan user, chon tai khoan va lay so tai khoan
-       // loginPage.login(Constants.userId1, Constants.password1);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml");
-        loginPage.login("huyle020597","Maddie123@");
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
         accountNo = bankAccountsPage.getAccountNoByIndex(1);
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
-        //loginAdminPage.loginAdmin(Constants.adminId,Constants.adminPassword);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginAdminPage.loginAdmin("1","admin");
+        driver.get(Constants.ADMIN_URL);
+        loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
 
         //Nhap data tim kiem
         homePage.openCustomerTransactionListPage();
-        transactionCustomerPage.inputAccountNumber(accountNo);
-        transactionCustomerPage.inputDateFrom(dateFrominString);
-        transactionCustomerPage.inputDateTo(dateToinString);
-        transactionCustomerPage.clickSearchBtn();
+        transactionCustomerPage.search(accountNo,dateFrominString,dateToinString);
 
         //kiem tra thong tin hien thi
         softAssert.assertEquals(transactionCustomerPage.getAccountNumbByRow(faker.number().numberBetween(1,2)),accountNo);

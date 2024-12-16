@@ -2,11 +2,9 @@ package example.UserTestcases;
 
 import com.github.javafaker.Faker;
 import modal.Constants;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -15,9 +13,7 @@ import page.UserPages.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class TC08_VerifyFilterTransactionsFunction {
@@ -61,6 +57,7 @@ public class TC08_VerifyFilterTransactionsFunction {
         start2 = Date.from(LocalDate.of(2024,12,16).atStartOfDay(ZoneId.systemDefault()).toInstant());
         end2 = Date.from(LocalDate.of(2024,12,30).atStartOfDay(ZoneId.systemDefault()).toInstant());
         endDate = faker.date().between(start2,end2);
+// random 1 ngay, + them vai ngay
 
         startDateinString = formatter.format(startDate);
         endDateinString = formatter.format(endDate);
@@ -78,13 +75,13 @@ public class TC08_VerifyFilterTransactionsFunction {
 
     @Test
     public void TC08() {
-        loginPage.login(Constants.userId1,Constants.password1);
+        loginPage.login(Constants.USER_ID_1,Constants.PASSWORD_1);
         bankAccountsPage.openTransactionsPage();
 
         transactionsPage.selectAccountByAccNumber(selectedAccount);
         transactionsPage.inputFromDate(startDateinString);
         transactionsPage.inputToDate(endDateinString);
-        actions.moveByOffset(50,50).click().perform();
+//        actions.moveByOffset(50,50).click().perform();
         transactionsPage.clickSearchBtn();
 
         //Kiem tra Account Number va Transaction Date

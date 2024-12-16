@@ -61,14 +61,14 @@ public class TC04_InternalTransfer {
     @Test
     public void TC04() throws InterruptedException {
         // Login tai khoan nhan va kiem tra so du
-        loginPage.login(Constants.userId2, Constants.password2);
+        loginPage.login(Constants.USER_ID_2, Constants.PASSWORD_2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
         receiverBalance = bankAccountsPage.getAccountBalance();
 
 
         // Login voi tai khoan gui và kiem tra so du
         bankAccountsPage.LogOut();
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
@@ -96,7 +96,7 @@ public class TC04_InternalTransfer {
 
         driver.switchTo().newWindow(WindowType.TAB);
 
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -116,7 +116,7 @@ public class TC04_InternalTransfer {
         //Kiem tra so du tai khoan nhan
         bankAccountsPage.LogOut();
 
-        loginPage.login(Constants.userId2, Constants.password2);
+        loginPage.login(Constants.USER_ID_2, Constants.PASSWORD_2);
         bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiverBalance + transferAmount);
 

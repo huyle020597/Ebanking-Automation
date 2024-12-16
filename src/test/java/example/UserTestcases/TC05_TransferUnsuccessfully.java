@@ -5,7 +5,6 @@ import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -60,7 +59,7 @@ public class TC05_TransferUnsuccessfully {
     @Test
     public void TC05() throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.userId1, Constants.password1);
+        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
@@ -108,7 +107,7 @@ public class TC05_TransferUnsuccessfully {
         // Lay ma OTP tu Yopmail
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.email1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu
         driver.switchTo().window(originalHandle);
