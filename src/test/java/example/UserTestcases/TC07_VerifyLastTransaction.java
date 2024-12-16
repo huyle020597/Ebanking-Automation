@@ -1,7 +1,7 @@
 package example.UserTestcases;
 
 import com.github.javafaker.Faker;
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
