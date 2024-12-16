@@ -45,6 +45,8 @@ public class TC11ViewTransaction {
     String accountNo;
     String originalHandle;
     String selectedAccount;
+    long maxRange;
+    long randomDuration;
 
 
 
@@ -65,7 +67,10 @@ public class TC11ViewTransaction {
         dateFrom = Date.from(LocalDate.of(2024,11,10).atStartOfDay(ZoneId.systemDefault()).toInstant());
         dateTo = Date.from(LocalDate.of(2024,12,15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         startDate = faker.date().between(dateFrom,dateTo);
-        endDate = faker.date().between(dateFrom, dateTo);
+        maxRange = dateTo.getTime() - startDate.getTime();
+        randomDuration = (long) (Math.random() * maxRange);
+        endDate = new Date(startDate.getTime() + randomDuration);
+
 
         dateFrominString = formatter.format(startDate);
         dateToinString = formatter.format(endDate);

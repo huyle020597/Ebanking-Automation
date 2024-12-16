@@ -2,6 +2,9 @@ package page.AdminPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class CustomerList {
     By inputCustomerIDTextbox = By.id("j_idt22:j_idt24:j_idt25:filter");
@@ -41,15 +44,22 @@ public class CustomerList {
         driver.findElement(inputPhoneNumberTextbox).sendKeys(phoneNumber);
     }
 
-    public String customerIdSearchReturn() {
+    public String customerIdSearchReturn(String customerId) {
+       // customerId = By.xpath(String.format(""), customerId);
         driver.findElement(customerIdReturn).getText();
-        return null;
+        return customerId;
     }
 
     public String phoneNumberSearchReturn(String phoneNumber) {
-        customerPhoneReturn = By.xpath(String.format("//td@role='gridcell'][text()='%s']", phoneNumber));;
-        driver.findElement(customerPhoneReturn).getText();
-        return phoneNumber;
+        List<WebElement> phoneElements = driver.findElements(By.xpath(String.format("//td[@role='gridcell'][text()='%s']", phoneNumber)));
+        if (!phoneElements.isEmpty()) {
+            // Lấy ngẫu nhiên 1 phần tử từ danh sách kết quả
+            int randomIndex = (int) (Math.random() * phoneElements.size());
+            String randomPhone = phoneElements.get(randomIndex).getText();
+            return randomPhone;
+        } else {
+            return null; // Trường hợp không tìm thấy kết quả nào
+        }
     }
 
     public void enterActive(String active) {

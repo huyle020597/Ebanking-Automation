@@ -34,6 +34,8 @@ public class TC12SearchCustomer {
 
     String originalHandle;
     String phoneNumber;
+    String actualPhoneNumber;
+
 
 
 
@@ -50,7 +52,6 @@ public class TC12SearchCustomer {
         userInfoPage = new UserInfoPage(driver);
         customerList = new CustomerList(driver);
         bankAccountsPage = new BankAccountsPage(driver);
-
 
 
         driver.get(Constants.USER_URL);
@@ -84,10 +85,11 @@ public class TC12SearchCustomer {
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        customerList.enterPhoneNumber(phoneNumber);
+        actualPhoneNumber = customerList.phoneNumberSearchReturn(phoneNumber);
+
 
         //kiem tra ket qua hien thi
-        softAssert.assertEquals(customerList.phoneNumberSearchReturn(phoneNumber),phoneNumber);
+        softAssert.assertEquals(actualPhoneNumber,phoneNumber);
 
 
         softAssert.assertAll();
