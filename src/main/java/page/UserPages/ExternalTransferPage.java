@@ -42,7 +42,7 @@ public class ExternalTransferPage {
 
     public double getSenderBalance() {
       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(senderBalanceLocator)));
+        wait.until(ExpectedConditions.stalenessOf(driver.findElement(senderBalanceLocator)));
         return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ","").replace(",",""));
     }
 
@@ -59,12 +59,9 @@ public class ExternalTransferPage {
         driver.findElement(banksDropdownLocator).click();
     }
     private void selectAvailableBanks(String bankName) {
-        driver.findElement(banksDropdownLocator).click();
+        clickBanksDropdown();
         availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",bankName));
         driver.findElement(availableBanksLocator).click();
-
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(branchDropdownLocator));
     }
     public void selectDongABank() {
         selectAvailableBanks("Ngân hàng Đông Á");
@@ -72,6 +69,8 @@ public class ExternalTransferPage {
 
 
     public void clickBranchsDropdown() {
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.stalenessOf(driver.findElement(branchDropdownLocator)));
         driver.findElement(branchDropdownLocator).click();
     }
     private void selectAvailableBranch(String branchName) {

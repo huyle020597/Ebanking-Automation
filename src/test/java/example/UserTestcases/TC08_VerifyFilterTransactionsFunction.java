@@ -4,16 +4,16 @@ import com.github.javafaker.Faker;
 import modal.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.UserPages.*;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class TC08_VerifyFilterTransactionsFunction {
@@ -24,19 +24,16 @@ public class TC08_VerifyFilterTransactionsFunction {
     String selectedAccount;
     TransactionsPage transactionsPage;
     Faker faker;
-    SimpleDateFormat formatter;
-    Date start1;
-    Date end1;
+    LocalDate randomDate1;
+    LocalDate randomDate2;
+    DateTimeFormatter formatter;
 
-    Date start2;
-    Date end2;
 
-    Date startDate;
-    Date endDate;
+    Date startDate; //Dùng biến này cho hàm faker lấy randomeDate
+    LocalDate startLocalDate;
+    LocalDate endLocalDate;
     String startDateinString;
     String endDateinString;
-
-    Actions actions;
 
     @BeforeMethod
     public void initData() {
@@ -46,21 +43,23 @@ public class TC08_VerifyFilterTransactionsFunction {
         bankAccountsPage = new BankAccountsPage(driver);
         transactionsPage = new TransactionsPage(driver);
         selectedAccount = "100001284";
-        formatter = new SimpleDateFormat("dd/MM/yyyy");
+        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         faker = new Faker();
-        actions = new Actions(driver);
+        //Lấy ngày start random
+        randomDate1 = LocalDate.of(2024,12,1);
+        randomDate2 = LocalDate.of(2024,12,15);
+        startDate = faker.date().between(Date.from(randomDate1.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                Date.from(randomDate2.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-        start1 = Date.from(LocalDate.of(2024,12,1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        end1 = Date.from(LocalDate.of(2024,12,15).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        startDate = faker.date().between(start1,end1);
+        //Lấy ngày end random
+        startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        start2 = Date.from(LocalDate.of(2024,12,16).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        end2 = Date.from(LocalDate.of(2024,12,30).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        endDate = faker.date().between(start2,end2);
-// random 1 ngay, + them vai ngay
+        endLocalDate = startLocalDate.plusDays(10);
 
-        startDateinString = formatter.format(startDate);
-        endDateinString = formatter.format(endDate);
+        //Chuyển về String để input
+        startDateinString = formatter.format(startLocalDate);
+        endDateinString = formatter.format(endLocalDate);
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -68,10 +67,10 @@ public class TC08_VerifyFilterTransactionsFunction {
 
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
     public void TC08() {
@@ -82,13 +81,12 @@ public class TC08_VerifyFilterTransactionsFunction {
         transactionsPage.selectAccountByAccNumber(selectedAccount);
         transactionsPage.inputFromDate(startDateinString);
         transactionsPage.inputToDate(endDateinString);
-//        actions.moveByOffset(50,50).click().perform();
+        transactionsPage.selectInputedDate();
         transactionsPage.clickSearchBtn();
 
         //Kiem tra Account Number va Transaction Date
-        softAssert.assertEquals(transactionsPage.getAccountNumbByRow(faker.number().numberBetween(1,5)),selectedAccount);
-        softAssert.assertTrue(transactionsPage.isTransactionDateValid(startDateinString,endDateinString,faker.number().numberBetween(1,5)));
-
+        softAssert.assertTrue(transactionsPage.isTransactionAccountsValid(selectedAccount));
+        softAssert.assertTrue(transactionsPage.isTransactionsDateValid(startDateinString,endDateinString));
 
         softAssert.assertAll();
     }

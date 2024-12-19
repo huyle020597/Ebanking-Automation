@@ -65,13 +65,11 @@ public class TC06_ExternalTransfer {
         // Thuc hien chuyen tien
         bankAccountsPage.openExternalTransferPage();
         externalTransferPage.selectAccountByAccNumber(senderAcc);
-        Thread.sleep(500);
         softAssert.assertEquals(externalTransferPage.getSenderBalance(), senderBalance); //Kiem tra so du
 
         externalTransferPage.inputReceiverAccount(Constants.EXTERNAL_ACCOUNT_NUMBER);
         externalTransferPage.inputReceiverName(Constants.EXTERNAL_NAME);
         externalTransferPage.selectDongABank();
-        Thread.sleep(500); // check hàm wait
         externalTransferPage.selectDaNangBranch();
         externalTransferPage.inputTransferDescription(transferDesc);
         externalTransferPage.inputTransferAmount(transferAmount);

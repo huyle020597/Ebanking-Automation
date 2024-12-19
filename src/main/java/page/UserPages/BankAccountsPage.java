@@ -56,20 +56,16 @@ public class BankAccountsPage extends MenuBar{
         return driver.findElement(transactionAccNumber).getText();
     }
 
-    public double getTransactionAmountByIndex (int index) {
+    public double getActualTransactionAmountByIndex (int index) {
         transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]",(index-1)*3+3));
         return Double.parseDouble(driver.findElement(transactionAmount).getText().substring(2).
                 replace(",","").replace(" VNĐ",""));
     }
 
-    public boolean isTransactionAmountNegative (int transactionIndex) {
+    public double getTransactionAmountByIndex (int transactionIndex) {
         transactionAmount = By.xpath(String.format("(//tbody[@id='j_idt37_data']/tr/td)[%s]", (transactionIndex - 1) * 3 + 3));
 
         return Double.parseDouble(driver.findElement(transactionAmount).getText()
-                .replace(" ", "").replace(",", "").replace("VNĐ", "")) < 0;
-    }
-
-    public double getTransactionAmount() {
-return 0;
+                .replace(" ", "").replace(",", "").replace("VNĐ", ""));
     }
 }

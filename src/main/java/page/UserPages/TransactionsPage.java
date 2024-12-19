@@ -1,11 +1,14 @@
 package page.UserPages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class TransactionsPage {
     By fromDateLocator = By.xpath("//input[@id='j_idt23:mask_input']");
     By toDateLocator = By.xpath("//input[@id='j_idt23:masks_input']");
     By searchBtnLocator = By.xpath("//input[@type='submit']");
+    By selectedCalendarDate = By.xpath("//a[contains (@class, 'ui-state-active')]");
 
 
     By mainAccountColumnLocator = By.xpath("//th[.='Tài khoản  Chính']");
@@ -76,22 +80,44 @@ public class TransactionsPage {
         return driver.findElements(cellLocator).get(getTransactionDateColumnOrder() - 1).getText();
     }
 
-    public boolean isTransactionDateValid(String startDateinString, String endDateinString, int rowNumber) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        boolean isValid = true;
+    public boolean isTransactionsDateValid(String startDateinString, String endDateinString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        boolean isWithinDateRange = true;
         try {
-            // Chuyển đổi chuỗi ngày thành đối tượng Date
-            Date startDate = sdf.parse(startDateinString);
-            Date endDate = sdf.parse(endDateinString);
-            Date checkDate = sdf.parse(getTransactionDateByRow(rowNumber));
-            // Kiểm tra xem checkDate có nằm trong khoảng startDate và endDate không
-            if( (checkDate.after(startDate) && checkDate.before(endDate)) || checkDate.equals(startDate) || checkDate.equals(endDate)  ){
+            // Chuyển ngày String thành LocalDate
+            LocalDate startDate = LocalDate.parse(startDateinString,formatter);
+            LocalDate endDate = LocalDate.parse(endDateinString,formatter);
+
+            List <WebElement> listTransactionDate = driver.findElements(By.xpath("//td[5]"));
+            for (int i = 0; i < 7; i++) {
+                LocalDate checkDate = LocalDate.parse(listTransactionDate.get(i).getText(), formatter);
+                if (!(checkDate.isAfter(startDate)
+                        && checkDate.isBefore(endDate)
+                        || checkDate.isEqual(startDate)
+                        || checkDate.isEqual(endDate))) {
+                    isWithinDateRange = false;
+                    break;
+                }
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Định dạng ngày không hợp lệ!");
+        }
+        return isWithinDateRange;
+    }
+
+    public void selectInputedDate () {
+        driver.findElement(selectedCalendarDate).click();
+    }
+
+    public boolean isTransactionAccountsValid (String accountNumber) {
+        List<WebElement> listTransactionAccounts = driver.findElements(By.xpath("//td[1]"));
+        boolean isValid = true ;
+        for (int i=4; i<11;i++) {
+            if (listTransactionAccounts.get(i).getText().equals(accountNumber)) {
                 isValid = true;
             } else {
                 isValid = false;
             }
-        } catch (ParseException e) {
-            System.out.println("Định dạng ngày không hợp lệ!");
         }
         return isValid;
     }
