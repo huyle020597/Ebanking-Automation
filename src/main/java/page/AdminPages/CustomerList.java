@@ -12,11 +12,8 @@ public class CustomerList {
     By inputAddressTextbox = By.id("j_idt22:j_idt24:j_idt29:filter");
     By inputCMDNTextbox = By.id("j_idt22:j_idt24:j_idt32:filter");
     By inputPhoneNumberTextbox = By.id("j_idt22:j_idt24:j_idt34:filter");
-    By inputActiveTextbox = By.id("j_idt22:j_idt24:j_idt36:filter");
-    By inputStatusTextbox = By.id("j_idt22:j_idt24:j_idt39:filter");
-    By customerIdReturn = By.xpath("(//td[@role='gridcell'])[1]");
-    By customerPhoneReturn;
-    //td[@role='gridcell'][normalize-space()='7774003855'])[1]
+    By customerTableRows = By.xpath("//table[@id='customerTable']/tbody/tr"); // Table rows
+
 
     WebDriver driver;
 
@@ -44,35 +41,66 @@ public class CustomerList {
         driver.findElement(inputPhoneNumberTextbox).sendKeys(phoneNumber);
     }
 
-    public String customerIdSearchReturn(String customerId) {
-       // customerId = By.xpath(String.format(""), customerId);
-        driver.findElement(customerIdReturn).getText();
-        return customerId;
-    }
+    public class CustomerData {
+        public String customerId;
+        public String fullName;
+        public String address;
+        public String cmdn;
+        public String phoneNumber;
 
-    public String phoneNumberSearchReturn(String phoneNumber) {
-        List<WebElement> phoneElements = driver.findElements(By.xpath(String.format("//td[@role='gridcell'][text()='%s']", phoneNumber)));
-        if (!phoneElements.isEmpty()) {
-            // Lấy ngẫu nhiên 1 phần tử từ danh sách kết quả
-            int randomIndex = (int) (Math.random() * phoneElements.size());
-            String randomPhone = phoneElements.get(randomIndex).getText();
-            return randomPhone;
-        } else {
-            return null; // Trường hợp không tìm thấy kết quả nào
+        public CustomerData(String customerId, String fullName, String address, String cmdn, String phoneNumber) {
+            this.customerId = customerId;
+            this.fullName = fullName;
+            this.address = address;
+            this.cmdn = cmdn;
+            this.phoneNumber = phoneNumber;
         }
     }
 
-    public void enterActive(String active) {
-        driver.findElement(inputActiveTextbox).sendKeys(active);
-    }
+//    public String customerIdSearchReturn(String customerId) {
+//       // customerId = By.xpath(String.format(""), customerId);
+//        driver.findElement(customerIdReturn).getText();
+//        return customerId;
+//    }
+//
+//    public String phoneNumberSearchReturn(String phoneNumber) {
+//        List<WebElement> phoneElements = driver.findElements(By.xpath(String.format("//td[@role='gridcell'][text()='%s']", phoneNumber)));
+//        if (!phoneElements.isEmpty()) {
+//            // Lấy ngẫu nhiên 1 phần tử từ danh sách kết quả
+//            int randomIndex = (int) (Math.random() * phoneElements.size());
+//            String randomPhone = phoneElements.get(randomIndex).getText();
+//            return randomPhone;
+//        } else {
+//            return null; // Trường hợp không tìm thấy kết quả nào
+//        }
+//    }
 
-    public void enterStatus(String status) {
-        driver.findElement(inputStatusTextbox).sendKeys(status);
-    }
+    // Method to retrieve customer data from the selected row
+    public CustomerData getCustomerDataFromRow(int rowIndex) {
+        List<WebElement> rows = driver.findElements(customerTableRows);
+        WebElement selectedRow = rows.get(rowIndex - 1); // Row index starts from 0 in Selenium
+        List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
 
-    public void customerList(String Id, String phoneNumber) {
-        enterCustomerID(Id);
-        enterPhoneNumber(phoneNumber);
-    }
+        // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber
+        return new CustomerData(
+                cells.get(0).getText(), // Customer ID
+                cells.get(1).getText(), // Full Name
+                cells.get(2).getText(), // Address
+                cells.get(3).getText(), // CMDN
+                cells.get(4).getText()  // Phone Number
+        );
 
+//        public void enterActive (String active){
+//            driver.findElement(inputActiveTextbox).sendKeys(active);
+//        }
+//
+//        public void enterStatus (String status){
+//            driver.findElement(inputStatusTextbox).sendKeys(status);
+//        }
+//
+//        public void customerList (String Id, String phoneNumber){
+//            enterCustomerID(Id);
+//            enterPhoneNumber(phoneNumber);
+//        }
+    }
 }

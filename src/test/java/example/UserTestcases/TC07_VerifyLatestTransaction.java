@@ -1,7 +1,7 @@
 package example.UserTestcases;
 
 import com.github.javafaker.Faker;
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -67,7 +67,7 @@ public class TC07_VerifyLatestTransaction {
     public void TC06 () throws InterruptedException {
 
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
@@ -107,7 +107,7 @@ public class TC07_VerifyLatestTransaction {
         //Kiem tra latest transaction cua nguoi nhan
         bankAccountsPage.LogOut();
 
-        loginPage.login(Constants.USER_ID_2, Constants.PASSWORD_2);
+        loginPage.login(Constants.USER_ID_2, Constants.USER_PASSWORD_1);
 
         softAssert.assertEquals(bankAccountsPage.getTransactionDateByIndex(1),transferTime);
         softAssert.assertEquals(bankAccountsPage.getTransactionAccNumberByIndex(1),receiverAcc);

@@ -2,17 +2,19 @@ package page.AdminPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class TransactionCustomerPage {
     By accountNumberTextbox = By.xpath("(//input[@id='j_idt23:mas'])[1]");
     By dateFromTextbox = By.id("j_idt23:mask_input");
     By dateToTextbox = By.id("j_idt23:masks_input");
     By searchBtn = By.name("j_idt23:j_idt28");
-    By accountTable = By.xpath("//div[@id='j_idt27']");
+    By transactionTableRows = By.xpath("//table[@id='resultTable']/tbody/tr");
 
     WebDriver driver;
 
@@ -36,7 +38,7 @@ public class TransactionCustomerPage {
         driver.findElement(searchBtn).click();
     }
 
-    public void search (String accountNumber,String dateFrom, String dateTo) {
+    public void search(String accountNumber, String dateFrom, String dateTo) {
         inputAccountNumber(accountNumber);
         inputDateFrom(dateFrom);
         inputDateTo(dateTo);
@@ -57,35 +59,73 @@ public class TransactionCustomerPage {
 
     //Lấy data của từng ô dựa vào thứ tự cột
     public String getAccountNumbByRow(int rowNumber) {
-        By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td", rowNumber - 1));
-        return driver.findElements(cellLocator).get(getSenderAccountColumnOrder() - 1).getText();
+        // By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td[2]", rowNumber - 1));
+        By cellLocator = By.xpath(String.format("//table[@id='resultTable']/tbody/tr[%d]/td[2]", rowNumber));
+        //return driver.findElements(cellLocator).get(getSenderAccountColumnOrder() - 1).getText();
+        return driver.findElement(cellLocator).getText();
     }
 
     public String getTransactionDateByRow(int rowNumber) {
-        By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td", rowNumber - 1));
-        return driver.findElements(cellLocator).get(getTransactionDateColumnOrder() - 1).getText();
+//        By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td", rowNumber - 1));
+//        return driver.findElements(cellLocator).get(getTransactionDateColumnOrder() - 1).getText();
+        By cellLocator = By.xpath(String.format("//table[@id='resultTable']/tbody/tr[%d]/td[5]", rowNumber));
+        return driver.findElement(cellLocator).getText();
     }
 
+    public boolean isTransactionDateValid(String dateFrom, String dateTo) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate startDate = LocalDate.parse(dateFrom, formatter);
+        LocalDate endDate = LocalDate.parse(dateTo, formatter);
 
-    public boolean isTransactionDateValid(String dateFrominString, String dateToinString, int rowNumber) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        boolean isValid = true;
-        try {
-            // Chuyển đổi chuỗi ngày thành đối tượng Date
-            Date startDate = sdf.parse(dateFrominString);
-            Date endDate = sdf.parse(dateToinString);
-            Date checkDate = sdf.parse(getTransactionDateByRow(rowNumber));
-            // Kiểm tra xem checkDate có nằm trong khoảng startDate và endDate không
-            if( (checkDate.after(startDate) && checkDate.before(endDate)) || checkDate.equals(startDate) || checkDate.equals(endDate)  ){
-                isValid = true;
-            } else {
-                isValid = false;
+        List<WebElement> rows = driver.findElements(transactionTableRows);
+        for (WebElement row : rows) {
+            String transactionDateText = row.findElement(By.xpath("./td[5]")).getText();
+            LocalDate transactionDate = LocalDate.parse(transactionDateText, formatter);
+            if (transactionDate.isBefore(startDate) || transactionDate.isAfter(endDate)) {
+                return false;
             }
-        } catch (ParseException e) {
-            System.out.println("Định dạng ngày không hợp lệ!");
         }
-        return isValid;
+        return true;
+    }
+
+    public void iterateTransactionRows(TransactionRowProcessor processor) {
+        //Duyệt qua từng hàng của bảng
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='resultTable']/tbody/tr"));
+        for (int i = 1; i <= rows.size(); i++) {
+            String senderAccount = getAccountNumbByRow(i);
+            String transactionDate = getTransactionDateByRow(i);
+            processor.processRow(i, senderAccount, transactionDate);
+        }
+    }
+
+    public interface TransactionRowProcessor {
+        void processRow(int rowIndex, String senderAccount, String transactionDate);
     }
 
 
+//    public boolean isTransactionDateValid(String dateFrominString, String dateToinString) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        boolean isValid = true;
+//        try {
+//            // Chuyển ngày String thành LocalDate
+//            LocalDate startDate = LocalDate.parse(dateFrominString, formatter);
+//            LocalDate endDate = LocalDate.parse(dateToinString, formatter);
+//
+//            List<WebElement> listTransactionByCustomer = driver.findElements(By.xpath("//td[5]"));
+//            for (int i = 0; i < 7; i++) {
+//                LocalDate checkDate = LocalDate.parse(listTransactionByCustomer.get(i).getText(), formatter);
+//                if (!(checkDate.isAfter(startDate)
+//                        && checkDate.isBefore(endDate)
+//                        || checkDate.isEqual(startDate)
+//                        || checkDate.isEqual(endDate))) {
+//                    isValid = false;
+//                    break;
+//                }
+//            }
+//        } catch (DateTimeParseException e) {
+//            System.out.println("Định dạng ngày không hợp lệ!");
+//        }
+//        return isValid;
 }
+
+

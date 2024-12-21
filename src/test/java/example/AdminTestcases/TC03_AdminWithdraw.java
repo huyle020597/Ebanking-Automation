@@ -1,6 +1,6 @@
 package example.AdminTestcases;
 
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WindowType;
 import page.AdminPages.HomePage;
 import page.AdminPages.LoginAdminPage;
@@ -16,7 +16,7 @@ import page.UserPages.LoginPage;
 
 import java.time.Duration;
 
-public class TC03AdminWithdraw {
+public class TC03_AdminWithdraw {
     WebDriver driver;
     SoftAssert softAssert;
 
@@ -43,7 +43,6 @@ public class TC03AdminWithdraw {
         withdrawPage = new WithdrawPage(driver);
         withdrawAmount = 325712.0;
 
-        driver.get(Constants.ADMIN_URL);
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
@@ -58,7 +57,7 @@ public class TC03AdminWithdraw {
     @Test
             (description = "Admin - Withdraw money successfully")
     public void TC03() {
-        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
@@ -68,16 +67,12 @@ public class TC03AdminWithdraw {
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
-      //  loginAdminPageAdmin.loginAdmin(Constants.adminId, Constants.adminPassword);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginAdminPage.loginAdmin("1","admin");
+        driver.get(Constants.ADMIN_URL);
+        loginAdminPage.loginAdmin(Constants.ADMIN_ID, Constants.ADMIN_PASSWORD);
 
         //Rut tien va xac nhan
         homePage.openWithdrawPage();
-        withdrawPage.inputAccountNumber(receiveAccountNo);
-        withdrawPage.inputAmount(String.valueOf(withdrawAmount));
-        withdrawPage.inputNote("test");
-        withdrawPage.clickTransfer();
+        withdrawPage.withdraw(receiveAccountNo,withdrawAmount,"testing");
         softAssert.assertTrue(withdrawPage.isSuccessfulMsgDisplayed());
 
         //quay lai tab user kiem tra so du tai khoan

@@ -2,9 +2,12 @@ package page.UserPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class RegisterPage {
-    By registerBtnLocator = By.linkText("Tạo tài khoản");
     By accountTbLocator = By.id("j_idt9:soucre");
     By passwordTbLocator = By.id("j_idt9:pwd1");
     By reenterPasswordTbLocator = By.id("j_idt9:pwd2");
@@ -17,6 +20,11 @@ public class RegisterPage {
     By idTbLocator = By.id("j_idt9:country_label");
     By emailTbLocator = By.id("j_idt9:email");
     By confirmBtnLocator = By.xpath("//span[@class='ui-button-text ui-c']");
+    By availableCityLocator;
+    By createAccountBtnConfirmLocator = By.name("j_idt9:j_idt30");
+    By msgConfirmCreateAccount = By.className("ui-dialog-content ui-widget-content");
+    By closeMsgConfirm = By.className("ui-icon ui-icon-closethick");
+
 
     WebDriver driver;
 
@@ -24,9 +32,6 @@ public class RegisterPage {
         this.driver = driver;
     }
 
-    public void clickRegisterBtn() {
-        driver.findElement(registerBtnLocator).click();
-    }
 
     public void enterAccount(String account) {
         driver.findElement(accountTbLocator).sendKeys(account);
@@ -61,7 +66,13 @@ public class RegisterPage {
     }
 
     public void enterCity() {
-        driver.findElement(cityDropdownLocator);
+        driver.findElement(cityDropdownLocator).click();
+    }
+
+    private void selectCity(String city) {
+        enterCity();
+        availableCityLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][data-label='%s']", city));
+        driver.findElement(availableCityLocator).click();
     }
 
     public void enterIdUser(String id) {
@@ -76,9 +87,40 @@ public class RegisterPage {
         driver.findElement(confirmBtnLocator).click();
     }
 
-    public void registerAccount(String account) {
+    public void registerAccount(String account, String password, String password2, String fullName, String phoneNumber,
+                                String dob, String city, String id, String email) {
         enterAccount(account);
+        enterPassword(password);
+        reenterPassword(password2);
+        enterFullName(fullName);
+        enterPhoneNumber(phoneNumber);
+        enterDob(dob);
+        clickFemaleGender();
+        selectCity(city);
+        enterIdUser(id);
+        enterEmail(email);
+        clickFemaleGender();
+        clickConfirmBtn();
+        clickCreateAccount();
+        clickCloseMsg();
     }
 
+    public void clickCreateAccount() {
+        driver.findElement(createAccountBtnConfirmLocator).click();
+    }
+
+    public void msgConfirm() {
+        driver.findElement(msgConfirmCreateAccount).click();
+    }
+
+    public void clickCloseMsg() {
+        driver.findElement(closeMsgConfirm).click();
+    }
+
+    public boolean isSuccessfulMsgDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(msgConfirmCreateAccount));
+        return driver.findElement(msgConfirmCreateAccount).isDisplayed();
+    }
 }
 

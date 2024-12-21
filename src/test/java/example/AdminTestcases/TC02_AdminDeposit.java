@@ -1,6 +1,6 @@
 package example.AdminTestcases;
 
-import modal.Constants;
+import model.Constants;
 import page.AdminPages.DepositPage;
 import page.AdminPages.HomePage;
 import org.openqa.selenium.WebDriver;
@@ -18,7 +18,7 @@ import page.UserPages.MenuBar;
 import java.time.Duration;
 
 
-public class TC02AdminDeposit {
+public class TC02_AdminDeposit {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
@@ -46,7 +46,6 @@ public class TC02AdminDeposit {
         homePage = new HomePage(driver);
         depositAmount = 325712.0;
 
-        driver.get(Constants.ADMIN_URL);
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
@@ -62,7 +61,7 @@ public class TC02AdminDeposit {
             (description = "Admin - Deposit money into account successfully")
     public void depositMoney() {
         //dang nhap tai khoan user
-        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
@@ -72,17 +71,15 @@ public class TC02AdminDeposit {
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
-      //  loginAdminPage.loginAdmin(Constants.adminId,Constants.adminPassword);
-        driver.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
-        loginAdminPage.loginAdmin("1","admin");
+        driver.get(Constants.ADMIN_URL);
+        loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
+
 
 
         //Nop tien va xac nhan
         homePage.openDepositPage();
-        depositPage.inputReceiveAccount(receiveAccountNo);
-        depositPage.inputAmount(depositAmount);
-        depositPage.inputNote("test");
-        depositPage.clickConfirm();
+        depositPage.inputDeposit(receiveAccountNo,depositAmount,"testing");
+        //depositPage.clickConfirm();
         softAssert.assertTrue(depositPage.isSuccessfulMsgDisplayed());
 
 

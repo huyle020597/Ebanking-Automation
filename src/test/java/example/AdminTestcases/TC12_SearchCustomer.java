@@ -1,6 +1,6 @@
 package example.AdminTestcases;
 
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WindowType;
 import page.AdminPages.CustomerList;
 import page.AdminPages.HomePage;
@@ -18,7 +18,7 @@ import page.UserPages.UserInfoPage;
 
 import java.time.Duration;
 
-public class TC12SearchCustomer {
+public class TC12_SearchCustomer {
     WebDriver driver;
     SoftAssert softAssert;
 
@@ -35,6 +35,8 @@ public class TC12SearchCustomer {
     String originalHandle;
     String phoneNumber;
     String actualPhoneNumber;
+    CustomerList.CustomerData selectedCustomer;
+    CustomerList.CustomerData returnedCustomer;
 
 
 
@@ -69,7 +71,7 @@ public class TC12SearchCustomer {
             (description = "Admin - Search customer by multiple fields")
     public void searchCustomer() {
         //dang nhap tai khoan user, chon tai khoan va lay so dien thoai
-        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
 
         menuBar.openUserInfoPage();
         phoneNumber = userInfoPage.getUserPhoneNumber();
@@ -81,10 +83,24 @@ public class TC12SearchCustomer {
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        actualPhoneNumber = customerList.phoneNumberSearchReturn(phoneNumber);
+        selectedCustomer = customerList.getCustomerDataFromRow(5); // Chọn hàng đầu tiên
+
+        // Step 5: Nhập thông tin vào các trường tìm kiếm
+        customerList.enterCustomerID(selectedCustomer.customerId);
+        customerList.enterFullName(selectedCustomer.fullName);
+        customerList.enterAddress(selectedCustomer.address);
+        customerList.enterCMDN(selectedCustomer.cmdn);
+        customerList.enterPhoneNumber(selectedCustomer.phoneNumber);
+
+        // Step 6: Lấy dữ liệu từ kết quả tìm kiếm và kiểm tra
+        returnedCustomer = customerList.getCustomerDataFromRow(5);
 
         //kiem tra ket qua hien thi
-        softAssert.assertEquals(actualPhoneNumber,phoneNumber);
+        softAssert.assertEquals(returnedCustomer.customerId, selectedCustomer.customerId, "Customer ID mismatch");
+        softAssert.assertEquals(returnedCustomer.fullName, selectedCustomer.fullName, "Full Name mismatch");
+        softAssert.assertEquals(returnedCustomer.address, selectedCustomer.address, "Address mismatch");
+        softAssert.assertEquals(returnedCustomer.cmdn, selectedCustomer.cmdn, "CMDN mismatch");
+        softAssert.assertEquals(returnedCustomer.phoneNumber, selectedCustomer.phoneNumber, "Phone Number mismatch");
 
         softAssert.assertAll();
     }

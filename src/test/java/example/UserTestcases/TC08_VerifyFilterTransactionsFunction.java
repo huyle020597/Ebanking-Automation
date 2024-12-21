@@ -1,7 +1,7 @@
 package example.UserTestcases;
 
 import com.github.javafaker.Faker;
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -74,7 +74,7 @@ public class TC08_VerifyFilterTransactionsFunction {
 
     @Test
     public void TC08() {
-        loginPage.login(Constants.USER_ID_1,Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1,Constants.USER_PASSWORD_1);
         bankAccountsPage.openTransactionsPage();
 
         transactionsPage.searchTransaction(selectedAccount,startDateinString,endDateinString);

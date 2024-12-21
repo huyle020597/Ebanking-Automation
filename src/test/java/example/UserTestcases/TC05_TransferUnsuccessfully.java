@@ -1,7 +1,7 @@
 package example.UserTestcases;
 
 import com.github.javafaker.Faker;
-import modal.Constants;
+import model.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -59,7 +59,7 @@ public class TC05_TransferUnsuccessfully {
     @Test
     public void TC05() throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.USER_ID_1, Constants.PASSWORD_1);
+        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 

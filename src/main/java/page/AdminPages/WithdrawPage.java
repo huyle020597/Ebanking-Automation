@@ -24,8 +24,8 @@ public class WithdrawPage {
         driver.findElement(accountNumberTextbox).sendKeys(account);
     }
 
-    public void inputAmount(String amount) {
-        driver.findElement(AmountTextbox).sendKeys(amount);
+    public void inputAmount(double amount) {
+        driver.findElement(AmountTextbox).sendKeys(Double.toString(amount));
     }
 
     public void inputNote(String note) {
@@ -37,7 +37,7 @@ public class WithdrawPage {
     }
 
 
-    public void withdraw(String account, String amount, String note) {
+    public void withdraw(String account, double amount, String note) {
         inputAccountNumber(account);
         inputAmount(amount);
         inputNote(note);
