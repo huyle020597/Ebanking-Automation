@@ -22,8 +22,8 @@ public class ChangePasswordPage extends MenuBar {
         super(driver);
     }
 
-    public void inputOldPW (String oldPW) {
 
+    public void inputOldPW (String oldPW) {
         driver.findElement(oldPWlocator).sendKeys(oldPW);
     }
     public void inputNewPW (String newPW) {

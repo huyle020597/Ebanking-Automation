@@ -117,6 +117,7 @@ public class TransactionsPage {
                 isValid = true;
             } else {
                 isValid = false;
+                break;
             }
         }
         return isValid;

@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import modal.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -31,5 +32,10 @@ public class LoginPage {
         driver.findElement(loginBtnLocator).click();
     }
 
+    public void login(User user) {
+        driver.findElement(loginBoxLocator).sendKeys(user.getUserId());
+        driver.findElement(passwordBoxLocator).sendKeys(user.getPassword());
+        driver.findElement(loginBtnLocator).click();
+    }
 
 }

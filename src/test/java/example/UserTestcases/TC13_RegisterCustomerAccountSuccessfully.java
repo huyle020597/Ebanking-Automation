@@ -72,10 +72,10 @@ public class TC13_RegisterCustomerAccountSuccessfully {
             (description = "User - Register customer account successfully")
     public void TC13() throws InterruptedException {
         // Step 1: Register new account
-       //cho nay sao no khong chay url ay
         loginPage.clickRegisterBtn();
         registerPage.registerAccount(account, password, password, fullName, phoneNumber, dob, city, id, email);
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
+        registerPage.clickCloseMsg();
 
 
         // Step 2: Open new tab for email confirmation

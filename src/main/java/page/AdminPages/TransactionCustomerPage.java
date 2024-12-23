@@ -85,7 +85,7 @@ public class TransactionCustomerPage {
                 return false;
             }
         }
-        return true;
+        return true; //chỗ này sai
     }
 
     public void iterateTransactionRows(TransactionRowProcessor processor) {

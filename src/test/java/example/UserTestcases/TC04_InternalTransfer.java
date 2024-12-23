@@ -46,6 +46,7 @@ public class TC04_InternalTransfer {
         receiverAcc = "100001298";
         faker = new Faker();
         transferDescription = faker.name().fullName();
+        transferAmount = faker.number().numberBetween(1,10)*1000;
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();

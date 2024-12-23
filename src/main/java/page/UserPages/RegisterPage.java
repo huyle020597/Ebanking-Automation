@@ -104,7 +104,6 @@ public class RegisterPage {
         enterEmail(email);
         clickConfirmBtn();
         clickCreateAccount();
-        clickCloseMsg();
     }
 
     public void clickCreateAccount() {

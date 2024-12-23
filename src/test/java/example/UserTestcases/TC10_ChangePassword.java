@@ -43,7 +43,6 @@ public class TC10_ChangePassword {
         softAssert = new SoftAssert();
         registerPage = new RegisterPage(driver);
         loginPage = new LoginPage(driver);
-        menuBar =new MenuBar(driver);
         changePasswordPage = new ChangePasswordPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
 
@@ -82,7 +81,7 @@ public class TC10_ChangePassword {
         loginPage.clickRegisterBtn();
         registerPage.registerAccount(account, oldPassword, oldPassword, fullName, phoneNumber, dob, city, id, email);
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
-
+        registerPage.clickCloseMsg();
 
         // Step 2: Open new tab for email confirmation
         driver.switchTo().newWindow(WindowType.TAB);
@@ -98,8 +97,7 @@ public class TC10_ChangePassword {
 
 
         //Step 4: Change PW
-//        changePasswordPage.changePassword(oldPassword,newPassword);
-        changePasswordPage.inputOldPW(oldPassword);
+        changePasswordPage.changePassword(oldPassword,newPassword);
         softAssert.assertTrue(changePasswordPage.isSuccessMessageDisplayed());
         changePasswordPage.closeSuccessMessage();
 
