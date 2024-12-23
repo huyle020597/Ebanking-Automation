@@ -107,6 +107,7 @@ public class TC05_TransferUnsuccessfully {
         // Lay ma OTP tu Yopmail
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
+        driver.get(Constants.YOPMAIL_URL);
         OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu

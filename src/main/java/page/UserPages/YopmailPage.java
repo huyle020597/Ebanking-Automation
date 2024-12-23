@@ -12,6 +12,7 @@ public class YopmailPage {
     By receivingEmailsLocator = By.xpath("//button[@onclick='g(this);']");
     By accessEmailBtnLocator = By.xpath("//i[@class='material-icons-outlined f36']");
     By OTPcodeLocator = By.xpath("//div[@id='mail']/pre");
+    By activatedURLLocator = By.xpath("//div[@id='mail']/pre");
 
     WebDriver driver;
 
@@ -35,14 +36,19 @@ public class YopmailPage {
         return OTPCode;
     }
 
+
+
     public String getOTPcodeByEmail (String senderEmailAddress) throws InterruptedException {
-        driver.get(Constants.YOPMAIL_URL);
         Thread.sleep(2000);
         inputEmailAddress(senderEmailAddress);
         return getOTPcode();
     }
 
-    public void activateAccount(String email) {
+    public String getActivateURL(String email) throws InterruptedException {
+        Thread.sleep(2000);
+        inputEmailAddress(email);
+        driver.switchTo().frame("ifmail");
+        return driver.findElement(activatedURLLocator).getText();
     }
 }
 

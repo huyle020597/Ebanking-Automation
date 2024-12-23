@@ -17,13 +17,13 @@ public class RegisterPage {
     By genderMaleLocator = By.xpath("(//span[@class='ui-radiobutton-icon ui-icon ui-icon-blank'])[1]");
     By genderFemaleLocator = By.xpath("(//span[@class='ui-radiobutton-icon ui-icon ui-icon-blank'])[2]");
     By cityDropdownLocator = By.id("j_idt9:country_label");
-    By idTbLocator = By.id("j_idt9:country_label");
+    By idTbLocator = By.id("j_idt9:cmnd");
     By emailTbLocator = By.id("j_idt9:email");
     By confirmBtnLocator = By.xpath("//span[@class='ui-button-text ui-c']");
     By availableCityLocator;
     By createAccountBtnConfirmLocator = By.name("j_idt9:j_idt30");
-    By msgConfirmCreateAccount = By.className("ui-dialog-content ui-widget-content");
-    By closeMsgConfirm = By.className("ui-icon ui-icon-closethick");
+    By msgConfirmCreateAccount = By.cssSelector(".ui-dialog-content.ui-widget-content");
+    By closeMsgConfirm = By.cssSelector(".ui-icon.ui-icon-closethick");
 
 
     WebDriver driver;
@@ -71,12 +71,15 @@ public class RegisterPage {
 
     private void selectCity(String city) {
         enterCity();
-        availableCityLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][data-label='%s']", city));
+        availableCityLocator = By.xpath(String.format("//li[contains(@class, 'ui-selectonemenu-item') and @data-label='%s']", city));
         driver.findElement(availableCityLocator).click();
     }
 
     public void enterIdUser(String id) {
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(idTbLocator));
         driver.findElement(idTbLocator).sendKeys(id);
+
     }
 
     public void enterEmail(String email) {
@@ -99,13 +102,15 @@ public class RegisterPage {
         selectCity(city);
         enterIdUser(id);
         enterEmail(email);
-        clickFemaleGender();
         clickConfirmBtn();
         clickCreateAccount();
         clickCloseMsg();
     }
 
     public void clickCreateAccount() {
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.stalenessOf(driver.findElement(createAccountBtnConfirmLocator)));
+
         driver.findElement(createAccountBtnConfirmLocator).click();
     }
 

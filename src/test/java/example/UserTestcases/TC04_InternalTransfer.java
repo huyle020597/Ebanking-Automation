@@ -96,6 +96,8 @@ public class TC04_InternalTransfer {
 
         driver.switchTo().newWindow(WindowType.TAB);
 
+        driver.get(Constants.YOPMAIL_URL);
+
         OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 
         // Quay ve tab cu va nhap OTP

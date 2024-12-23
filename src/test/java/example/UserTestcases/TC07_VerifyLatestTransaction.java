@@ -82,6 +82,7 @@ public class TC07_VerifyLatestTransaction {
         String originalHandle = driver.getWindowHandle();
 
         driver.switchTo().newWindow(WindowType.TAB);
+        driver.get(Constants.YOPMAIL_URL);
 
         OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
 

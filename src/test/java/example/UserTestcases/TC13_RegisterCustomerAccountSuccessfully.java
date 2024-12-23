@@ -49,7 +49,8 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         password = "Test@1234"; //làm sao để no thỏa mãn yêu cầu ve pass ạ?
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
-        dob = String.valueOf(faker.date().birthday());
+//        dob = String.valueOf(faker.date().birthday());
+        dob = "02/05/1997";
         city = "Quang Nam";
         id = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
@@ -62,14 +63,14 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     }
 
 
-    @AfterMethod
-    public void cleanUp() {
-        driver.quit();
-    }
+//    @AfterMethod
+//    public void cleanUp() {
+//        driver.quit();
+//    }
 
     @Test
             (description = "User - Register customer account successfully")
-    public void TC13() {
+    public void TC13() throws InterruptedException {
         // Step 1: Register new account
        //cho nay sao no khong chay url ay
         loginPage.clickRegisterBtn();
@@ -80,13 +81,13 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         // Step 2: Open new tab for email confirmation
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
-        yopmailPage.activateAccount(email);
+        String activateURL = yopmailPage.getActivateURL(email);
+        driver.switchTo().newWindow(WindowType.TAB);
+        driver.get(activateURL);
 
         // Step 3: Login with the newly created account
         driver.switchTo().window(originalHandle);
         loginPage.login(account, password);
-
-
 
         softAssert.assertAll();
     }
