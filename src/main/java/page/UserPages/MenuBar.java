@@ -32,4 +32,6 @@ public class MenuBar {
     public void LogOut() {clickMenuButtons("Đăng xuất");}
 
     public void openTransactionsPage () {clickMenuButtons("Nhật kí giao dịch");}
+
+    public void openChangePWPage () {clickMenuButtons("Đổi mật khẩu");}
 }
