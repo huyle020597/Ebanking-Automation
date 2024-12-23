@@ -10,6 +10,7 @@ public class HomePage {
     By customerTransactionListLocator = By.xpath("//a[@tabindex='-1']/span[text()='Theo Khách Hàng']");
     By dayTransactionListLocator = By.xpath("//a[@tabindex='-1']/span[text()='Theo Ngày']");
     By logOutLocator = By.xpath("//input[@name='j_idt9:j_idt19']");
+    By nameAccountLocator = By.xpath("//a[contains(text(),'%s')]");
 
     WebDriver driver;
 
@@ -39,6 +40,10 @@ public class HomePage {
 
     public void clickLogOutButton() {
         driver.findElement(logOutLocator).click();
+    }
+
+    public String userName() {
+        return driver.findElement(nameAccountLocator).getText();
     }
 
     public void homePage() {

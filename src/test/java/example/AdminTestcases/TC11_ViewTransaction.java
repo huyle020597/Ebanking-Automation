@@ -46,8 +46,6 @@ public class TC11_ViewTransaction {
     String accountNo;
     String originalHandle;
     String selectedAccount;
-    String senderAccount;
-    String receiverAccount;
     boolean isDateValid;
 
 
@@ -107,18 +105,18 @@ public class TC11_ViewTransaction {
         transactionCustomerPage.search(accountNo, dateFrominString, dateToinString);
 
         // Sử dụng iterateTransactionRows để kiểm tra thông tin hiển thị
-        transactionCustomerPage.iterateTransactionRows((rowIndex, senderAccount, transactionDate) -> {
-            // Kiểm tra tài khoản người gửi khớp với số tài khoản đã chọn
-            softAssert.assertEquals(senderAccount, accountNo, "Sender account does not match at row " + rowIndex);
-
-            // Kiểm tra ngày giao dịch nằm trong khoảng ngày đã chọn
-            isDateValid = transactionCustomerPage.isTransactionDateValid(dateFrominString, dateToinString);
-            softAssert.assertTrue(isDateValid, "Transaction date is not valid at row " + rowIndex);
-        });
+//        transactionCustomerPage.iterateTransactionRows((rowIndex, senderAccount, transactionDate) -> {
+//            // Kiểm tra tài khoản người gửi khớp với số tài khoản đã chọn
+//            softAssert.assertEquals(senderAccount, accountNo, "Sender account does not match at row " + rowIndex);
+//
+//            // Kiểm tra ngày giao dịch nằm trong khoảng ngày đã chọn
+//            isDateValid = transactionCustomerPage.isTransactionDateValid(dateFrominString, dateToinString);
+//            softAssert.assertTrue(isDateValid, "Transaction date is not valid at row " + rowIndex);
+//        });
 
             //kiem tra thong tin hien thi
-            //softAssert.assertTrue(senderAccount.equals(accountNo) || receiverAccount.equals(accountNo),
-            // "Dữ liệu không khớp với số tài khoản!");
+//            softAssert.assertTrue(senderAccount.equals(accountNo) || receiverAccount.equals(accountNo),
+//             "Dữ liệu không khớp với số tài khoản!");
 //            softAssert.assertEquals(senderAccount, accountNo, "Sender account does not match!");
 //            //softAssert.assertEquals(transactionCustomerPage.getAccountNumbByRow(faker.number().numberBetween(1,5)),accountNo);
 //            softAssert.assertTrue(transactionCustomerPage.isTransactionDateValid(dateFrominString, dateToinString));

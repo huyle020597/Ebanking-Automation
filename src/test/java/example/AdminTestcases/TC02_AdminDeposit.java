@@ -1,5 +1,6 @@
 package example.AdminTestcases;
 
+import com.github.javafaker.Faker;
 import model.Constants;
 import page.AdminPages.DepositPage;
 import page.AdminPages.HomePage;
@@ -31,6 +32,7 @@ public class TC02_AdminDeposit {
     String originalHandle;
     double receiveBalance;
     String receiveAccountNo;
+    Faker faker;
     double newReceiveBalance;
 
 
@@ -39,12 +41,13 @@ public class TC02_AdminDeposit {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
+        faker = new Faker();
         menuBar = new MenuBar(driver);
         loginAdminPage = new LoginAdminPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         depositPage = new DepositPage(driver);
         homePage = new HomePage(driver);
-        depositAmount = 325712.0;
+        depositAmount = faker.number().numberBetween(1,10)*1000;
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();

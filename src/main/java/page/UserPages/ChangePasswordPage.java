@@ -16,7 +16,6 @@ public class ChangePasswordPage extends MenuBar {
     By successMessageLocator = By.xpath("//div[@class='ui-dialog-content ui-widget-content'][text()='Đổi mật khẩu thành công']");
     By closeSuccessMessageLocator = By.xpath("//span[@class='ui-icon ui-icon-closethick']");
 
-    WebDriver driver;
 
     public ChangePasswordPage(WebDriver driver) {
         super(driver);

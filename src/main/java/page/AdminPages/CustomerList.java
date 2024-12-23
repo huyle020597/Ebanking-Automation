@@ -12,7 +12,7 @@ public class CustomerList {
     By inputAddressTextbox = By.id("j_idt22:j_idt24:j_idt29:filter");
     By inputCMDNTextbox = By.id("j_idt22:j_idt24:j_idt32:filter");
     By inputPhoneNumberTextbox = By.id("j_idt22:j_idt24:j_idt34:filter");
-    By customerTableRows = By.xpath("//table[@id='customerTable']/tbody/tr"); // Table rows
+    By customerTableRows = By.xpath("//table[@id='customerTable']/tbody/tr"); // Table rows, sua lai locator
 
 
     WebDriver driver;
@@ -42,7 +42,7 @@ public class CustomerList {
     }
 
     public class CustomerData {
-        public String customerId;
+        public String customerId; //viet qua class moi, chuyen thanh private
         public String fullName;
         public String address;
         public String cmdn;
@@ -78,7 +78,7 @@ public class CustomerList {
     // Method to retrieve customer data from the selected row
     public CustomerData getCustomerDataFromRow(int rowIndex) {
         List<WebElement> rows = driver.findElements(customerTableRows);
-        WebElement selectedRow = rows.get(rowIndex - 1); // Row index starts from 0 in Selenium
+        WebElement selectedRow = rows.get(rowIndex - 1);
         List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
 
         // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber

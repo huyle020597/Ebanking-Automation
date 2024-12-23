@@ -9,6 +9,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import page.AdminPages.HomePage;
 import page.UserPages.LoginPage;
 import page.UserPages.RegisterPage;
 import page.UserPages.YopmailPage;
@@ -21,6 +22,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     LoginPage loginPage;
     SoftAssert softAssert;
     Faker faker;
+    HomePage homePage;
     YopmailPage yopmailPage;
 
     String account;
@@ -29,7 +31,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     String phoneNumber;
     String dob;
     String city;
-    String id;
+    String cmnd;
     String email;
 
     String originalHandle;
@@ -41,18 +43,19 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         softAssert = new SoftAssert();
         registerPage = new RegisterPage(driver);
         loginPage = new LoginPage(driver);
+        homePage = new HomePage(driver);
 
         yopmailPage = new YopmailPage(driver);
         faker = new Faker();
 
         account = faker.name().username();
-        password = "Test@1234"; //làm sao để no thỏa mãn yêu cầu ve pass ạ?
+        password = "Test@1234"; //làm sao để no thỏa mãn yêu cầu ve pass?
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
 //        dob = String.valueOf(faker.date().birthday());
         dob = "02/05/1997";
         city = "Quang Nam";
-        id = faker.idNumber().valid();
+        cmnd = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
 
         driver.get(Constants.USER_URL);
@@ -73,7 +76,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     public void TC13() throws InterruptedException {
         // Step 1: Register new account
         loginPage.clickRegisterBtn();
-        registerPage.registerAccount(account, password, password, fullName, phoneNumber, dob, city, id, email);
+        registerPage.registerAccount(account, password, password, fullName, phoneNumber, dob, city, cmnd, email);
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
         registerPage.clickCloseMsg();
 
@@ -85,10 +88,14 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(activateURL);
 
+
         // Step 3: Login with the newly created account
         driver.switchTo().window(originalHandle);
         loginPage.login(account, password);
 
+
+        //Step 4: Confirm login with new account
+       // softAssert.assertEquals(homePage.userName(),fullName);
         softAssert.assertAll();
     }
 }

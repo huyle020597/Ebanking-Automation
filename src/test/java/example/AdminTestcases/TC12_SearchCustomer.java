@@ -56,9 +56,9 @@ public class TC12_SearchCustomer {
         bankAccountsPage = new BankAccountsPage(driver);
 
 
-        driver.get(Constants.USER_URL);
+        driver.get(Constants.ADMIN_URL);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         originalHandle = driver.getWindowHandle();
     }
 
@@ -70,20 +70,11 @@ public class TC12_SearchCustomer {
     @Test
             (description = "Admin - Search customer by multiple fields")
     public void searchCustomer() {
-        //dang nhap tai khoan user, chon tai khoan va lay so dien thoai
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
-
-        menuBar.openUserInfoPage();
-        phoneNumber = userInfoPage.getUserPhoneNumber();
-
-
-        driver.switchTo().newWindow(WindowType.TAB);
-        driver.get(Constants.ADMIN_URL);
         loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        selectedCustomer = customerList.getCustomerDataFromRow(5); // Chọn hàng đầu tiên
+        selectedCustomer = customerList.getCustomerDataFromRow(1); // Chọn hàng đầu tiên
 
         // Step 5: Nhập thông tin vào các trường tìm kiếm
         customerList.enterCustomerID(selectedCustomer.customerId);
@@ -93,7 +84,7 @@ public class TC12_SearchCustomer {
         customerList.enterPhoneNumber(selectedCustomer.phoneNumber);
 
         // Step 6: Lấy dữ liệu từ kết quả tìm kiếm và kiểm tra
-        returnedCustomer = customerList.getCustomerDataFromRow(5);
+        returnedCustomer = customerList.getCustomerDataFromRow(1);
 
         //kiem tra ket qua hien thi
         softAssert.assertEquals(returnedCustomer.customerId, selectedCustomer.customerId, "Customer ID mismatch");

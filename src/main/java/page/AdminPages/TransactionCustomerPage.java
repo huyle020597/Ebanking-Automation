@@ -88,44 +88,45 @@ public class TransactionCustomerPage {
         return true; //chỗ này sai
     }
 
-    public void iterateTransactionRows(TransactionRowProcessor processor) {
-        //Duyệt qua từng hàng của bảng
-        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='resultTable']/tbody/tr"));
-        for (int i = 1; i <= rows.size(); i++) {
-            String senderAccount = getAccountNumbByRow(i);
-            String transactionDate = getTransactionDateByRow(i);
-            processor.processRow(i, senderAccount, transactionDate);
-        }
-    }
+//    public void iterateTransactionRows(TransactionRowProcessor processor) {
+//        //Duyệt qua từng hàng của bảng
+//        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='resultTable']/tbody/tr"));
+//        for (int i = 1; i <= rows.size(); i++) {
+//            String senderAccount = getAccountNumbByRow(i);
+//            String transactionDate = getTransactionDateByRow(i);
+//            processor.processRow(i, senderAccount, transactionDate);
+//        }
+//    }
+//
+//    public interface TransactionRowProcessor {
+//        void processRow(int rowIndex, String senderAccount, String transactionDate);
+//    }
 
-    public interface TransactionRowProcessor {
-        void processRow(int rowIndex, String senderAccount, String transactionDate);
-    }
 
-
-//    public boolean isTransactionDateValid(String dateFrominString, String dateToinString) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//    public boolean isTransactionDateBetween(String dateFrominString, String dateToinString) {
+//        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 //        boolean isValid = true;
 //        try {
 //            // Chuyển ngày String thành LocalDate
 //            LocalDate startDate = LocalDate.parse(dateFrominString, formatter);
 //            LocalDate endDate = LocalDate.parse(dateToinString, formatter);
-//
-//            List<WebElement> listTransactionByCustomer = driver.findElements(By.xpath("//td[5]"));
-//            for (int i = 0; i < 7; i++) {
+
+            //  List<WebElement> listTransactionByCustomer = driver.findElements(By.xpath("//td[5]"));
+//            for (int i = 0; i < 7; i++) { //di het danh sach
 //                LocalDate checkDate = LocalDate.parse(listTransactionByCustomer.get(i).getText(), formatter);
 //                if (!(checkDate.isAfter(startDate)
 //                        && checkDate.isBefore(endDate)
 //                        || checkDate.isEqual(startDate)
 //                        || checkDate.isEqual(endDate))) {
 //                    isValid = false;
-//                    break;
+//                    //break;
 //                }
 //            }
 //        } catch (DateTimeParseException e) {
 //            System.out.println("Định dạng ngày không hợp lệ!");
 //        }
 //        return isValid;
-}
+//}
+//
 
-
+        }
