@@ -22,14 +22,13 @@ public class TC04_InternalTransfer {
     InternalTransferPage internalTransferPage;
     InternalTransferConfirmPage internalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String receiverAcc;
-    String senderAcc;
     double transferAmount;
     String OTP;
     String transferDescription;
     double receiverBalance;
     double senderBalance;
     Faker faker;
+    String originalHandle;
 
 
     @BeforeMethod
@@ -42,15 +41,13 @@ public class TC04_InternalTransfer {
         internalTransferPage = new InternalTransferPage(driver);
         internalTransferConfirmPage = new InternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        senderAcc = "100001284";
-        receiverAcc = "100001298";
         faker = new Faker();
         transferDescription = faker.name().fullName();
         transferAmount = faker.number().numberBetween(1,10)*1000;
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
     }
 
@@ -61,66 +58,67 @@ public class TC04_InternalTransfer {
 
     @Test
     public void TC04() throws InterruptedException {
-        // Login tai khoan nhan va kiem tra so du
+        // Login with Receiver Account and check Balance
         loginPage.login(Constants.USER_ID_2, Constants.USER_PASSWORD_2);
-        bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_2.getBankAccount());
         receiverBalance = bankAccountsPage.getAccountBalance();
 
 
-        // Login voi tai khoan gui và kiem tra so du
+        // Login with Sender Account and check Balance
         bankAccountsPage.LogOut();
         loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
-        bankAccountsPage.viewDetailsByAccNumber(senderAcc);
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
         senderBalance = bankAccountsPage.getAccountBalance();
 
-        // Thuc hien chuyen tien
+        // Transfer money
         bankAccountsPage.openTransferPage();
 
-        internalTransferPage.inputTransferInfo(senderAcc,receiverAcc,transferAmount,transferDescription);
+        internalTransferPage.inputTransferInfo(Constants.USER_1.getBankAccount(),Constants.USER_2.getBankAccount()
+                , transferAmount,transferDescription);
 
-        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance);//Kiem tra so du
+        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance);
 
 
         internalTransferPage.clickConfirmBtn();
 
-        // Kiem tra thong tin da nhap
-        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
+        // Verify the data input
+        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), Constants.USER_2.getBankAccount());
         softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), transferDescription);
-        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
+        softAssert.assertEquals(internalTransferConfirmPage.getSenderAcc(), Constants.USER_1.getBankAccount());
 
         internalTransferConfirmPage.clickConfirmBtn();
 
-        // Lay ma OTP tu Yopmail
-        String originalHandle = driver.getWindowHandle();
+        // Get OTP code
+        originalHandle = driver.getWindowHandle();
 
         driver.switchTo().newWindow(WindowType.TAB);
 
         driver.get(Constants.YOPMAIL_URL);
 
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
 
-        // Quay ve tab cu va nhap OTP
+        // Return to original tab and input OTP
         driver.switchTo().window(originalHandle);
 
         internalTransferConfirmPage.inputOTP(OTP);
 
         internalTransferConfirmPage.clickTransferBtn();
 
-        // Kiem tra message success
+        // Verify successful message
         softAssert.assertTrue(internalTransferConfirmPage.isTransferSuccessMessageDisplayed());
         internalTransferConfirmPage.closeTransferSuccessMessage();
 
-        //Kiem tra so du tai khoan gui
-        bankAccountsPage.viewDetailsByAccNumber(senderAcc);
+        // Verify sender account balance
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.INTERNAL_TRANSACTION_FEE);
 
-        //Kiem tra so du tai khoan nhan
+        // Verify receiver account balance
         bankAccountsPage.LogOut();
 
         loginPage.login(Constants.USER_ID_2, Constants.USER_PASSWORD_2);
-        bankAccountsPage.viewDetailsByAccNumber(receiverAcc);
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_2.getBankAccount());
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiverBalance + transferAmount);
 
         softAssert.assertAll();

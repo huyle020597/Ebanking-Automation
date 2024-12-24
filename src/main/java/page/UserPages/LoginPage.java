@@ -1,6 +1,6 @@
 package page.UserPages;
 
-import modal.User;
+import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

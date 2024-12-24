@@ -5,6 +5,7 @@ import model.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -20,8 +21,6 @@ public class TC05_TransferUnsuccessfully {
     InternalTransferPage internalTransferPage;
     InternalTransferConfirmPage internalTransferConfirmPage;
     YopmailPage yopmailPage;
-    String receiverAcc;
-    String senderAcc;
     String transferDesc;
     double transferAmount;
     double senderBalance;
@@ -39,8 +38,6 @@ public class TC05_TransferUnsuccessfully {
         internalTransferPage = new InternalTransferPage(driver);
         internalTransferConfirmPage = new InternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        senderAcc = "100001284";
-        receiverAcc = "100001298";
         faker = new Faker();
         transferDesc = faker.name().fullName();
         transferAmount = faker.number().numberBetween(1,10)*1000;
@@ -51,83 +48,82 @@ public class TC05_TransferUnsuccessfully {
 
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
     public void TC05() throws InterruptedException {
-        // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
-        bankAccountsPage.viewDetailsByAccNumber(senderAcc);
+        // Login with Sender Account and check Balance
+        loginPage.login(Constants.USER_1);
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
         senderBalance = bankAccountsPage.getAccountBalance();
 
-        // Thuc hien chuyen tien
+        // Transfer Money
         bankAccountsPage.openTransferPage();
-        internalTransferPage.selectAccountByAccNumber(senderAcc);
-        Thread.sleep(500); //check hàm wait
+        internalTransferPage.selectAccountByAccNumber(Constants.USER_1.getBankAccount());
 
-        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); //Check balance
+        internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount() + "1");
 
-        internalTransferPage.inputReceiverAccount(receiverAcc + "1");
-        softAssert.assertTrue(internalTransferPage.isReceiverNameEmpty()); //Check name empty
 
         internalTransferPage.inputMoneyAmount(transferAmount);
 
         internalTransferPage.inputTransferDescription(transferDesc);
 
+        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); // Check account balance
+        softAssert.assertTrue(internalTransferPage.isReceiverNameEmpty()); //Check name empty
+
         internalTransferPage.clickConfirmBtn();
 
-        softAssert.assertTrue(internalTransferPage.isInvalidAccMessageDisplayed()); //Check loi~ tai khoan khong hop le
+        softAssert.assertTrue(internalTransferPage.isInvalidAccMessageDisplayed()); //Check error invalid bank account
 
-        internalTransferPage.inputReceiverAccount(receiverAcc);
+        internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount());
 
         internalTransferPage.inputMoneyAmount(senderBalance+1);
 
         internalTransferPage.clickConfirmBtn();
 
-        softAssert.assertTrue(internalTransferPage.isInsufficientMessageDisplayed()); //Check loi~ so tien vuot muc
+        softAssert.assertTrue(internalTransferPage.isInsufficientMessageDisplayed()); //Check error Insufficient Fund
 
         internalTransferPage.inputMoneyAmount(transferAmount);
 
         internalTransferPage.clickConfirmBtn();
 
 
-        // Kiem tra thong tin da nhap
-        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
+        // Verify data
+        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), Constants.USER_2.getBankAccount());
         softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), transferDesc);
-        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), receiverAcc);
+        softAssert.assertEquals(internalTransferConfirmPage.getSenderAcc(), Constants.USER_1.getBankAccount());
 
         internalTransferConfirmPage.clickConfirmBtn();
 
 
-        // Lay ma OTP tu Yopmail
+        // Get OTP
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
 
-        // Quay ve tab cu
         driver.switchTo().window(originalHandle);
 
-        // Nhap sai OTP
+        // Input wrong OTP
         internalTransferConfirmPage.inputOTP(OTP+"A");
         internalTransferConfirmPage.clickTransferBtn();
         softAssert.assertTrue(internalTransferConfirmPage.isWrongOTPMessageDisplayed());
 
-        // Nhap dung OTP
+        // Input correct OTP
         internalTransferConfirmPage.inputOTP(OTP);
         internalTransferConfirmPage.clickTransferBtn();
 
-        // Kiem tra message success
+        // Verify success message
         softAssert.assertTrue(internalTransferConfirmPage.isTransferSuccessMessageDisplayed());
         internalTransferConfirmPage.closeTransferSuccessMessage();
 
-        //Kiem tra so du tai khoan gui
-        bankAccountsPage.viewDetailsByAccNumber(senderAcc);
+        // Verify Sender account balance
+        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.INTERNAL_TRANSACTION_FEE);
 
         softAssert.assertAll();

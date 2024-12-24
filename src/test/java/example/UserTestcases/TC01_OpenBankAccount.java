@@ -9,24 +9,21 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.UserPages.BankAccountsPage;
 import page.UserPages.LoginPage;
-import page.UserPages.MenuBar;
 import page.UserPages.OpenBankAccountPage;
 
-public class TC01_OpenAccount {
+public class TC01_OpenBankAccount {
     WebDriver driver;
     LoginPage loginPage;
     SoftAssert softAssert;
-    MenuBar menuBar;
     OpenBankAccountPage openBankAccountPage;
     BankAccountsPage bankAccountsPage;
-    int accountQuantityBefore;
+    int previousAccountQuantity;
 
     @BeforeMethod
     public void initData() {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        menuBar = new MenuBar(driver);
         openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
 
@@ -42,21 +39,21 @@ public class TC01_OpenAccount {
 
     @Test
     public void openNewAccount() {
-        loginPage.login("huyle020597", "Maddie123@");
-// Lay so luong account truoc khi tao tai khoan
+        loginPage.login(Constants.USER_1);
+// Get account quantity before creating a new one
         bankAccountsPage.openAccountPage();
-        accountQuantityBefore = bankAccountsPage.getQuantityAccount();
+        previousAccountQuantity = bankAccountsPage.getQuantityAccount();
 
-// Tao tai khoan Saving
+// Create Saving Account
         bankAccountsPage.openOpenAccountPage();
         openBankAccountPage.createSavingAccount();
 
-// Kiem tra thong bao co hien thi
+// Verify if the successful message display
         softAssert.assertTrue(openBankAccountPage.isSuccessfulMsgDisplayed());
         openBankAccountPage.closeMessage();
 
-// Kiem tra so luong account sau khi tao tai khoan
-        softAssert.assertEquals(bankAccountsPage.getQuantityAccount(), accountQuantityBefore + 1);
+// Verify if the account quantity has increased by 1
+        softAssert.assertEquals(bankAccountsPage.getQuantityAccount(), previousAccountQuantity + 1);
         softAssert.assertAll();
     }
 }
