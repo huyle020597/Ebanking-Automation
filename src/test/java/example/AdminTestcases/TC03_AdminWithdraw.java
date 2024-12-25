@@ -1,5 +1,6 @@
 package example.AdminTestcases;
 
+import com.github.javafaker.Faker;
 import model.Constants;
 import org.openqa.selenium.WindowType;
 import page.AdminPages.HomePage;
@@ -19,13 +20,14 @@ import java.time.Duration;
 public class TC03_AdminWithdraw {
     WebDriver driver;
     SoftAssert softAssert;
+    Faker faker;
 
     LoginPage loginPage;
     LoginAdminPage loginAdminPage;
-
     HomePage homePage;
     BankAccountsPage bankAccountsPage;
     WithdrawPage withdrawPage;
+
     double withdrawAmount;
     String originalHandle;
     String receiveAccountNo;
@@ -35,17 +37,20 @@ public class TC03_AdminWithdraw {
     @BeforeMethod
     public void initData() {
         driver = new ChromeDriver();
-        loginPage = new LoginPage(driver);
         softAssert = new SoftAssert();
-        homePage = new HomePage(driver);
+        faker = new Faker();
+
+        loginPage = new LoginPage(driver);
         loginAdminPage = new LoginAdminPage(driver);
+        homePage = new HomePage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
-        withdrawAmount = 325712.0;
+
+        withdrawAmount = faker.number().numberBetween(1,10)*1000;
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         originalHandle = driver.getWindowHandle();
     }
 

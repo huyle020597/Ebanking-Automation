@@ -55,16 +55,16 @@ public class TC02_AdminDeposit {
         originalHandle = driver.getWindowHandle();
     }
 
-    @AfterMethod
-    public void cleanUp() {
-        driver.quit();
-    }
+//    @AfterMethod
+//    public void cleanUp() {
+//        driver.quit();
+//    }
 
     @Test
             (description = "Admin - Deposit money into account successfully")
     public void depositMoney() {
         //dang nhap tai khoan user
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
@@ -78,11 +78,9 @@ public class TC02_AdminDeposit {
         loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
 
 
-
         //Nop tien va xac nhan
         homePage.openDepositPage();
         depositPage.inputDeposit(receiveAccountNo,depositAmount,"testing");
-        //depositPage.clickConfirm();
         softAssert.assertTrue(depositPage.isSuccessfulMsgDisplayed());
 
 

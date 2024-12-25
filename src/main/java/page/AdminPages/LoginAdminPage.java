@@ -19,4 +19,5 @@ public class LoginAdminPage {
         driver.findElement(passwordInputLocator).sendKeys(adminPassword);
         driver.findElement(loginButtonLocator).click();
     }
+
 }
