@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import model.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +21,7 @@ public class YopmailPage {
         this.driver = driver;
     }
 
+    @Step("Input email address")
     public void inputEmailAddress (String email) {
         driver.findElement(emailBoxLocator).sendKeys(email);
         driver.findElement(accessEmailBtnLocator).click();
@@ -30,6 +32,7 @@ public class YopmailPage {
         listEmails.get(index-1).click();
     }
 
+    @Step ("Get OTP code")
     public String getOTPcode () {
         driver.switchTo().frame("ifmail");
         String OTPCode = driver.findElement(OTPcodeLocator).getText().replace("OTP:  ","");
@@ -38,14 +41,16 @@ public class YopmailPage {
 
 
 
+    @Step ("Get OTP code by email")
     public String getOTPcodeByEmail (String senderEmailAddress) throws InterruptedException {
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         inputEmailAddress(senderEmailAddress);
         return getOTPcode();
     }
 
+    @Step ("Get activate URL by email")
     public String getActivateURL(String email) throws InterruptedException {
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         inputEmailAddress(email);
         driver.switchTo().frame("ifmail");
         return driver.findElement(activatedURLLocator).getText();

@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,7 @@ public class LoginPage {
         this.driver = driver;
     }
 
+    @Step ("Click Register Button")
     public void clickRegisterBtn() {
         driver.findElement(registerBtnLocator).click();
     }
@@ -25,13 +27,13 @@ public class LoginPage {
         driver.findElement(forgotPasswordLocator).click();
     }
 
-
+    @Step ("Login with valid id and password")
     public void login (String customerId, String password) {
         driver.findElement(loginBoxLocator).sendKeys(customerId);
         driver.findElement(passwordBoxLocator).sendKeys(password);
         driver.findElement(loginBtnLocator).click();
     }
-
+    @Step ("Login with valid id and password")
     public void login(User user) {
         driver.findElement(loginBoxLocator).sendKeys(user.getUserId());
         driver.findElement(passwordBoxLocator).sendKeys(user.getPassword());

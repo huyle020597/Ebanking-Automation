@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -32,12 +33,14 @@ public class OpenBankAccountPage {
         driver.findElement(createAccBtnLocator).click();
     }
 
+    @Step("Open Saving Account")
     public void createSavingAccount () {
         clickAccTypeDropdown();
         selectSavingAcc();
         clickCreateAccBtn();
     }
 
+    @Step ("Open NonTerm Account")
     public void createNonTermAccount () {
         clickAccTypeDropdown();
         selectNonTermAcc();
@@ -45,12 +48,14 @@ public class OpenBankAccountPage {
     }
 
 
+    @Step ("Verify if successful message displays")
     public boolean isSuccessfulMsgDisplayed () {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(successMessageLocator));
         return driver.findElement(successMessageLocator).isDisplayed();
     }
 
+    @Step ("Close successful message")
     public void closeMessage () { driver.findElement(closeMessageBtnLocator).click();}
 
 }

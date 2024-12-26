@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -75,7 +76,7 @@ public class RegisterPage {
         driver.findElement(availableCityLocator).click();
     }
 
-    public void enterIdUser(String id) {
+    public void enterCMND(String id) {
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(idTbLocator));
         driver.findElement(idTbLocator).sendKeys(id);
@@ -100,8 +101,24 @@ public class RegisterPage {
         enterDob(dob);
         clickFemaleGender();
         selectCity(city);
-        enterIdUser(id);
+        enterCMND(id);
         enterEmail(email);
+        clickConfirmBtn();
+        clickCreateAccount();
+    }
+
+    //Method register chỉ truyền biến User
+    public void registerAccountByUser(User user) {
+        enterAccount(user.getUserId());
+        enterPassword(user.getPassword());
+        reenterPassword(user.getPassword());
+        enterFullName(user.getFullName());
+        enterPhoneNumber(user.getPhoneNumber());
+        enterDob(user.getDob());
+        clickFemaleGender();
+        selectCity(user.getCity());
+        enterCMND(user.getCmnd());
+        enterEmail(user.getEmailAddress());
         clickConfirmBtn();
         clickCreateAccount();
     }

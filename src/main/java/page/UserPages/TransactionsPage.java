@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,6 +33,7 @@ public class TransactionsPage {
         driver.findElement(accountsDropdownLocator).click();
     }
 
+    @Step("Select an account")
     public void selectAccountByAccNumber(String accountNumber) {
         clickAccountsDropdown();
         availableAccountsLocator = By.xpath(String.format("//li[contains(@class, 'ui-selectonemenu-item')][@data-label='%s']", accountNumber));
@@ -46,10 +48,13 @@ public class TransactionsPage {
         driver.findElement(toDateLocator).sendKeys(endDate);
     }
 
+    @Step ("Search transactions of a account number in a date range")
     public void searchTransaction(String accountNumber,String startDate, String endDate) {
         selectAccountByAccNumber(accountNumber);
         inputFromDate(startDate);
         inputToDate(endDate);
+        selectInputedDate();
+        clickSearchBtn();
     }
 
     public void clickSearchBtn() {
@@ -69,7 +74,7 @@ public class TransactionsPage {
         return getColumnOrder("Ngày giao dịch");
     }
 
-    //Lấy data của từng ô dựa vào thứ tự hàng và cột
+
     public String getAccountNumbByRow(int rowNumber) {
         By cellLocator = By.xpath(String.format("//tr[@data-ri='%s']/td", rowNumber - 1));
         return driver.findElements(cellLocator).get(getMainAccountColumnOrder() - 1).getText();
@@ -80,39 +85,37 @@ public class TransactionsPage {
         return driver.findElements(cellLocator).get(getTransactionDateColumnOrder() - 1).getText();
     }
 
+    @Step ("Verify if all transaction date is within the date range input")
     public boolean isTransactionsDateValid(String startDateinString, String endDateinString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        boolean isWithinDateRange = true;
         try {
             // Chuyển ngày String thành LocalDate
-            LocalDate startDate = LocalDate.parse(startDateinString,formatter);
-            LocalDate endDate = LocalDate.parse(endDateinString,formatter);
+            LocalDate startDate = LocalDate.parse(startDateinString, formatter);
+            LocalDate endDate = LocalDate.parse(endDateinString, formatter);
 
-            List <WebElement> listTransactionDate = driver.findElements(By.xpath("//td[5]"));
-            for (int i = 0; i < 7; i++) {
+            List<WebElement> listTransactionDate = driver.findElements(By.xpath("//td[5]"));
+            for (int i = 0; i < listTransactionDate.size(); i++) {
                 LocalDate checkDate = LocalDate.parse(listTransactionDate.get(i).getText(), formatter);
-                if (!(checkDate.isAfter(startDate)
-                        && checkDate.isBefore(endDate)
-                        || checkDate.isEqual(startDate)
-                        || checkDate.isEqual(endDate))) {
-                    isWithinDateRange = false;
-                    break;
+                if (checkDate.isBefore(startDate) || checkDate.isAfter(endDate)) {
+                    return false;
                 }
             }
+            return true;
         } catch (DateTimeParseException e) {
             System.out.println("Định dạng ngày không hợp lệ!");
+            return false;
         }
-        return isWithinDateRange;
     }
 
     public void selectInputedDate () {
         driver.findElement(selectedCalendarDate).click();
     }
 
+    @Step ("Verify if all transaction accounts match the account selected")
     public boolean isTransactionAccountsValid (String accountNumber) {
         List<WebElement> listTransactionAccounts = driver.findElements(By.xpath("//td[1]"));
         boolean isValid = true ;
-        for (int i=4; i<11;i++) {
+        for (int i=4; i<listTransactionAccounts.size()-4;i++) {
             if (listTransactionAccounts.get(i).getText().equals(accountNumber)) {
                 isValid = true;
             } else {

@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,18 +36,21 @@ public class ChangePasswordPage extends MenuBar {
         driver.findElement(changePWbuttonLocator).click();
     }
 
+    @Step ("Change Password")
     public void changePassword(String oldPW, String newPW) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(oldPWlocator));
         inputOldPW(oldPW);
         inputNewPW(newPW);
         inputConfirmPW(newPW);
         clickChangePWbutton();
     }
 
+    @Step ("Verify that the successful message display")
     public boolean isSuccessMessageDisplayed () {
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(successMessageLocator));
      return    driver.findElement(successMessageLocator).isDisplayed();
     }
+    @Step ("Close successful message")
     public void closeSuccessMessage () {
         driver.findElement(closeSuccessMessageLocator).click();
     }

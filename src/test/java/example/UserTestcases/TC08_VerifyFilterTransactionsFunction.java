@@ -42,7 +42,6 @@ public class TC08_VerifyFilterTransactionsFunction {
         softAssert = new SoftAssert();
         bankAccountsPage = new BankAccountsPage(driver);
         transactionsPage = new TransactionsPage(driver);
-        selectedAccount = "100001284";
         formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         faker = new Faker();
@@ -74,17 +73,13 @@ public class TC08_VerifyFilterTransactionsFunction {
 
     @Test
     public void TC08() {
-        loginPage.login(Constants.USER_ID_1,Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_1);
+        selectedAccount = bankAccountsPage.getAccountNoByIndex(1);
         bankAccountsPage.openTransactionsPage();
 
         transactionsPage.searchTransaction(selectedAccount,startDateinString,endDateinString);
-        transactionsPage.selectAccountByAccNumber(selectedAccount);
-        transactionsPage.inputFromDate(startDateinString);
-        transactionsPage.inputToDate(endDateinString);
-        transactionsPage.selectInputedDate();
-        transactionsPage.clickSearchBtn();
 
-        //Kiem tra Account Number va Transaction Date
+        //Verify Account Number va Transaction Date
         softAssert.assertTrue(transactionsPage.isTransactionAccountsValid(selectedAccount));
         softAssert.assertTrue(transactionsPage.isTransactionsDateValid(startDateinString,endDateinString));
 

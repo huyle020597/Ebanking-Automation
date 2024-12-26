@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -34,65 +35,76 @@ public class ExternalTransferPage {
         driver.findElement(accountDropdownLocator).click();
     }
 
+    @Step("Select account")
     public void selectAccountByAccNumber(String accNumber) {
         clickAccountDropdown();
-        availableAccountsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",accNumber));
+        availableAccountsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']", accNumber));
         driver.findElement(availableAccountsLocator).click();
     }
 
+    @Step("Get sender balance")
     public double getSenderBalance() {
-      WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.stalenessOf(driver.findElement(senderBalanceLocator)));
-        return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ","").replace(",",""));
+        return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
     }
 
+    @Step("Input receiver account")
     public void inputReceiverAccount(String receiverAccount) {
         driver.findElement(receiverAccountBoxLocator).clear();
         driver.findElement(receiverAccountBoxLocator).sendKeys(receiverAccount);
     }
 
-    public void inputReceiverName (String receiverName) {
-       driver.findElement(receiverNameLocator).sendKeys(receiverName);
+    @Step("Input receiver name")
+    public void inputReceiverName(String receiverName) {
+        driver.findElement(receiverNameLocator).sendKeys(receiverName);
     }
 
     public void clickBanksDropdown() {
         driver.findElement(banksDropdownLocator).click();
     }
+
     private void selectAvailableBanks(String bankName) {
         clickBanksDropdown();
-        availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",bankName));
+        availableBanksLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']", bankName));
         driver.findElement(availableBanksLocator).click();
     }
+
+    @Step("Select Dong A bank")
     public void selectDongABank() {
         selectAvailableBanks("Ngân hàng Đông Á");
     }
 
 
     public void clickBranchsDropdown() {
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.stalenessOf(driver.findElement(branchDropdownLocator)));
         driver.findElement(branchDropdownLocator).click();
     }
+
     private void selectAvailableBranch(String branchName) {
         clickBranchsDropdown();
-        availableBranchsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']",branchName));
+        availableBranchsLocator = By.xpath(String.format("//li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']", branchName));
         driver.findElement(availableBranchsLocator).click();
     }
+
+    @Step("Select Danang branch")
     public void selectDaNangBranch() {
         selectAvailableBranch("Chi nhánh Đà Nẵng");
     }
 
-    public void inputTransferDescription (String transferDesc) {
+    @Step("Input transfer description")
+    public void inputTransferDescription(String transferDesc) {
         driver.findElement(transferDescLocator).sendKeys(transferDesc);
     }
 
-    public void inputTransferAmount (double transferAmount) {
+    @Step("Input transfer amount")
+    public void inputTransferAmount(double transferAmount) {
         driver.findElement(transferAmountLocator).sendKeys(Double.toString(transferAmount));
     }
 
-    public void clickTransferBtn () {
+    @Step("Click transfer button")
+    public void clickTransferBtn() {
         driver.findElement(transferBtnLocator).click();
     }
-
-
 }

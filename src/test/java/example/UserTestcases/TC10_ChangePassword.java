@@ -62,7 +62,13 @@ public class TC10_ChangePassword {
         id = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
 
-//        newUser = new User(account,oldPassword,email);
+        newUser = new User(account,oldPassword,email);
+        newUser.setFullName(fullName);
+        newUser.setPhoneNumber(phoneNumber);
+        newUser.setDob(dob);
+        newUser.setCity(city);
+        newUser.setCmnd(id);
+
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -82,7 +88,7 @@ public class TC10_ChangePassword {
     public void TC13() throws InterruptedException {
         // Step 1: Register new account
         loginPage.clickRegisterBtn();
-        registerPage.registerAccount(account, oldPassword, oldPassword, fullName, phoneNumber, dob, city, id, email);
+        registerPage.registerAccountByUser(newUser);
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
         registerPage.clickCloseMsg();
 
@@ -95,7 +101,7 @@ public class TC10_ChangePassword {
 
         // Step 3: Login with the newly created account
         driver.switchTo().window(originalHandle);
-        loginPage.login(account, oldPassword);
+        loginPage.login(newUser);
         bankAccountsPage.openChangePWPage();
 
 
@@ -103,11 +109,12 @@ public class TC10_ChangePassword {
         changePasswordPage.changePassword(oldPassword,newPassword);
         softAssert.assertTrue(changePasswordPage.isSuccessMessageDisplayed());
         changePasswordPage.closeSuccessMessage();
+        newUser.setPassword(newPassword);
 
         //Step5: Logout and login with new PW
         changePasswordPage.LogOut();
-        loginPage.login(account,newPassword);
-
+        loginPage.login(newUser);
+        softAssert.assertEquals(userInfoPage.getUserProfileName(),newUser.getFullName());
 
         softAssert.assertAll();
     }

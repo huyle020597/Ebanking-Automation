@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -25,6 +26,7 @@ public class UserInfoPage {
         driver.findElement(addressBoxLocator).sendKeys(address);
     }
 
+    @Step("Edit Address")
     public void editAddress (String address) {
         driver.findElement(addressBoxLocator).clear();
         enterAddress(address);
