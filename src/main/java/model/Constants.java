@@ -12,12 +12,12 @@ public class Constants {
     public static final String USER_PASSWORD_1 = "Maddie123@";
     public static final String EMAIL_1 = "huyle020597@yopmail.com";
 
-    public static final User USER_1 = new User("huyle020597","Maddie123@","100001284","huyle020597@yopmail.com");
+    public static final User USER_1 = new User("huyle020597","Maddie123@","huyle020597@yopmail.com");
 
 
     public static final String USER_ID_2 = "huyle0205971";
     public static final String USER_PASSWORD_2 = "Maddie123@";
-    public static final User USER_2 = new User("huyle0205971","Maddie123@","100001298","huyle0205971@yopmail.com");
+    public static final User USER_2 = new User("huyle0205971","Maddie123@","huyle0205971@yopmail.com");
 
 
     //Test data - External Bank Account

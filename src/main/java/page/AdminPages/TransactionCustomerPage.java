@@ -78,7 +78,7 @@ public class TransactionCustomerPage {
             LocalDate endDate = LocalDate.parse(endDateinString, formatter);
 
             List<WebElement> listTransactionDate = driver.findElements(By.xpath("//td[5]"));
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < listTransactionDate.size(); i++) {
                 LocalDate checkDate = LocalDate.parse(listTransactionDate.get(i).getText(), formatter);
                 if (!(checkDate.isAfter(startDate)
                         && checkDate.isBefore(endDate)
@@ -95,9 +95,9 @@ public class TransactionCustomerPage {
     }
 
     public boolean isTransactionAccountsValid (String accountNo) {
-        List<WebElement> listTransactionAccounts = driver.findElements(By.xpath("//td[1]"));
+        List<WebElement> listTransactionAccounts = driver.findElements(By.xpath("//td[2]"));
         boolean isValid = true ;
-        for (int i=3; i<9;i++) {
+        for (int i=3; i< listTransactionAccounts.size()-4;i++) {
             if (listTransactionAccounts.get(i).getText().equals(accountNo)) {
                 isValid = true;
             } else {

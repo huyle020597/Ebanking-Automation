@@ -3,20 +3,18 @@ package model;
 public class User {
     String userId;
     String password;
-    String bankAccount;
     String emailAddress;
+    String bankAccount;
     String fullName;
     String phoneNumber;
     String dob;
     String city;
     String cmnd;
 
-    public User(String userId, String password, String bankAccount, String emailAddress) {
+    public User(String userId, String password, String emailAddress) {
         this.userId = userId;
         this.password = password;
-        this.bankAccount = bankAccount;
         this.emailAddress = emailAddress;
-
     }
 
     public String getUserId() {

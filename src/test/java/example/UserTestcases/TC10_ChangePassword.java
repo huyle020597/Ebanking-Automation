@@ -2,6 +2,7 @@ package example.UserTestcases;
 
 import com.github.javafaker.Faker;
 import model.Constants;
+import model.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,9 +20,10 @@ public class TC10_ChangePassword {
     SoftAssert softAssert;
     Faker faker;
     YopmailPage yopmailPage;
-    MenuBar menuBar;
     ChangePasswordPage changePasswordPage;
     BankAccountsPage bankAccountsPage;
+    UserInfoPage userInfoPage;
+    User newUser;
 
 
     String account;
@@ -45,6 +47,7 @@ public class TC10_ChangePassword {
         loginPage = new LoginPage(driver);
         changePasswordPage = new ChangePasswordPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
+        userInfoPage = new UserInfoPage(driver);
 
         yopmailPage = new YopmailPage(driver);
         faker = new Faker();
@@ -52,14 +55,14 @@ public class TC10_ChangePassword {
         account = faker.name().username();
         oldPassword = "Test@1234";
         newPassword = "Maddie123@";
-        //làm sao để no thỏa mãn yêu cầu ve pass ạ?
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
-//        dob = String.valueOf(faker.date().birthday());
         dob = "02/05/1997";
         city = "Quang Nam";
         id = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
+
+//        newUser = new User(account,oldPassword,email);
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();

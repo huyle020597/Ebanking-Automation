@@ -12,6 +12,7 @@ import org.testng.asserts.SoftAssert;
 import page.AdminPages.HomePage;
 import page.UserPages.LoginPage;
 import page.UserPages.RegisterPage;
+import page.UserPages.UserInfoPage;
 import page.UserPages.YopmailPage;
 
 import java.time.Duration;
@@ -20,9 +21,9 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     WebDriver driver;
     RegisterPage registerPage;
     LoginPage loginPage;
+    UserInfoPage userInfoPage;
     SoftAssert softAssert;
     Faker faker;
-    HomePage homePage;
     YopmailPage yopmailPage;
 
     String account;
@@ -43,13 +44,13 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         softAssert = new SoftAssert();
         registerPage = new RegisterPage(driver);
         loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
+        userInfoPage = new UserInfoPage(driver);
 
         yopmailPage = new YopmailPage(driver);
         faker = new Faker();
 
         account = faker.name().username();
-        password = "Test@1234"; //làm sao để no thỏa mãn yêu cầu ve pass?
+        password = "Test@1234";
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
 //        dob = String.valueOf(faker.date().birthday());
@@ -66,10 +67,10 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     }
 
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
             (description = "User - Register customer account successfully")
@@ -95,7 +96,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
 
 
         //Step 4: Confirm login with new account
-       // softAssert.assertEquals(homePage.userName(),fullName);
+        softAssert.assertEquals(userInfoPage.getUserProfileName(),fullName);
         softAssert.assertAll();
     }
 }

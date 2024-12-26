@@ -3,8 +3,7 @@ package example.AdminTestcases;
 import com.github.javafaker.Faker;
 import model.Constants;
 import org.openqa.selenium.WindowType;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
 import page.AdminPages.HomePage;
 import page.AdminPages.LoginAdminPage;
 import page.AdminPages.TransactionCustomerPage;
@@ -46,7 +45,6 @@ public class TC11_ViewTransaction {
 
     String accountNo;
     String originalHandle;
-    String transactionNo;
     boolean isDateBetween;
 
 
@@ -78,7 +76,6 @@ public class TC11_ViewTransaction {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         originalHandle = driver.getWindowHandle();
 
-        transactionNo = "100001283";
     }
 
 //    @AfterMethod
@@ -105,7 +102,7 @@ public class TC11_ViewTransaction {
 
 
         // kiem tra thong tin hien thi
-        softAssert.assertTrue(transactionCustomerPage.isTransactionAccountsValid(transactionNo));
+        softAssert.assertTrue(transactionCustomerPage.isTransactionAccountsValid(accountNo));
         softAssert.assertTrue(transactionCustomerPage.isTransactionsDateBetween(dateFrominString, dateToinString));
 
         softAssert.assertAll();

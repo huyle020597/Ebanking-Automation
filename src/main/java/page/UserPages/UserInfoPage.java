@@ -7,6 +7,7 @@ public class UserInfoPage {
     By addressBoxLocator = By.id("j_idt24:j_idt36");
     By saveInfoBtnLocator = By.name("j_idt24:j_idt39");
     By userPhoneNumbLocator = By.id("j_idt24:j_idt34");
+    By profileNameLocator = By.xpath("(//div[@class='nav_wrap']//a)[4]");
 
     WebDriver driver;
 
@@ -32,5 +33,9 @@ public class UserInfoPage {
 
     public String getUserPhoneNumber() {
         return driver.findElement(userPhoneNumbLocator).getText();
+    }
+
+    public String getUserProfileName () {
+      return   driver.findElement(profileNameLocator).getText();
     }
 }
