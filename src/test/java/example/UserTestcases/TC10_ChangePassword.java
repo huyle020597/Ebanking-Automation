@@ -13,6 +13,10 @@ import org.testng.asserts.SoftAssert;
 import page.UserPages.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class TC10_ChangePassword {
     WebDriver driver;
@@ -25,6 +29,8 @@ public class TC10_ChangePassword {
     BankAccountsPage bankAccountsPage;
     UserInfoPage userInfoPage;
     User newUser;
+    DateTimeFormatter formatter;
+    LocalDate localDate;
 
 
     String account;
@@ -50,6 +56,7 @@ public class TC10_ChangePassword {
         bankAccountsPage = new BankAccountsPage(driver);
         userInfoPage = new UserInfoPage(driver);
 
+        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         yopmailPage = new YopmailPage(driver);
         faker = new Faker();
 
@@ -58,7 +65,10 @@ public class TC10_ChangePassword {
         newPassword = "Maddie123@";
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
-        dob = "02/05/1997";
+        localDate = faker.date().birthday().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        dob = localDate.format(formatter);
         city = "Quang Nam";
         id = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
@@ -104,7 +114,6 @@ public class TC10_ChangePassword {
         driver.switchTo().window(originalHandle);
         loginPage.login(newUser);
         bankAccountsPage.openChangePWPage();
-
 
         //Step 4: Change PW
         changePasswordPage.changePassword(oldPassword,newPassword);

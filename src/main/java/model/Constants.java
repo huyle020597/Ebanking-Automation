@@ -9,25 +9,16 @@ public class Constants {
     public static final String YOPMAIL_URL = "https://yopmail.com";
 
     //Test data , user account
-    public static final String USER_ID_1 = "huyle020597";
-    public static final String USER_PASSWORD_1 = "Maddie123@";
-    public static final String EMAIL_1 = "huyle020597@yopmail.com";
 
     public static final User USER_1 = new User("huyle020597","Maddie123@","huyle020597@yopmail.com");
 
-
-    public static final String USER_ID_2 = "huyle0205971";
-    public static final String USER_PASSWORD_2 = "Maddie123@";
     public static final User USER_2 = new User("huyle0205971","Maddie123@","huyle0205971@yopmail.com");
-
 
     //Test data - External Bank Account
     public static final String EXTERNAL_ACCOUNT_NUMBER = "10001111";
     public static final String EXTERNAL_NAME = "Nguyen Van A";
 
     //Test data , admin account
-    public static final String ADMIN_ID = "1";
-    public static final String ADMIN_PASSWORD = "admin";
     public  static final User ADMIN = new User("1","admin",null);
 
 }

@@ -67,7 +67,7 @@ public class TC07_VerifyLatestTransaction {
     public void TC06 () throws InterruptedException {
 
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_1);
 
         // Thuc hien chuyen tien
         bankAccountsPage.openTransferPage();
@@ -84,7 +84,7 @@ public class TC07_VerifyLatestTransaction {
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
 
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);
@@ -108,7 +108,7 @@ public class TC07_VerifyLatestTransaction {
         //Kiem tra latest transaction cua nguoi nhan
         bankAccountsPage.LogOut();
 
-        loginPage.login(Constants.USER_ID_2, Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_2);
 
         softAssert.assertEquals(bankAccountsPage.getTransactionDateByIndex(1),transferTime);
         softAssert.assertEquals(bankAccountsPage.getTransactionAccNumberByIndex(1),receiverAcc);

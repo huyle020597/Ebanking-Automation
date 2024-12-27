@@ -58,7 +58,7 @@ public class TC06_ExternalTransfer {
     @Test
     public void TC06 () throws InterruptedException {
         // Login voi tai khoan gui và kiem tra so du
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
@@ -90,7 +90,7 @@ public class TC06_ExternalTransfer {
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.EMAIL_1);
+        OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
 
         // Quay ve tab cu va nhap OTP
         driver.switchTo().window(originalHandle);

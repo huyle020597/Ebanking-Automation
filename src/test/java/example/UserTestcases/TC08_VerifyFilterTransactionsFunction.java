@@ -46,7 +46,7 @@ public class TC08_VerifyFilterTransactionsFunction {
 
         faker = new Faker();
         //Lấy ngày start random
-        randomDate1 = LocalDate.of(2024,12,1);
+        randomDate1 = LocalDate.of(2024,12,10);
         randomDate2 = LocalDate.of(2024,12,15);
         startDate = faker.date().between(Date.from(randomDate1.atStartOfDay(ZoneId.systemDefault()).toInstant()),
                 Date.from(randomDate2.atStartOfDay(ZoneId.systemDefault()).toInstant()));
