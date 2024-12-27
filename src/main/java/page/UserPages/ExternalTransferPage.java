@@ -45,7 +45,7 @@ public class ExternalTransferPage {
     @Step("Get sender balance")
     public double getSenderBalance() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.stalenessOf(driver.findElement(senderBalanceLocator)));
+        wait.until(ExpectedConditions.presenceOfElementLocated(senderBalanceLocator));
         return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
     }
 

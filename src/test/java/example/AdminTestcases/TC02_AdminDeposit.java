@@ -67,8 +67,8 @@ public class TC02_AdminDeposit {
         loginPage.login(Constants.USER_1);
 
         //chon tai khoan va lay so du
-        receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
-        bankAccountsPage.viewDetailsByIndex(1);
+        receiveAccountNo = bankAccountsPage.getAccountNoByIndex(3);
+        bankAccountsPage.viewDetailsByIndex(3);
         receiveBalance = bankAccountsPage.getAccountBalance();
 
 

@@ -26,7 +26,6 @@ public class TC01_OpenBankAccount {
         softAssert = new SoftAssert();
         openBankAccountPage = new OpenBankAccountPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
-
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
 

@@ -62,8 +62,8 @@ public class TC03_AdminWithdraw {
         loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
 
         //chon tai khoan va lay so du
-        receiveAccountNo = bankAccountsPage.getAccountNoByIndex(1);
-        bankAccountsPage.viewDetailsByIndex(1);
+        receiveAccountNo = bankAccountsPage.getAccountNoByIndex(3);
+        bankAccountsPage.viewDetailsByIndex(3);
         receiveBalance = bankAccountsPage.getAccountBalance();
         // lấy số dư trừ một số random để đảm bảo số tiền withdraw không vuot quá
 
@@ -83,5 +83,6 @@ public class TC03_AdminWithdraw {
         bankAccountsPage.viewDetailsByAccNumber(receiveAccountNo);
 
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiveBalance - withdrawAmount);
+        softAssert.assertAll();
     }
 }

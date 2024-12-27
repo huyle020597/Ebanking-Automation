@@ -78,10 +78,10 @@ public class TC11_ViewTransaction {
 
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
             (description = "Admin - View transaction list by Account")

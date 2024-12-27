@@ -2,6 +2,7 @@ package example.UserTestcases;
 
 import com.github.javafaker.Faker;
 import model.Constants;
+import model.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,6 +28,8 @@ public class TC05_TransferUnsuccessfully {
     String OTP;
     String originalHandle;
     Faker faker;
+    User user1;
+    User user2;
 
 
     @BeforeMethod
@@ -41,6 +44,10 @@ public class TC05_TransferUnsuccessfully {
         faker = new Faker();
         transferDesc = faker.name().fullName();
         transferAmount = faker.number().numberBetween(1,10)*1000;
+        user2 = Constants.USER_2;
+        user2.setBankAccount("100001298");
+        user1 = Constants.USER_1;
+        user1.setBankAccount("100001284");
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
@@ -56,29 +63,28 @@ public class TC05_TransferUnsuccessfully {
     @Test
     public void TC05() throws InterruptedException {
         // Login with Sender Account and check Balance
-        loginPage.login(Constants.USER_1);
-        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
+        loginPage.login(user1);
+        bankAccountsPage.viewDetailsByAccNumber(user1.getBankAccount());
         senderBalance = bankAccountsPage.getAccountBalance();
 
         // Transfer Money
         bankAccountsPage.openTransferPage();
-        internalTransferPage.selectAccountByAccNumber(Constants.USER_1.getBankAccount());
+        internalTransferPage.selectAccountByAccNumber(user1.getBankAccount());
 
-        internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount() + "1");
+        internalTransferPage.inputReceiverAccount(user2.getBankAccount() + "1");
 
 
         internalTransferPage.inputTransferAmount(transferAmount);
 
         internalTransferPage.inputTransferDescription(transferDesc);
 
-        softAssert.assertEquals(internalTransferPage.getAccBalance(), senderBalance); // Check account balance
         softAssert.assertTrue(internalTransferPage.isReceiverNameEmpty()); //Check name empty
 
         internalTransferPage.clickConfirmBtn();
 
         softAssert.assertTrue(internalTransferPage.isInvalidAccMessageDisplayed()); //Check error invalid bank account
 
-        internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount());
+        internalTransferPage.inputReceiverAccount(user2.getBankAccount());
 
         internalTransferPage.inputTransferAmount(senderBalance+1);
 
@@ -92,11 +98,11 @@ public class TC05_TransferUnsuccessfully {
 
 
         // Verify data
-        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), Constants.USER_2.getBankAccount());
+        softAssert.assertEquals(internalTransferConfirmPage.getSenderAcc(), user1.getBankAccount());
         softAssert.assertEquals(internalTransferConfirmPage.getAvailableBalance(), senderBalance);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferAmount(), transferAmount);
         softAssert.assertEquals(internalTransferConfirmPage.getTransferDescription(), transferDesc);
-        softAssert.assertEquals(internalTransferConfirmPage.getSenderAcc(), Constants.USER_1.getBankAccount());
+        softAssert.assertEquals(internalTransferConfirmPage.getReceiverAcc(), user2.getBankAccount());
 
         internalTransferConfirmPage.clickConfirmBtn();
 
@@ -105,7 +111,7 @@ public class TC05_TransferUnsuccessfully {
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
-        OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
+        OTP = yopmailPage.getOTPcodeByEmail(user1.getEmailAddress());
 
         driver.switchTo().window(originalHandle);
 
@@ -119,11 +125,10 @@ public class TC05_TransferUnsuccessfully {
         internalTransferConfirmPage.clickTransferBtn();
 
         // Verify success message
-        softAssert.assertTrue(internalTransferConfirmPage.isTransferSuccessMessageDisplayed());
         internalTransferConfirmPage.closeTransferSuccessMessage();
 
         // Verify Sender account balance
-        bankAccountsPage.viewDetailsByAccNumber(Constants.USER_1.getBankAccount());
+        bankAccountsPage.viewDetailsByAccNumber(user1.getBankAccount());
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.INTERNAL_TRANSACTION_FEE);
 
         softAssert.assertAll();

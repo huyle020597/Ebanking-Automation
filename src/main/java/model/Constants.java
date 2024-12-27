@@ -27,6 +27,6 @@ public class Constants {
     //Test data , admin account
     public static final String ADMIN_ID = "1";
     public static final String ADMIN_PASSWORD = "admin";
-
+    public  static final User admin = new User("1","admin",null);
 
 }

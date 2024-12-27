@@ -1,13 +1,12 @@
 package example.AdminTestcases;
 
 import model.Constants;
-import org.openqa.selenium.WindowType;
-import page.AdminPages.CustomerList;
+import org.testng.annotations.AfterMethod;
+import page.AdminPages.CustomerListPage;
 import page.AdminPages.HomePage;
 import page.AdminPages.LoginAdminPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -28,15 +27,15 @@ public class TC12_SearchCustomer {
     HomePage homePage;
     MenuBar menuBar;
     UserInfoPage userInfoPage;
-    CustomerList customerList;
+    CustomerListPage customerListPage;
     BankAccountsPage bankAccountsPage;
 
 
     String originalHandle;
     String phoneNumber;
     String actualPhoneNumber;
-    CustomerList.CustomerData selectedCustomer;
-    CustomerList.CustomerData returnedCustomer;
+    CustomerListPage.CustomerData selectedCustomer;
+    CustomerListPage.CustomerData returnedCustomer;
 
 
 
@@ -52,7 +51,7 @@ public class TC12_SearchCustomer {
         homePage = new HomePage(driver);
         menuBar = new MenuBar(driver);
         userInfoPage = new UserInfoPage(driver);
-        customerList = new CustomerList(driver);
+        customerListPage = new CustomerListPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
 
 
@@ -74,17 +73,17 @@ public class TC12_SearchCustomer {
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        selectedCustomer = customerList.getCustomerDataFromRow(1); // Chọn hàng đầu tiên
+        selectedCustomer = customerListPage.getCustomerDataFromRow(1); // Chọn hàng đầu tiên
 
         // Step 5: Nhập thông tin vào các trường tìm kiếm
-        customerList.enterCustomerID(selectedCustomer.customerId);
-        customerList.enterFullName(selectedCustomer.fullName);
-        customerList.enterAddress(selectedCustomer.address);
-        customerList.enterCMDN(selectedCustomer.cmdn);
-        customerList.enterPhoneNumber(selectedCustomer.phoneNumber);
+        customerListPage.enterCustomerID(selectedCustomer.customerId);
+        customerListPage.enterFullName(selectedCustomer.fullName);
+        customerListPage.enterAddress(selectedCustomer.address);
+        customerListPage.enterCMDN(selectedCustomer.cmdn);
+        customerListPage.enterPhoneNumber(selectedCustomer.phoneNumber);
 
         // Step 6: Lấy dữ liệu từ kết quả tìm kiếm và kiểm tra
-        returnedCustomer = customerList.getCustomerDataFromRow(1);
+        returnedCustomer = customerListPage.getCustomerDataFromRow(1);
 
         //kiem tra ket qua hien thi
         softAssert.assertEquals(returnedCustomer.customerId, selectedCustomer.customerId, "Customer ID mismatch");

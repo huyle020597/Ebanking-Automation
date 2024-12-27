@@ -3,6 +3,10 @@ package page.UserPages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class InternalTransferConfirmPage {
     By senderAccount = By.id("j_idt23:j_idt27");
@@ -28,6 +32,8 @@ public class InternalTransferConfirmPage {
 
     @Step("Get sender account")
     public String getSenderAcc() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.presenceOfElementLocated(senderAccount));
         return driver.findElement(senderAccount).getText();
     }
 
@@ -50,6 +56,8 @@ public class InternalTransferConfirmPage {
 
     @Step ("Get receiver account")
     public String getReceiverAcc() {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+//        wait.until(ExpectedConditions.stalenessOf(driver.findElement(receiverAccLocator)));
         return driver.findElement(receiverAccLocator).getText();
     }
 
