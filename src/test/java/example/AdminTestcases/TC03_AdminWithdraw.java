@@ -39,15 +39,12 @@ public class TC03_AdminWithdraw {
         driver = new ChromeDriver();
         softAssert = new SoftAssert();
         faker = new Faker();
-
         loginPage = new LoginPage(driver);
         loginAdminPage = new LoginAdminPage(driver);
         homePage = new HomePage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
-
         withdrawAmount = faker.number().numberBetween(1,10)*1000;
-
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));

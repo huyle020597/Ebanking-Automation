@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Batch Demo" parallel="classes" thread-count="2">
+    <test name="Admin Testcases">
+        <classes>
+            <class name="example.AdminTestcases.TC02_AdminDeposit"/>
+            <class name="example.AdminTestcases.TC03_AdminWithdraw"/>
+            <class name="example.AdminTestcases.TC11_ViewTransaction"/>
+            <class name="example.AdminTestcases.TC12_SearchCustomer"/>
+        </classes>
+    </test>
+    <test name="User Testcases">
+        <classes>
+            <class name="example.UserTestcases.TC01_OpenBankAccount"/>
+            <class name="example.UserTestcases.TC04_InternalTransfer"/>
+            <class name="example.UserTestcases.TC05_TransferUnsuccessfully"/>
+            <class name="example.UserTestcases.TC06_ExternalTransfer"></class>
+            <class name="example.UserTestcases.TC07_VerifyLatestTransaction"></class>
+            <class name="example.UserTestcases.TC08_VerifyFilterTransactionsFunction"/>
+            <class name="example.UserTestcases.TC09_EditAddress"/>
+            <class name="example.UserTestcases.TC10_ChangePassword"></class>
+            <class name="example.UserTestcases.TC13_RegisterCustomerAccountSuccessfully"></class>
+
+        </classes>
+    </test>
+</suite>

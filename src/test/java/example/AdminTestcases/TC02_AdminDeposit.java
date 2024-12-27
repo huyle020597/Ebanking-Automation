@@ -55,10 +55,10 @@ public class TC02_AdminDeposit {
         originalHandle = driver.getWindowHandle();
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
             (description = "Admin - Deposit money into account successfully")

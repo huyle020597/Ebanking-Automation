@@ -67,7 +67,7 @@ public class TC05_TransferUnsuccessfully {
         internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount() + "1");
 
 
-        internalTransferPage.inputMoneyAmount(transferAmount);
+        internalTransferPage.inputTransferAmount(transferAmount);
 
         internalTransferPage.inputTransferDescription(transferDesc);
 
@@ -80,13 +80,13 @@ public class TC05_TransferUnsuccessfully {
 
         internalTransferPage.inputReceiverAccount(Constants.USER_2.getBankAccount());
 
-        internalTransferPage.inputMoneyAmount(senderBalance+1);
+        internalTransferPage.inputTransferAmount(senderBalance+1);
 
         internalTransferPage.clickConfirmBtn();
 
         softAssert.assertTrue(internalTransferPage.isInsufficientMessageDisplayed()); //Check error Insufficient Fund
 
-        internalTransferPage.inputMoneyAmount(transferAmount);
+        internalTransferPage.inputTransferAmount(transferAmount);
 
         internalTransferPage.clickConfirmBtn();
 
