@@ -25,6 +25,7 @@ public class RegisterPage {
     By createAccountBtnConfirmLocator = By.name("j_idt9:j_idt30");
     By msgConfirmCreateAccount = By.cssSelector(".ui-dialog-content.ui-widget-content");
     By closeMsgConfirm = By.cssSelector(".ui-icon.ui-icon-closethick");
+    By msgActiveAccountConfirm = By.tagName("center");
 
 
     WebDriver driver;
@@ -142,6 +143,12 @@ public class RegisterPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(msgConfirmCreateAccount));
         return driver.findElement(msgConfirmCreateAccount).isDisplayed();
+    }
+
+    public boolean isActiveMsgDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(msgActiveAccountConfirm));
+        return driver.findElement(msgActiveAccountConfirm).isDisplayed();
     }
 }
 

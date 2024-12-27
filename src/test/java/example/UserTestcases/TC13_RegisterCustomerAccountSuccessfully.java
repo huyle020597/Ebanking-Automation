@@ -9,13 +9,16 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import page.AdminPages.HomePage;
 import page.UserPages.LoginPage;
 import page.UserPages.RegisterPage;
 import page.UserPages.UserInfoPage;
 import page.UserPages.YopmailPage;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class TC13_RegisterCustomerAccountSuccessfully {
     WebDriver driver;
@@ -25,6 +28,9 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     SoftAssert softAssert;
     Faker faker;
     YopmailPage yopmailPage;
+    DateTimeFormatter formatter;
+    Date birthday;
+    LocalDate localDate;
 
     String account;
     String password;
@@ -48,22 +54,25 @@ public class TC13_RegisterCustomerAccountSuccessfully {
 
         yopmailPage = new YopmailPage(driver);
         faker = new Faker();
+        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         account = faker.name().username();
         password = "Test@1234";
         fullName = faker.name().fullName();
         phoneNumber = faker.phoneNumber().subscriberNumber(10);
-//        dob = String.valueOf(faker.date().birthday());
-        dob = "02/05/1997";
+        birthday = faker.date().birthday();
+        localDate = birthday.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        dob = localDate.format(formatter);
         city = "Quang Nam";
         cmnd = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         originalHandle = driver.getWindowHandle();
-
     }
 
 
@@ -81,19 +90,17 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
         registerPage.clickCloseMsg();
 
-
         // Step 2: Open new tab for email confirmation
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
         String activateURL = yopmailPage.getActivateURL(email);
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(activateURL);
-
+        softAssert.assertTrue(registerPage.isActiveMsgDisplayed());
 
         // Step 3: Login with the newly created account
         driver.switchTo().window(originalHandle);
         loginPage.login(account, password);
-
 
         //Step 4: Confirm login with new account
         softAssert.assertEquals(userInfoPage.getUserProfileName(),fullName);

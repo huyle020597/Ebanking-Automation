@@ -40,14 +40,4 @@ public class HomePage {
     public void clickLogOutButton() {
         driver.findElement(logOutLocator).click();
     }
-
-
-    public void homePage() {
-        openCustomerListPage();
-        openDepositPage();
-        openWithdrawPage();
-        openCustomerTransactionListPage();
-        openDayTransactionListPage();
-        clickLogOutButton();
-    }
 }

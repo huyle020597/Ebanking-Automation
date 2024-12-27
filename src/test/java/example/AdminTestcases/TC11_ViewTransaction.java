@@ -45,7 +45,6 @@ public class TC11_ViewTransaction {
 
     String accountNo;
     String originalHandle;
-    boolean isDateBetween;
 
 
     @BeforeMethod
@@ -99,9 +98,7 @@ public class TC11_ViewTransaction {
         homePage.openCustomerTransactionListPage();
         transactionCustomerPage.search(accountNo, dateFrominString, dateToinString);
 
-
-
-        // kiem tra thong tin hien thi
+        //Verify
         softAssert.assertTrue(transactionCustomerPage.isTransactionAccountsValid(accountNo));
         softAssert.assertTrue(transactionCustomerPage.isTransactionsDateBetween(dateFrominString, dateToinString));
 
