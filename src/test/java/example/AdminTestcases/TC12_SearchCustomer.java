@@ -61,10 +61,10 @@ public class TC12_SearchCustomer {
         originalHandle = driver.getWindowHandle();
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
             (description = "Admin - Search customer by multiple fields")
