@@ -75,7 +75,7 @@ public class TC02_AdminDeposit {
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
-        loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
+        loginAdminPage.loginAdmin(Constants.ADMIN);
 
 
         //Nop tien va xac nhan

@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,36 +42,20 @@ public class CustomerListPage {
         driver.findElement(inputPhoneNumberTextbox).sendKeys(phoneNumber);
     }
 
-    public class CustomerData {
-        public String customerId; //viet qua class moi, chuyen thanh private
-        public String fullName;
-        public String address;
-        public String cmdn;
-        public String phoneNumber;
-
-        public CustomerData(String customerId, String fullName, String address, String cmdn, String phoneNumber) {
-            this.customerId = customerId;
-            this.fullName = fullName;
-            this.address = address;
-            this.cmdn = cmdn;
-            this.phoneNumber = phoneNumber;
-        }
-    }
 
 
     // Method to retrieve customer data from the selected row
-    public CustomerData getCustomerDataFromRow(int rowIndex) {
+    public User getCustomerDataFromRow(int rowIndex) {
         List<WebElement> rows = driver.findElements(customerTableRows);
         WebElement selectedRow = rows.get(rowIndex - 1);
         List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
 
         // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber
-        return new CustomerData(
-                cells.get(0).getText(), // Customer ID
-                cells.get(1).getText(), // Full Name
-                cells.get(2).getText(), // Address
-                cells.get(3).getText(), // CMDN
-                cells.get(4).getText()  // Phone Number
-        );
+        User selectedUser = new User( cells.get(0).getText(),null,null);
+            selectedUser.setFullName(cells.get(1).getText());
+            selectedUser.setCmnd(cells.get(3).getText());
+            selectedUser.setPhoneNumber(cells.get(4).getText());
+            selectedUser.setCity(cells.get(2).getText());
+        return selectedUser;
     }
 }

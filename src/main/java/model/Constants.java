@@ -3,6 +3,7 @@ package model;
 public class Constants {
     public static final double INTERNAL_TRANSACTION_FEE = 1100;
     public static final double EXTERNAL_TRANSACTION_FEE = 3300;
+    public static final double WITHDRAW_FEE = 3000;
     public static final String USER_URL = "http://14.176.232.213:8080/EBankingWebsite/faces/bank.xhtml#";
     public static final String ADMIN_URL = "http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml";
     public static final String YOPMAIL_URL = "https://yopmail.com";
@@ -27,6 +28,6 @@ public class Constants {
     //Test data , admin account
     public static final String ADMIN_ID = "1";
     public static final String ADMIN_PASSWORD = "admin";
-    public  static final User admin = new User("1","admin",null);
+    public  static final User ADMIN = new User("1","admin",null);
 
 }

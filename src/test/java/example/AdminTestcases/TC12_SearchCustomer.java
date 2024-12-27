@@ -1,15 +1,16 @@
 package example.AdminTestcases;
 
 import model.Constants;
-import org.testng.annotations.AfterMethod;
-import page.AdminPages.CustomerListPage;
-import page.AdminPages.HomePage;
-import page.AdminPages.LoginAdminPage;
+import model.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import page.AdminPages.CustomerListPage;
+import page.AdminPages.HomePage;
+import page.AdminPages.LoginAdminPage;
 import page.UserPages.BankAccountsPage;
 import page.UserPages.LoginPage;
 import page.UserPages.MenuBar;
@@ -29,13 +30,12 @@ public class TC12_SearchCustomer {
     UserInfoPage userInfoPage;
     CustomerListPage customerListPage;
     BankAccountsPage bankAccountsPage;
+    User selectedUser;
 
 
     String originalHandle;
-    String phoneNumber;
-    String actualPhoneNumber;
-    CustomerListPage.CustomerData selectedCustomer;
-    CustomerListPage.CustomerData returnedCustomer;
+
+    User returnedUser;
 
 
 
@@ -61,36 +61,36 @@ public class TC12_SearchCustomer {
         originalHandle = driver.getWindowHandle();
     }
 
-    @AfterMethod
-    public void cleanUp() {
-        driver.quit();
-    }
+//    @AfterMethod
+//    public void cleanUp() {
+//        driver.quit();
+//    }
 
     @Test
             (description = "Admin - Search customer by multiple fields")
-    public void searchCustomer() {
-        loginAdminPage.loginAdmin(Constants.ADMIN_ID,Constants.ADMIN_PASSWORD);
+    public void searchCustomer() throws InterruptedException {
+        loginAdminPage.loginAdmin(Constants.ADMIN);
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        selectedCustomer = customerListPage.getCustomerDataFromRow(1); // Chọn hàng đầu tiên
-
+        selectedUser = customerListPage.getCustomerDataFromRow(5);
         // Step 5: Nhập thông tin vào các trường tìm kiếm
-        customerListPage.enterCustomerID(selectedCustomer.customerId);
-        customerListPage.enterFullName(selectedCustomer.fullName);
-        customerListPage.enterAddress(selectedCustomer.address);
-        customerListPage.enterCMDN(selectedCustomer.cmdn);
-        customerListPage.enterPhoneNumber(selectedCustomer.phoneNumber);
+        customerListPage.enterCustomerID(selectedUser.getUserId());
+        customerListPage.enterFullName(selectedUser.getFullName());
+        customerListPage.enterAddress(selectedUser.getCity());
+        customerListPage.enterCMDN(selectedUser.getCmnd());
+        customerListPage.enterPhoneNumber(selectedUser.getPhoneNumber());
 
         // Step 6: Lấy dữ liệu từ kết quả tìm kiếm và kiểm tra
-        returnedCustomer = customerListPage.getCustomerDataFromRow(1);
+        Thread.sleep(2000);
+        returnedUser = customerListPage.getCustomerDataFromRow(1);
 
         //kiem tra ket qua hien thi
-        softAssert.assertEquals(returnedCustomer.customerId, selectedCustomer.customerId, "Customer ID mismatch");
-        softAssert.assertEquals(returnedCustomer.fullName, selectedCustomer.fullName, "Full Name mismatch");
-        softAssert.assertEquals(returnedCustomer.address, selectedCustomer.address, "Address mismatch");
-        softAssert.assertEquals(returnedCustomer.cmdn, selectedCustomer.cmdn, "CMDN mismatch");
-        softAssert.assertEquals(returnedCustomer.phoneNumber, selectedCustomer.phoneNumber, "Phone Number mismatch");
+        softAssert.assertEquals(returnedUser.getUserId(), selectedUser.getUserId(), "Customer ID mismatch");
+        softAssert.assertEquals(returnedUser.getFullName(), selectedUser.getFullName(), "Full Name mismatch");
+        softAssert.assertEquals(returnedUser.getCity(), selectedUser.getCity(), "Address mismatch");
+        softAssert.assertEquals(returnedUser.getCmnd(), selectedUser.getCmnd(), "CMDN mismatch");
+        softAssert.assertEquals(returnedUser.getPhoneNumber(), selectedUser.getPhoneNumber(), "Phone Number mismatch");
 
         softAssert.assertAll();
     }

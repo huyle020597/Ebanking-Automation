@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -14,9 +15,10 @@ public class LoginAdminPage {
         this.driver = driver;
     }
 
-    public void loginAdmin (String adminId, String adminPassword) {
-        driver.findElement(idInputLocator).sendKeys(adminId);
-        driver.findElement(passwordInputLocator).sendKeys(adminPassword);
+
+    public void loginAdmin (User admin) {
+        driver.findElement(idInputLocator).sendKeys(admin.getUserId());
+        driver.findElement(passwordInputLocator).sendKeys(admin.getPassword());
         driver.findElement(loginButtonLocator).click();
     }
 

@@ -93,7 +93,7 @@ public class TC11_ViewTransaction {
         //Login admin account
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
-        loginAdminPage.loginAdmin(Constants.ADMIN_ID, Constants.ADMIN_PASSWORD);
+        loginAdminPage.loginAdmin(Constants.ADMIN);
 
         //Input data
         homePage.openCustomerTransactionListPage();

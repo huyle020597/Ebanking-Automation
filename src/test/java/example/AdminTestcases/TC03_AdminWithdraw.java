@@ -44,7 +44,6 @@ public class TC03_AdminWithdraw {
         homePage = new HomePage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
         withdrawPage = new WithdrawPage(driver);
-        withdrawAmount = faker.number().numberBetween(1,10)*1000;
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -59,18 +58,18 @@ public class TC03_AdminWithdraw {
     @Test
             (description = "Admin - Withdraw money successfully")
     public void TC03() {
-        loginPage.login(Constants.USER_ID_1, Constants.USER_PASSWORD_1);
+        loginPage.login(Constants.USER_1);
 
         //chon tai khoan va lay so du
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(3);
         bankAccountsPage.viewDetailsByIndex(3);
         receiveBalance = bankAccountsPage.getAccountBalance();
-        // lấy số dư trừ một số random để đảm bảo số tiền withdraw không vuot quá
+        withdrawAmount = faker.number().numberBetween(0L, (long) (receiveBalance-Constants.WITHDRAW_FEE));
 
         //dang nhap voi tai khoan admin
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
-        loginAdminPage.loginAdmin(Constants.ADMIN_ID, Constants.ADMIN_PASSWORD);
+        loginAdminPage.loginAdmin(Constants.ADMIN);
 
         //Rut tien va xac nhan
         homePage.openWithdrawPage();
