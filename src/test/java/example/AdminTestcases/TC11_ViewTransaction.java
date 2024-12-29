@@ -61,12 +61,12 @@ public class TC11_ViewTransaction {
         bankAccountsPage = new BankAccountsPage(driver);
 
         formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        randomDate1 = LocalDate.of(2024, 12, 1);
-        randomDate2 = LocalDate.of(2024, 12, 23);
+        randomDate1 = LocalDate.of(2024, 12, 10);
+        randomDate2 = LocalDate.of(2024, 12, 15);
         startDate = faker.date().between(Date.from(randomDate1.atStartOfDay(ZoneId.systemDefault()).toInstant()),
                 Date.from(randomDate2.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        endLocalDate = startLocalDate.plusDays(10);
+        endLocalDate = startLocalDate.plusDays(5);
         dateFrominString = formatter.format(startLocalDate);
         dateToinString = formatter.format(endLocalDate);
 
@@ -87,7 +87,7 @@ public class TC11_ViewTransaction {
     public void viewTransactionByAccount() {
         //Login user account, select account number and get balance
         loginPage.login(Constants.USER_1);
-        accountNo = bankAccountsPage.getAccountNoByIndex(1);
+        accountNo = bankAccountsPage.getAccountNoByIndex(2);
 
         //Login admin account
         driver.switchTo().newWindow(WindowType.TAB);

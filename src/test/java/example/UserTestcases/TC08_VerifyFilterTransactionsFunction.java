@@ -46,7 +46,7 @@ public class TC08_VerifyFilterTransactionsFunction {
 
         faker = new Faker();
         //Lấy ngày start random
-        randomDate1 = LocalDate.of(2024,12,10);
+        randomDate1 = LocalDate.of(2024,12,12);
         randomDate2 = LocalDate.of(2024,12,15);
         startDate = faker.date().between(Date.from(randomDate1.atStartOfDay(ZoneId.systemDefault()).toInstant()),
                 Date.from(randomDate2.atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -54,7 +54,7 @@ public class TC08_VerifyFilterTransactionsFunction {
         //Lấy ngày end random
         startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        endLocalDate = startLocalDate.plusDays(10);
+        endLocalDate = startLocalDate.plusDays(5);
 
         //Chuyển về String để input
         startDateinString = formatter.format(startLocalDate);
@@ -74,14 +74,13 @@ public class TC08_VerifyFilterTransactionsFunction {
     @Test
     public void TC08() {
         loginPage.login(Constants.USER_1);
-        selectedAccount = bankAccountsPage.getAccountNoByIndex(1);
         bankAccountsPage.openTransactionsPage();
 
-        transactionsPage.searchTransaction(selectedAccount,startDateinString,endDateinString);
+        transactionsPage.searchTransaction(Constants.USER_1.getBankAccount(),startDateinString,endDateinString);
 
         //Verify Account Number va Transaction Date
-        softAssert.assertTrue(transactionsPage.isTransactionAccountsValid(selectedAccount));
-        softAssert.assertTrue(transactionsPage.isTransactionsDateValid(startDateinString,endDateinString));
+        softAssert.assertTrue(transactionsPage.isTransactionAccountsValid(Constants.USER_1.getBankAccount()),"Transaction Account invalid");
+        softAssert.assertTrue(transactionsPage.isTransactionsDateBetween(startDateinString,endDateinString),"Transaction Date invalid");
 
         softAssert.assertAll();
     }

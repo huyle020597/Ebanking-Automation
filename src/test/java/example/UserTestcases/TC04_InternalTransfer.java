@@ -48,9 +48,7 @@ public class TC04_InternalTransfer {
         transferDescription = faker.name().fullName();
         transferAmount = faker.number().numberBetween(1,10)*1000;
         user2 = Constants.USER_2;
-        user2.setBankAccount("100001298");
         user1 = Constants.USER_1;
-        user1.setBankAccount("100001284");
 
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();

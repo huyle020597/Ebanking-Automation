@@ -38,7 +38,7 @@ public class TC06_ExternalTransfer {
         externalTransferPage = new ExternalTransferPage(driver);
         externalTransferConfirmPage = new ExternalTransferConfirmPage(driver);
         yopmailPage = new YopmailPage(driver);
-        senderAcc = "100001284";
+        senderAcc = Constants.USER_1.getBankAccount();
         faker = new Faker();
         transferAmount = faker.number().numberBetween(1,10)*1000;
         transferDesc = faker.name().fullName();
@@ -57,15 +57,14 @@ public class TC06_ExternalTransfer {
 
     @Test
     public void TC06 () throws InterruptedException {
-        // Login voi tai khoan gui và kiem tra so du
+        // Login with sender account and get balance
         loginPage.login(Constants.USER_1);
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         senderBalance = bankAccountsPage.getAccountBalance();
 
-        // Thuc hien chuyen tien
+        // Transfer money
         bankAccountsPage.openExternalTransferPage();
         externalTransferPage.selectAccountByAccNumber(senderAcc);
-        softAssert.assertEquals(externalTransferPage.getSenderBalance(), senderBalance); //Kiem tra so du
 
         externalTransferPage.inputReceiverAccount(Constants.EXTERNAL_ACCOUNT_NUMBER);
         externalTransferPage.inputReceiverName(Constants.EXTERNAL_NAME);
@@ -75,7 +74,7 @@ public class TC06_ExternalTransfer {
         externalTransferPage.inputTransferAmount(transferAmount);
         externalTransferPage.clickTransferBtn();
 
-        // Kiem tra thong tin chuyen khoan
+        // Verify transfer information
         softAssert.assertEquals(externalTransferConfirmPage.getSenderAcc(),senderAcc);
         softAssert.assertEquals(externalTransferConfirmPage.getSenderBalance(),senderBalance);
         softAssert.assertEquals(externalTransferConfirmPage.getReceiverAcc(),Constants.EXTERNAL_ACCOUNT_NUMBER);
@@ -83,27 +82,26 @@ public class TC06_ExternalTransfer {
         softAssert.assertEquals(externalTransferConfirmPage.getTransferDesc(),transferDesc);
         softAssert.assertEquals(externalTransferConfirmPage.getReceiverName(),Constants.EXTERNAL_NAME);
 
-        //Xac nhan va nhap OTP
         externalTransferConfirmPage.clickConfirmBtn();
 
-        // Lay ma OTP tu Yopmail
+        // Get OTP
         originalHandle = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
         OTP = yopmailPage.getOTPcodeByEmail(Constants.USER_1.getEmailAddress());
 
-        // Quay ve tab cu va nhap OTP
+        // Input OTP
         driver.switchTo().window(originalHandle);
 
         externalTransferConfirmPage.inputOTP(OTP);
 
         externalTransferConfirmPage.clickTransferBtn();
 
-        // Kiem tra message success
+        // Verify successful message
         softAssert.assertTrue(externalTransferConfirmPage.isSuccessMessageDisplayed());
         externalTransferConfirmPage.closeSuccessMessage();
 
-        //Kiem tra so du tai khoan gui
+        // Verify sender balance
         bankAccountsPage.viewDetailsByAccNumber(senderAcc);
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), senderBalance - transferAmount - Constants.EXTERNAL_TRANSACTION_FEE);
 

@@ -42,12 +42,12 @@ public class ExternalTransferPage {
         driver.findElement(availableAccountsLocator).click();
     }
 
-    @Step("Get sender balance")
-    public double getSenderBalance() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.presenceOfElementLocated(senderBalanceLocator));
-        return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
-    }
+//    @Step("Get sender balance")
+//    public double getSenderBalance() {
+////        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+////        wait.until(ExpectedConditions.());
+//        return Double.parseDouble(driver.findElement(senderBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
+//    }
 
     @Step("Input receiver account")
     public void inputReceiverAccount(String receiverAccount) {

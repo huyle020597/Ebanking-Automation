@@ -83,6 +83,8 @@ public class InternalTransferConfirmPage {
 
     @Step ("Verify if the successful message display")
     public boolean isTransferSuccessMessageDisplayed () {
+        WebDriverWait wait =new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(transferSuccessMessageLocator));
         return driver.findElement(transferSuccessMessageLocator).isDisplayed();
     }
 

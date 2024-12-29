@@ -1,5 +1,6 @@
 package example.AdminTestcases;
 
+import com.github.javafaker.Faker;
 import model.Constants;
 import model.User;
 import org.openqa.selenium.WebDriver;
@@ -31,6 +32,7 @@ public class TC12_SearchCustomer {
     CustomerListPage customerListPage;
     BankAccountsPage bankAccountsPage;
     User selectedUser;
+    Faker faker;
 
 
     String originalHandle;
@@ -53,6 +55,7 @@ public class TC12_SearchCustomer {
         userInfoPage = new UserInfoPage(driver);
         customerListPage = new CustomerListPage(driver);
         bankAccountsPage = new BankAccountsPage(driver);
+        faker = new Faker();
 
 
         driver.get(Constants.ADMIN_URL);
@@ -61,10 +64,10 @@ public class TC12_SearchCustomer {
         originalHandle = driver.getWindowHandle();
     }
 
-    @AfterMethod
-    public void cleanUp() {
-        driver.quit();
-    }
+//    @AfterMethod
+//    public void cleanUp() {
+//        driver.quit();
+//    }
 
     @Test
             (description = "Admin - Search customer by multiple fields")
@@ -73,7 +76,7 @@ public class TC12_SearchCustomer {
 
         //Nhap data tim kiem
         homePage.openCustomerListPage();
-        selectedUser = customerListPage.getCustomerDataFromRow(5);
+        selectedUser = customerListPage.getCustomerDataFromRow(faker.number().numberBetween(1,10));
         // Step 5: Nhập thông tin vào các trường tìm kiếm
         customerListPage.enterCustomerID(selectedUser.getUserId());
         customerListPage.enterFullName(selectedUser.getFullName());

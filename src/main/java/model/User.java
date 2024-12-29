@@ -1,20 +1,27 @@
 package model;
 
 public class User {
-    String userId;
-    String password;
-    String emailAddress;
-    String bankAccount;
-    String fullName;
-    String phoneNumber;
-    String dob;
-    String city;
-    String cmnd;
+    private String userId;
+    private String password;
+    private String emailAddress;
+    private String bankAccount;
+    private String fullName;
+    private String phoneNumber;
+    private String dob;
+    private String city;
+    private String cmnd;
 
     public User(String userId, String password, String emailAddress) {
         this.userId = userId;
         this.password = password;
         this.emailAddress = emailAddress;
+    }
+
+    public User(String userId, String password, String emailAddress, String bankAccount) {
+        this.userId = userId;
+        this.password = password;
+        this.emailAddress = emailAddress;
+        this.bankAccount = bankAccount;
     }
 
     public String getUserId() {

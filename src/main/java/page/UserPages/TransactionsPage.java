@@ -53,7 +53,7 @@ public class TransactionsPage {
         selectAccountByAccNumber(accountNumber);
         inputFromDate(startDate);
         inputToDate(endDate);
-        selectInputedDate();
+        selectDateInCalendar();
         clickSearchBtn();
     }
 
@@ -86,7 +86,7 @@ public class TransactionsPage {
     }
 
     @Step ("Verify if all transaction date is within the date range input")
-    public boolean isTransactionsDateValid(String startDateinString, String endDateinString) {
+    public boolean isTransactionsDateBetween(String startDateinString, String endDateinString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
             // Chuyển ngày String thành LocalDate
@@ -107,7 +107,7 @@ public class TransactionsPage {
         }
     }
 
-    public void selectInputedDate () {
+    public void selectDateInCalendar () {
         driver.findElement(selectedCalendarDate).click();
     }
 

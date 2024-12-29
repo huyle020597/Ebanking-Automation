@@ -3,6 +3,10 @@ package page.UserPages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class ExternalTransferConfirmPage {
     By senderAccountLocator = By.xpath("//label[text()='Tài khoản gửi']/../following-sibling::td/label");
@@ -30,6 +34,7 @@ public class ExternalTransferConfirmPage {
 
     @Step ("Get sender balance")
     public double getSenderBalance () {
+
         return Double.parseDouble(driver.findElement(senderBalanceLocator)
                 .getText().replace(",","").replace(" VNĐ",""));
     }
@@ -69,6 +74,8 @@ public class ExternalTransferConfirmPage {
 
     @Step ("Verify that the successful message display")
     public boolean isSuccessMessageDisplayed () {
+        WebDriverWait wait =new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(transferSuccessMessageLocator));
         return driver.findElement(transferSuccessMessageLocator).isDisplayed();
     }
 

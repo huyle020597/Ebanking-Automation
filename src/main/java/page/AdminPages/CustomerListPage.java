@@ -43,19 +43,19 @@ public class CustomerListPage {
     }
 
 
-
     // Method to retrieve customer data from the selected row
     public User getCustomerDataFromRow(int rowIndex) {
         List<WebElement> rows = driver.findElements(customerTableRows);
-        WebElement selectedRow = rows.get(rowIndex - 1);
-        List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
+            WebElement selectedRow = rows.get(rowIndex - 1);
+            List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
 
-        // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber
-        User selectedUser = new User( cells.get(0).getText(),null,null);
+            // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber
+            User selectedUser = new User(cells.get(0).getText(), null, null);
             selectedUser.setFullName(cells.get(1).getText());
             selectedUser.setCmnd(cells.get(3).getText());
             selectedUser.setPhoneNumber(cells.get(4).getText());
             selectedUser.setCity(cells.get(2).getText());
-        return selectedUser;
+            return selectedUser;
+        }
     }
-}
+
