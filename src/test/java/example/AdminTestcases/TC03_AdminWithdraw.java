@@ -58,29 +58,31 @@ public class TC03_AdminWithdraw {
     @Test
             (description = "Admin - Withdraw money successfully")
     public void TC03() {
+        //Step 1: Login with user account
         loginPage.login(Constants.USER_1);
 
-        //chon tai khoan va lay so du
+        //Step 2: Select account and get balance
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(3);
         bankAccountsPage.viewDetailsByIndex(3);
         receiveBalance = bankAccountsPage.getAccountBalance();
         withdrawAmount = faker.number().numberBetween(0L, (long) (receiveBalance-Constants.WITHDRAW_FEE));
 
-        //dang nhap voi tai khoan admin
+        //Step 3: Switch tab and login with admin account
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
         loginAdminPage.loginAdmin(Constants.ADMIN);
 
-        //Rut tien va xac nhan
+        //Step 4: Withdraw and confirm
         homePage.openWithdrawPage();
         withdrawPage.withdraw(receiveAccountNo,withdrawAmount,"testing");
         softAssert.assertTrue(withdrawPage.isSuccessfulMsgDisplayed());
 
-        //quay lai tab user kiem tra so du tai khoan
+        //Step 5: Go back to user tab and check account balance
         driver.switchTo().window(originalHandle);
         bankAccountsPage.openAccountPage();
         bankAccountsPage.viewDetailsByAccNumber(receiveAccountNo);
 
+        //Step 6: Check that expected information matches actual information
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(),receiveBalance - withdrawAmount);
         softAssert.assertAll();
     }

@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class TC10_ChangePassword {
     WebDriver driver;
@@ -96,7 +95,7 @@ public class TC10_ChangePassword {
 
     @Test
             (description = "User - Change PW successfully")
-    public void TC13() throws InterruptedException {
+    public void TC10() throws InterruptedException {
         // Step 1: Register new account
         loginPage.clickRegisterBtn();
         registerPage.registerAccountByUser(newUser);

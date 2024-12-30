@@ -72,29 +72,30 @@ public class TC12_SearchCustomer {
     @Test
             (description = "Admin - Search customer by multiple fields")
     public void searchCustomer() throws InterruptedException {
+        //Step 1: Login with user account
         loginAdminPage.loginAdmin(Constants.ADMIN);
 
-        //Nhap data tim kiem
+        //Step 2: Get customer information from random row
         homePage.openCustomerListPage();
         selectedUser = customerListPage.getCustomerDataFromRow(faker.number().numberBetween(1,10));
-        // Step 5: Nhập thông tin vào các trường tìm kiếm
+
+        //Step 3: Copy information from selected row into search fields
         customerListPage.enterCustomerID(selectedUser.getUserId());
         customerListPage.enterFullName(selectedUser.getFullName());
         customerListPage.enterAddress(selectedUser.getCity());
         customerListPage.enterCMDN(selectedUser.getCmnd());
         customerListPage.enterPhoneNumber(selectedUser.getPhoneNumber());
 
-        // Step 6: Lấy dữ liệu từ kết quả tìm kiếm và kiểm tra
+        //Step 4: Get data from search results
         Thread.sleep(2000);
         returnedUser = customerListPage.getCustomerDataFromRow(1);
 
-        //kiem tra ket qua hien thi
+        //Step 5: Check that expected information matches actual information
         softAssert.assertEquals(returnedUser.getUserId(), selectedUser.getUserId(), "Customer ID mismatch");
         softAssert.assertEquals(returnedUser.getFullName(), selectedUser.getFullName(), "Full Name mismatch");
         softAssert.assertEquals(returnedUser.getCity(), selectedUser.getCity(), "Address mismatch");
         softAssert.assertEquals(returnedUser.getCmnd(), selectedUser.getCmnd(), "CMDN mismatch");
         softAssert.assertEquals(returnedUser.getPhoneNumber(), selectedUser.getPhoneNumber(), "Phone Number mismatch");
-
         softAssert.assertAll();
     }
 }

@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -37,7 +38,7 @@ public class DepositPage {
     }
 
 
-
+    @Step ("Input Deposit Transaction")
     public void inputDeposit(String accountNumber, double amount, String paymentNote) {
         inputReceiveAccount(accountNumber);
         inputAmount(amount);
@@ -45,6 +46,7 @@ public class DepositPage {
         clickConfirm();
     }
 
+    @Step ("Verify that the successful message display")
     public boolean isSuccessfulMsgDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(successMessageLocator));

@@ -63,34 +63,31 @@ public class TC02_AdminDeposit {
     @Test
             (description = "Admin - Deposit money into account successfully")
     public void depositMoney() {
-        //dang nhap tai khoan user
+        //Step 1: Login with user account
         loginPage.login(Constants.USER_1);
 
-        //chon tai khoan va lay so du
+        //Step 2: Select account and get balance
         receiveAccountNo = bankAccountsPage.getAccountNoByIndex(3);
         bankAccountsPage.viewDetailsByIndex(3);
         receiveBalance = bankAccountsPage.getAccountBalance();
 
-
-        //dang nhap voi tai khoan admin
+        //Step 3: Switch tab and login with admin account
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
         loginAdminPage.loginAdmin(Constants.ADMIN);
 
-
-        //Nop tien va xac nhan
+        //Step 4: Deposit and confirm
         homePage.openDepositPage();
         depositPage.inputDeposit(receiveAccountNo,depositAmount,"testing");
         softAssert.assertTrue(depositPage.isSuccessfulMsgDisplayed());
 
-
-        //quay lai tab user kiem tra so du tai khoan
+        //Step 5: Go back to user tab and check account balance
         driver.switchTo().window(originalHandle);
         bankAccountsPage.openAccountPage();
         bankAccountsPage.viewDetailsByAccNumber(receiveAccountNo);
 
+        //Step 6: Check that expected information matches actual information
         softAssert.assertEquals(bankAccountsPage.getAccountBalance(), receiveBalance + depositAmount);
-
         softAssert.assertAll();
     }
 

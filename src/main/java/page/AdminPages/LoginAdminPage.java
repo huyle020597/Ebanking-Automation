@@ -1,8 +1,10 @@
 package page.AdminPages;
 
+import io.qameta.allure.Step;
 import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Test;
 
 public class LoginAdminPage {
     By idInputLocator = By.xpath("//input[@id='j_idt9:id1']");
@@ -16,6 +18,7 @@ public class LoginAdminPage {
     }
 
 
+    @Step ("Login Admin Account")
     public void loginAdmin (User admin) {
         driver.findElement(idInputLocator).sendKeys(admin.getUserId());
         driver.findElement(passwordInputLocator).sendKeys(admin.getPassword());

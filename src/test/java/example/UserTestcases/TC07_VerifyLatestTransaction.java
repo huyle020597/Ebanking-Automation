@@ -64,7 +64,7 @@ public class TC07_VerifyLatestTransaction {
     }
 
     @Test
-    public void TC06 () throws InterruptedException {
+    public void TC07() throws InterruptedException {
 
         // Login with sender account and check balance
         loginPage.login(Constants.USER_1);

@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,6 +40,7 @@ public class TransactionCustomerPage {
         driver.findElement(searchBtn).click();
     }
 
+    @Step ("Input Data To Search Box")
     public void search(String accountNumber, String dateFrom, String dateTo) {
         inputAccountNumber(accountNumber);
         inputDateFrom(dateFrom);
@@ -58,22 +60,24 @@ public class TransactionCustomerPage {
         return getColumnOrder("Date Chuyển tiền");
     }
 
-    //Lấy data của từng ô dựa vào thứ tự cột
+    @Step ("Get data of each cell based on column order")
     public String getAccountNumbByRow(int rowNumber) {
         By cellLocator = By.xpath(String.format("//table[@role='grid']/tbody/tr[%d]/td[%s]", rowNumber - 1));
         return driver.findElements(cellLocator).get(getSenderAccountColumnOrder() - 1).getText();
     }
 
+    @Step ("Get transaction date from selected row")
     public String getTransactionDateByRow(int rowNumber) {
             By cellLocator = By.xpath(String.format("//table[@role='grid']/tbody/tr[%d]/td[%s]", rowNumber));
         return driver.findElements(cellLocator).get(getTransactionDateColumnOrder() - 1).getText();
     }
 
+    @Step ("Verify the displayed date matches the input date")
     public boolean isTransactionsDateBetween(String startDateinString, String endDateinString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         boolean isWithinDateRange = true;
         try {
-            // Chuyển ngày String thành LocalDate
+            //Convert String date to LocalDate
             LocalDate startDate = LocalDate.parse(startDateinString, formatter);
             LocalDate endDate = LocalDate.parse(endDateinString, formatter);
 
@@ -94,6 +98,7 @@ public class TransactionCustomerPage {
         return isWithinDateRange;
     }
 
+    @Step ("Verify the account number matches the input account number.")
     public boolean isTransactionAccountsValid (String accountNo) {
         List<WebElement> listTransactionAccounts = driver.findElements(By.xpath("//td[2]"));
         boolean isValid = true ;

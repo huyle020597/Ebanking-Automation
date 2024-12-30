@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -37,6 +38,7 @@ public class WithdrawPage {
     }
 
 
+    @Step ("Input withdraw transaction")
     public void withdraw(String account, double amount, String note) {
         inputAccountNumber(account);
         inputAmount(amount);
@@ -44,6 +46,7 @@ public class WithdrawPage {
         clickTransfer();
     }
 
+    @Step ("Verify that the successful message display")
     public boolean isSuccessfulMsgDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(successMessageLocator));

@@ -2,6 +2,7 @@ package example.UserTestcases;
 
 import com.github.javafaker.Faker;
 import model.Constants;
+import model.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,6 +41,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     String city;
     String cmnd;
     String email;
+    User user;
 
     String originalHandle;
 
@@ -69,6 +71,9 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         cmnd = faker.idNumber().valid();
         email = "test" + System.currentTimeMillis() + "@yopmail.com";
 
+        user = new User(account,password,password,fullName,phoneNumber,dob,city,cmnd,email);
+
+
         driver.get(Constants.USER_URL);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -84,13 +89,13 @@ public class TC13_RegisterCustomerAccountSuccessfully {
     @Test
             (description = "User - Register customer account successfully")
     public void TC13() throws InterruptedException {
-        // Step 1: Register new account
+        //Step 1: Register new account
         loginPage.clickRegisterBtn();
-        registerPage.registerAccount(account, password, password, fullName, phoneNumber, dob, city, cmnd, email);
+        registerPage.registerAccountByUser(user);
         softAssert.assertTrue(registerPage.isSuccessfulMsgDisplayed());
         registerPage.clickCloseMsg();
 
-        // Step 2: Open new tab for email confirmation
+        //Step 2: Open new tab for email confirmation
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.YOPMAIL_URL);
         String activateURL = yopmailPage.getActivateURL(email);
@@ -98,7 +103,7 @@ public class TC13_RegisterCustomerAccountSuccessfully {
         driver.get(activateURL);
         softAssert.assertTrue(registerPage.isActiveMsgDisplayed());
 
-        // Step 3: Login with the newly created account
+        //Step 3: Login with the newly created account
         driver.switchTo().window(originalHandle);
         loginPage.login(account, password);
 

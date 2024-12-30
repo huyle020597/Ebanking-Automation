@@ -1,5 +1,6 @@
 package page.UserPages;
 
+import io.qameta.allure.Step;
 import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -67,13 +68,14 @@ public class RegisterPage {
         driver.findElement(genderMaleLocator).click();
     }
 
-    public void enterCity() {
+    public void clickCityDropdown() {
         driver.findElement(cityDropdownLocator).click();
     }
 
     private void selectCity(String city) {
-        enterCity();
+        clickCityDropdown();
         availableCityLocator = By.xpath(String.format("//li[contains(@class, 'ui-selectonemenu-item') and @data-label='%s']", city));
+        //li[@class='ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all'][@data-label='%s']
         driver.findElement(availableCityLocator).click();
     }
 
@@ -92,6 +94,7 @@ public class RegisterPage {
         driver.findElement(confirmBtnLocator).click();
     }
 
+    @Step ("Input user account registration information")
     public void registerAccount(String account, String password, String password2, String fullName, String phoneNumber,
                                 String dob, String city, String id, String email) {
         enterAccount(account);
@@ -108,7 +111,7 @@ public class RegisterPage {
         clickCreateAccount();
     }
 
-    //Method register chỉ truyền biến User
+    //The register method only passes the User variable.
     public void registerAccountByUser(User user) {
         enterAccount(user.getUserId());
         enterPassword(user.getPassword());
@@ -139,12 +142,15 @@ public class RegisterPage {
         driver.findElement(closeMsgConfirm).click();
     }
 
+
+    @Step ("Verify that the successful message display")
     public boolean isSuccessfulMsgDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(msgConfirmCreateAccount));
         return driver.findElement(msgConfirmCreateAccount).isDisplayed();
     }
 
+    @Step ("Verify that the active message display")
     public boolean isActiveMsgDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(msgActiveAccountConfirm));

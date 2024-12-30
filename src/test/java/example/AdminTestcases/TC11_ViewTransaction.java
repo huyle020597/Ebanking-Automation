@@ -85,23 +85,22 @@ public class TC11_ViewTransaction {
     @Test
             (description = "Admin - View transaction list by Account")
     public void viewTransactionByAccount() {
-        //Login user account, select account number and get balance
+        //Step 1: Login with user account and get account number
         loginPage.login(Constants.USER_1);
         accountNo = bankAccountsPage.getAccountNoByIndex(2);
 
-        //Login admin account
+        //Step 2: Switch tab and login with admin account
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(Constants.ADMIN_URL);
         loginAdminPage.loginAdmin(Constants.ADMIN);
 
-        //Input data
+        //Step 3: Input data want to view transactions
         homePage.openCustomerTransactionListPage();
         transactionCustomerPage.search(accountNo, dateFrominString, dateToinString);
 
-        //Verify
+        //Step 4: Check that expected information matches actual information
         softAssert.assertTrue(transactionCustomerPage.isTransactionAccountsValid(accountNo));
         softAssert.assertTrue(transactionCustomerPage.isTransactionsDateBetween(dateFrominString, dateToinString));
-
         softAssert.assertAll();
     }
 }

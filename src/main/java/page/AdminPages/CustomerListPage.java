@@ -1,5 +1,6 @@
 package page.AdminPages;
 
+import io.qameta.allure.Step;
 import model.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -42,14 +43,12 @@ public class CustomerListPage {
         driver.findElement(inputPhoneNumberTextbox).sendKeys(phoneNumber);
     }
 
-
-    // Method to retrieve customer data from the selected row
+    @Step("Get Customer Data From Row Index")
     public User getCustomerDataFromRow(int rowIndex) {
         List<WebElement> rows = driver.findElements(customerTableRows);
             WebElement selectedRow = rows.get(rowIndex - 1);
             List<WebElement> cells = selectedRow.findElements(By.tagName("td"));
 
-            // Assuming the column order: customerId, fullName, address, cmdn, phoneNumber
             User selectedUser = new User(cells.get(0).getText(), null, null);
             selectedUser.setFullName(cells.get(1).getText());
             selectedUser.setCmnd(cells.get(3).getText());
