@@ -64,10 +64,10 @@ public class TC12_SearchCustomer {
         originalHandle = driver.getWindowHandle();
     }
 
-//    @AfterMethod
-//    public void cleanUp() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void cleanUp() {
+        driver.quit();
+    }
 
     @Test
             (description = "Admin - Search customer by multiple fields")
@@ -78,7 +78,6 @@ public class TC12_SearchCustomer {
         //Step 2: Get customer information from random row
         homePage.openCustomerListPage();
         selectedUser = customerListPage.getCustomerDataFromRow(faker.number().numberBetween(1,10));
-
         //Step 3: Copy information from selected row into search fields
         customerListPage.enterCustomerID(selectedUser.getUserId());
         customerListPage.enterFullName(selectedUser.getFullName());
